@@ -1,0 +1,4 @@
+[gd_scene format=2]
+
+[node name="Hangar" type="Spatial"]
+transform = Transform( 0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0 )
