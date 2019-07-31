@@ -62,6 +62,12 @@ func _connected_to_server():
 
 # S'executa quan es desconnecta un jugador
 func _on_player_disconnected(id):
+	if players2[id] != null:
+		players2.erase(id)
+		get_node("/root/Main/Splitscreen/Viewport2").get_node(str(id)).set_process(false) # Es pot treure?
+		get_node("/root/Main/Splitscreen/Viewport2").get_node(str(id)).queue_free()
+	get_node("/root/Main/Splitscreen/Viewport1").get_node(str(id)).set_process(false) # Es pot treure?
+	get_node("/root/Main/Splitscreen/Viewport1").get_node(str(id)).queue_free()
 	players1.erase(id)
 
 # S'executa quan es connecta un nou jugador (poden ser els que ja hi son o els que s'uniran), la seva utilitat es sincronitzar els jugadors que es connectin o els ja connectats amb la partida de cadascun (a excepció del servidor)

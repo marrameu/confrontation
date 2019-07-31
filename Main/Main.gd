@@ -8,6 +8,8 @@ var troops_instantiated := false
 
 # Crear una funció per a crear un nou jugador local
 func _ready() -> void:
+	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
+	
 	var new_players := [null, null, null, null]
 	var selection_menus := [null, null, null, null]
 	
@@ -250,6 +252,14 @@ func exit_game() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_tree().change_scene("res://Title Screen/TitleScreen.tscn")
 	get_tree().paused = false
+
+func _on_server_disconnected() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	exit_game()
+	get_tree().set_network_peer(null)
+	Network.self_data1 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0,
+	health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
+	Network.self_data2 = Network.self_data1
 
 func enable_scene_camera4() -> void:
 	var render4 = $Splitscreen.add_player(3)
