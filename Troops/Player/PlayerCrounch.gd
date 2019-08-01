@@ -20,18 +20,26 @@ func _process(delta : float) -> void:
 	
 	if Input.is_action_just_pressed(action_name):
 		if not crounching:
-			crounch()
+			if get_tree().has_network_peer():
+				if is_network_master():
+					rpc("crounch")
+			else:
+				crounch()
 		else:
-			get_up()
+			if get_tree().has_network_peer():
+				if is_network_master():
+					rpc("get_up")
+			else:
+				get_up()
 
-func crounch():
+sync func crounch():
 	crounching = true
 	capsule_mesh.mesh.set_mid_height(1.5)
 	capsule_collision.translation += Vector3(0, -0.15, 0)
 	capsule_collision.shape.set_height(1.5)
 	capsule_mesh.translation += Vector3(0, -0.15, 0)
 
-func get_up():
+sync func get_up():
 	crounching = false
 	capsule_mesh.mesh.set_mid_height(1.8)
 	capsule_collision.translation += Vector3(0, 0.15, 0)

@@ -29,6 +29,8 @@ func _process(delta: float) -> void:
 func set_player_input() -> void:
 	var ship_camera : Camera = ProjectSettings.get("ship_camera" + String(get_parent().number_of_player))
 	var player : Player = ProjectSettings.get("player" + String(get_parent().number_of_player))
+	if player == null: # Mirar si es pot treure aquesta comporvació
+		return
 	input_manager = player.get_node("InputManager")
 	input_map = input_manager.input_map
 	

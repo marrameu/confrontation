@@ -67,7 +67,6 @@ func enter_ship(result):
 	result.collider.get_node("PlayerHUD/ShipUI/Control/Cursor").rect_position = Vector2(-0.5, -0.5)
 	result.collider.number_of_player = get_parent().number_of_player
 	ship_camera.init(result.collider.get_node("CameraPosition"), get_parent().number_of_player)
-	is_in_a_vehicle = true
 	if get_tree().has_network_peer():
 		get_parent().update_network_info()
 
@@ -78,25 +77,29 @@ func exit_ship() -> void:
 	ship_camera.rotation = Vector3()
 	ship_camera.target = null
 	
-	if get_tree().has_network_peer():
-		rpc("change_ship_player", current_vehicle.get_path(), false, "")
-		get_parent().rpc("enable_components", false)
-		
-	else:
-		change_ship_player(current_vehicle.get_path(), false, "")
-		get_parent().enable_components(false)
-	
 	current_vehicle.number_of_player = 0
 	current_vehicle.set_linear_velocity(Vector3.ZERO)
 	current_vehicle.get_node("CameraPosition").translation = Vector3(0, 6, -30) # Change when adding slerp or other ships
 	get_parent().translation = current_vehicle.translation
-	is_in_a_vehicle = false
-	current_vehicle = null
+	
+	if get_tree().has_network_peer():
+		rpc("change_ship_player", current_vehicle.get_path(), false, "")
+		get_parent().rpc("enable_components", false)
+	else:
+		change_ship_player(current_vehicle.get_path(), false, "")
+		get_parent().enable_components(false)
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if get_tree().has_network_peer():
 		get_parent().update_network_info()
 
-sync func change_ship_player(ship_path : String, status : bool, name : String) -> void:
-	current_vehicle = get_node(NodePath(ship_path))
-	get_node(NodePath(ship_path)).is_player = status
-	get_node(NodePath(ship_path)).player_name = name
+sync func change_ship_player(ship_path : NodePath, status : bool, name : String) -> void:
+	is_in_a_vehicle = status
+	if status == true:
+		current_vehicle = get_node(ship_path)
+	else:
+		current_vehicle = null
+	
+	if get_node(ship_path) != null:
+		get_node(ship_path).is_player = status
+		get_node(ship_path).player_name = name

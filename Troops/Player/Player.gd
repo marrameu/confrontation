@@ -47,7 +47,7 @@ puppet var slave_position : = Vector3()
 puppet var slave_rotation : = 0.0
 var nickname := "Noname"
 
-func init(new_nickname, start_position, start_health, start_alive, start_in_a_vehicle) -> void:
+func init(new_nickname, start_position, start_crounching, start_health, start_alive, start_in_a_vehicle) -> void:
 	# Position and Nickname
 	translation = start_position
 	nickname = new_nickname
@@ -57,11 +57,11 @@ func init(new_nickname, start_position, start_health, start_alive, start_in_a_ve
 		$HealthSystem.health = start_health
 		if start_in_a_vehicle:
 			disable_components(false)
+		elif start_crounching:
+			$Crounch.crounch()
 	else:
 		if get_tree().has_network_peer():
-			rpc("die")
-			update_network_info()
-			# No es necesari actualitzar la informació 
+			rpc("die") 
 		else:
 			die()
 	
@@ -190,7 +190,10 @@ func walk(delta : float) -> void:
 		velocity.y = jump_height
 		has_contact = false
 		if $Crounch.crounching:
-			$Crounch.get_up()
+			if get_tree().has_network_peer():
+				$Crounch.rpc("get_up")
+			else:
+				$Crounch.get_up()
 	
 	# Move
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0), false, 4, deg2rad(MAX_SLOPE_ANGLE))
@@ -275,6 +278,7 @@ sync func respawn() -> void:
 
 sync func disable_components(var disable_interaction : bool) -> void:
 	set_physics_process(false)
+	set_process(false)
 	if $Crounch.crounching:
 		$Crounch.get_up()
 	$Crounch.set_process(false)
@@ -302,6 +306,7 @@ sync func disable_components(var disable_interaction : bool) -> void:
 
 sync func enable_components(var enable_interaction : bool) -> void:
 	set_physics_process(true)
+	set_process(true)
 	$Crounch.set_process(true)
 	$CameraBase.set_process(true)
 	if enable_interaction:
@@ -325,5 +330,5 @@ sync func enable_components(var enable_interaction : bool) -> void:
 		$CameraBase/Camera.current = true
 
 func update_network_info():
-	Network.update_info(int(name), translation, rotation.y, $HealthSystem.health, $TroopManager.is_alive,
-	$Interaction.is_in_a_vehicle, number_of_player)
+	Network.update_info(int(name), translation, rotation.y, $Crounch.crounching,
+	$HealthSystem.health, $TroopManager.is_alive, $Interaction.is_in_a_vehicle, number_of_player)

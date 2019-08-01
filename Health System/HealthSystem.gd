@@ -4,10 +4,11 @@ signal die
 
 # Health
 export(int) var max_health : int = 150 # const?
-onready var health := max_health
+var health := 0
 
 func _ready() -> void:
-	pass
+	if health == 0:
+		health = max_health
 
 sync func take_damage(amount : int) -> void:
 	if health == 0:

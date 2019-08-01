@@ -9,13 +9,14 @@ const MAX_PLAYERS = 5 # El nombre màxim de peers al servidor
 var players1 = { }
 var players2 = { }
 # Conté totes les variables de cada peer necesaries per inicialitzar al jugador
-var self_data1 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0,
+var self_data1 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crounching = false,
 health = 0, is_alive = false, team = 0, is_in_a_vehicle = false } # Classe i is_alive = si té 0 vida
-var self_data2 = self_data1
+var self_data2 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crounching = false,
+health = 0, is_alive = false, team = 0, is_in_a_vehicle = false } # No es pot self_data2 = self_data1
 # Crear una nova variable ja que self_data1 es només per a la inicialització i l'equip i classe es poden canviar durant la partida
 # var self_conifg or player_config
 # Conté totes les variables de cada peer necesaries per inicialitzar la partida
-var match_data = { cps_counts = [], vehicles_data = [], troops_data = [] }
+var match_data = { recived = false, vehicles_data = [], troops_data = [], capital_ships_data = [] }
 
 signal player_disconnected
 signal server_disconnected
@@ -29,8 +30,9 @@ func _ready():
 func create_server(player_nickname):
 	self_data1.name = player_nickname # El primer pas tant per a crear un servidor com un client es definir el mot que tindrà el jugador en la partida
 	players1[1] = self_data1 # El "self_data1" local s'afegeix al llistat de "players" i ocupa la posició 1, ja que el servidor sempre té aquesta id
-	self_data2.name = player_nickname
-	players2[1] = self_data2
+	if LocalMultiplayer.number_of_players == 2:
+		self_data2.name = player_nickname
+		players2[1] = self_data2
 	var peer = NetworkedMultiplayerENet.new() # Es crea un peer
 	peer.create_server(DEFAULT_PORT, MAX_PLAYERS) # Es crea un servidor amb la configuració establerta
 	get_tree().set_network_peer(peer) # S'inicialitza el peer juntament amb el servidor i la API
@@ -50,9 +52,7 @@ func _connected_to_server():
 	var i = LocalMultiplayer.number_of_players
 	if i == 2:
 		players2[local_player_id] = self_data2
-		players1[local_player_id] = self_data1 # I establim la informació fent servir el "self_data1" local
-	elif i == 1:
-		players1[local_player_id] = self_data1
+	players1[local_player_id] = self_data1 # I establim la informació fent servir el "self_data1" local
 	# Es crida a la funció amb els parametres de la id local i el "self_data1" local per a crear un jugador en el servidor
 	# Aquesta crida només va dirigida al servidor i no als altres peers ja que encara no sap quins hi han
 	while i > 0: # Multijugador local
@@ -62,12 +62,23 @@ func _connected_to_server():
 
 # S'executa quan es desconnecta un jugador
 func _on_player_disconnected(id):
-	if players2[id] != null:
+	if players2.has(id):
+		var player : Player = get_node("/root/Main/Splitscreen/Viewport2").get_node(str(id))
+		if player.get_node("Interaction").is_in_a_vehicle:
+			player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF)
+		
+		player.set_process(false) # Es pot treure?
+		player.get_node("/root/Main/Splitscreen/Viewport2").get_node(str(id)).queue_free()
+		
 		players2.erase(id)
-		get_node("/root/Main/Splitscreen/Viewport2").get_node(str(id)).set_process(false) # Es pot treure?
-		get_node("/root/Main/Splitscreen/Viewport2").get_node(str(id)).queue_free()
-	get_node("/root/Main/Splitscreen/Viewport1").get_node(str(id)).set_process(false) # Es pot treure?
-	get_node("/root/Main/Splitscreen/Viewport1").get_node(str(id)).queue_free()
+	
+	var player : Player = get_node("/root/Main/Splitscreen/Viewport1").get_node(str(id))
+	if player.get_node("Interaction").is_in_a_vehicle:
+		player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF)
+	
+	player.set_process(false) # Es pot treure?
+	player.queue_free()
+	
 	players1.erase(id)
 
 # S'executa quan es connecta un nou jugador (poden ser els que ja hi son o els que s'uniran), la seva utilitat es sincronitzar els jugadors que es connectin o els ja connectats amb la partida de cadascun (a excepció del servidor)
@@ -81,18 +92,21 @@ func _on_player_connected(connected_player_id):
 remote func _request_player_info(request_from_id, player_id):
 	if get_tree().is_network_server():
 		# Si es el servidor, li envia la informació del nou jugador a qui la demani
-		# Comprovar si hi han 2 jugadors
-		if players2[player_id] != null:
+		# Comprova si hi han 2 jugadors
+		if players2.has(player_id):
 			rpc_id(request_from_id, '_send_player_info', player_id, players2[player_id], 2)
 		rpc_id(request_from_id, '_send_player_info', player_id, players1[player_id], 1)
 
 # A function to be used if needed. The purpose is to request all players in the current session.
-# Arreglar per al mode multijugador local
 remote func _request_players(request_from_id):
 	if get_tree().is_network_server():
 		for peer_id in players1:
 			if peer_id != request_from_id:
-				rpc_id(request_from_id, '_send_player_info', peer_id, players1[peer_id])
+				rpc_id(request_from_id, "_send_player_info", peer_id, players1[peer_id], 1)
+		
+		for peer_id in players2:
+			if peer_id != request_from_id:
+				rpc_id(request_from_id, "_send_player_info", peer_id, players2[peer_id], 2)
 
 # *La paraula clau "remote" fa referència a que la funció s'executarà en tots el peers menys en el que l'execut-hi;
 # d'altra banda, la paraula clau "sync" fa referència a que s'executarà en tots els peers 
@@ -119,7 +133,7 @@ remote func _send_player_info(id, info, number_of_player):
 			node.name = "Viewport2"
 			$'/root/Main/Splitscreen'.add_child(node)
 		$'/root/Main/Splitscreen/Viewport2'.add_child(new_player)
-	new_player.init(info.name, info.position, info.health, info.is_alive, info.is_in_a_vehicle) # S'inicalitza el jugador
+	new_player.init(info.name, info.position, info.crounching, info.health, info.is_alive, info.is_in_a_vehicle) # S'inicalitza el jugador
 
 remote func _request_match_info(request_from_id) -> void:
 	var current_vehicles_data := []
@@ -132,16 +146,21 @@ remote func _request_match_info(request_from_id) -> void:
 		current_troops_data.resize(current_troops_data.size() + 1)
 		current_troops_data[current_troops_data.size() - 1] = troop.get_node("TroopNetwork").troop_data
 	
+	var current_capital_ships_data := []
+	for ship in get_node("/root/Main/CapitalShips").get_children():
+		current_capital_ships_data.resize(current_capital_ships_data.size() + 1)
+		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health }
+		current_capital_ships_data[current_capital_ships_data.size() - 1] = ship_data
+	
 	if get_tree().is_network_server():
 		# Si es el servidor, li envia la informació de la partida a qui la demani
-		rpc_id(request_from_id, '_send_match_info', [], current_vehicles_data, current_troops_data)
+		rpc_id(request_from_id, '_send_match_info', current_vehicles_data, current_troops_data, current_capital_ships_data)
 
-remote func _send_match_info(cps_counts : Array, vehicles_data : Array, troops_data : Array):
-	match_data.cps_counts = cps_counts
+remote func _send_match_info(vehicles_data : Array, troops_data : Array, capital_ships_data : Array):
 	match_data.vehicles_data = vehicles_data
 	match_data.troops_data = troops_data
-	
-	# Troops (AI)
+	match_data.capital_ships_data = capital_ships_data
+	match_data.recived = true
 
 remote func _send_player_config(id, team, number_of_player):
 	if number_of_player == 1:
@@ -151,17 +170,19 @@ remote func _send_player_config(id, team, number_of_player):
 	else:
 		breakpoint
 
-func update_info(id : int, position : Vector3, rotation : float, health : int, is_alive : bool, is_in_a_vehicle : bool, number_of_player : int) -> void:
+func update_info(id : int, position : Vector3, rotation : float, crounching : bool, health : int, is_alive : bool, is_in_a_vehicle : bool, number_of_player : int) -> void:
 	# Canviar?
 	if number_of_player == 1:
 		players1[id].position = position
 		players1[id].rotation = rotation
+		players1[id].crounching = crounching
 		players1[id].health = health
 		players1[id].is_alive = is_alive
 		players1[id].is_in_a_vehicle = is_in_a_vehicle
 	elif number_of_player == 2:
 		players2[id].position = position
 		players2[id].rotation = rotation
+		players2[id].crounching = crounching
 		players2[id].health = health
 		players2[id].is_alive = is_alive
 		players2[id].is_in_a_vehicle = is_in_a_vehicle

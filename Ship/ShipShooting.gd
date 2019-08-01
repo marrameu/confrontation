@@ -1,11 +1,6 @@
 extends Spatial
 
 var shoot_range := 1500
-var camera_width_center := 0.0
-var camera_height_center := 0.0
-var shoot_origin := Vector3()
-var shoot_normal := Vector3()
-var shoot_target := Vector3()
 
 # Bullets
 onready var bullet_scene : PackedScene = preload("res://Bullets/Particles/ShipBullet.tscn")
@@ -37,28 +32,31 @@ func _process(delta : float) -> void:
 	
 	if Input.is_action_pressed(shoot_action_name) and time_now >= next_times_to_fire[0]:
 		next_times_to_fire[0] = time_now + 1.0 / fire_rates[0]
-		var shoot_calcs = calc_shoot()
 		if get_tree().has_network_peer():
-			rpc("shoot", 0, shoot_calcs[0], shoot_calcs[1])
+			rpc("shoot", 0, shoot_target())
 		else:
-			shoot(0, shoot_calcs[0], shoot_calcs[1])
+			shoot(0, shoot_target())
 	
 	if Input.is_action_pressed(zoom_action_name) and time_now >= next_times_to_fire[1]:
 		next_times_to_fire[1] = time_now + 1.0 / fire_rates[1]
-		var shoot_calcs = calc_shoot()
 		if get_tree().has_network_peer():
-			rpc("shoot", 1, shoot_calcs[0], shoot_calcs[1])
+			rpc("shoot", 1, shoot_target())
 		else:
-			shoot(1, shoot_calcs[0], shoot_calcs[1])
+			shoot(1, shoot_target())
 
-func calc_shoot(): # -> Array:
+func shoot_target() -> Vector3:
 	# Camera
 	var current_cam = ProjectSettings.get("ship_camera" + String(get_parent().number_of_player))
 	var space_state = get_world().direct_space_state
 	
+	var camera_width_center := 0.0
+	var camera_height_center := 0.0
+	var shoot_origin := Vector3()
+	var shoot_normal := Vector3()
+	var shoot_target := Vector3()
+	
 	if current_cam != null:
 		var viewport : Viewport
-		# Millor preguntar si és el network_master per al splitscreen online (¿Ara és igual?)
 		if get_tree().has_network_peer():
 			viewport = get_node("/root/Main/Splitscreen")._renders[0].viewport
 		else:
@@ -76,9 +74,9 @@ func calc_shoot(): # -> Array:
 		else:
 			shoot_target = result.position
 		
-		return [shoot_target, shoot_origin]
+	return shoot_target
 
-sync func shoot(bullet_type : int, shoot_target, shoot_origin) -> void:
+sync func shoot(bullet_type : int, shoot_target) -> void:
 	# Sound
 	if bullet_type == 0:
 		$Audio.play()
@@ -93,5 +91,5 @@ sync func shoot(bullet_type : int, shoot_target, shoot_origin) -> void:
 	get_node("/root/Main").add_child(bullet)
 	var shoot_from := global_transform.origin
 	bullet.global_transform.origin = shoot_from
-	bullet.direction = (shoot_target - shoot_origin).normalized() 
-	bullet.add_collision_exception_with(get_parent())
+	bullet.direction = (shoot_target - shoot_from).normalized() 
+	bullet.ship = get_parent()

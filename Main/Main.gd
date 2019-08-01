@@ -5,6 +5,7 @@ var game_started := false
 # Client
 var vehicles_instantiated := false
 var troops_instantiated := false
+var capital_ships_instantiated := false
 
 # Crear una funció per a crear un nou jugador local
 func _ready() -> void:
@@ -39,7 +40,7 @@ func _ready() -> void:
 		new_player.set_network_master(get_tree().get_network_unique_id())
 		# add_child(new_player)
 		var info = Network.self_data1
-		new_player.init(info.name, info.position, info.health, false, false) # O info.is_alive, info.is_in_a_vehicle
+		new_player.init(info.name, info.position, false, info.health, false, false) # O info.is_alive, info.is_in_a_vehicle
 	else:
 		print("ERROR: No players")
 		breakpoint
@@ -65,7 +66,7 @@ func _ready() -> void:
 		new_player2.set_network_master(get_tree().get_network_unique_id())
 		# add_child(new_player2)
 		var info = Network.self_data2
-		new_player2.init(info.name, info.position, info.health, false, false)
+		new_player2.init(info.name, info.position, false, info.health, false, false)
 	
 	if LocalMultiplayer.number_of_players >= 3:
 		var new_player3 : Player = preload("res://Troops/Player/Player.tscn").instance()
@@ -84,7 +85,7 @@ func _ready() -> void:
 		ProjectSettings.set("player3", new_players[2])
 		ProjectSettings.set("scene_camera_3", scene_camera3)
 		var info = Network.self_data1
-		new_player3.init(info.name, info.position, info.health, false, false)
+		new_player3.init(info.name, info.position, false, info.health, false, false)
 	
 	if LocalMultiplayer.number_of_players == 4:
 		var new_player4 : Player = preload("res://Troops/Player/Player.tscn").instance()
@@ -103,7 +104,7 @@ func _ready() -> void:
 		ProjectSettings.set("player4", new_players[3])
 		ProjectSettings.set("scene_camera_4", scene_camera4)
 		var info = Network.self_data1
-		new_player4.init(info.name, info.position, info.health, false, false)
+		new_player4.init(info.name, info.position, false, info.health, false, false)
 	
 	if LocalMultiplayer.number_of_players == 2:
 		var selection_menu : Node = preload("res://Menus/Selection Menu/SelectionMenu.tscn").instance()
@@ -139,6 +140,9 @@ func _ready() -> void:
 		if not get_tree().is_network_server():
 			for vehicle in $Vehicles.get_children():
 				vehicle.queue_free()
+			
+			for ship in $CapitalShips.get_children():
+				ship.queue_free()
 	
 	Settings.apply_settings()
 	# Pròximament
@@ -172,41 +176,65 @@ func _process(delta : float) -> void:
 	
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
-			var vehicles_data = Network.match_data.vehicles_data
-			if vehicles_data != [] and not vehicles_instantiated: # Que passa si no n'hi ha cap? S'instanciarien dobles en el futur
-				for vehicle_data in vehicles_data:
-					var vehicle_scene = load(vehicle_data.vehicle_res)
-					var new_vehicle : Spatial = vehicle_scene.instance()
-					new_vehicle.translation = vehicle_data.position
-					new_vehicle.rotation = vehicle_data.rotation
-					new_vehicle.is_player = vehicle_data.is_player
-					new_vehicle.state = vehicle_data.state
-					if vehicle_data.team != 0:
-						new_vehicle.get_node("Transport").m_team = vehicle_data.team
-					if vehicle_data.is_player:
-						new_vehicle.player_name = String(vehicle_data.player_id)
-					$Vehicles.add_child(new_vehicle)
-				vehicles_instantiated = true
-			
-			var troops_data = Network.match_data.troops_data
-			if troops_data != [] and not troops_instantiated:
-				for troop_data in troops_data:
-					var troop_scene = load("res://Troops/NPC Troop/Troop.tscn")
-					var new_troop : Troop = troop_scene.instance()
-					new_troop.name = troop_data.name
-					new_troop.translation = troop_data.position
-					new_troop.rotation = troop_data.rotation
-					new_troop.get_node("TroopManager").m_team = troop_data.team
-					if troop_data.is_alive:
-						new_troop.get_node("TroopManager").is_alive = true
-						new_troop.get_node("HealthSystem").health = troop_data.health
-					else:
-						new_troop.get_node("TroopManager").is_alive = false
-						new_troop.get_node("HealthSystem").health = 0
-					set_troop_material(new_troop)
-					new_troop.init()
-					$Troops.add_child(new_troop)
-				troops_instantiated = true
+			if Network.match_data.recived:
+				var vehicles_data = Network.match_data.vehicles_data
+				var troops_data = Network.match_data.troops_data
+				var capital_ships_data = Network.match_data.capital_ships_data
+				
+				if not vehicles_instantiated:
+					# Passar el nom per match_data en el futur
+					for vehicle_data in vehicles_data:
+						var vehicle_scene = load(vehicle_data.vehicle_res)
+						var new_vehicle : Spatial = vehicle_scene.instance()
+						new_vehicle.translation = vehicle_data.position
+						new_vehicle.rotation = vehicle_data.rotation
+						new_vehicle.name = vehicle_data.vehicle_name
+						new_vehicle.get_node("HealthSystem").health = vehicle_data.health
+						new_vehicle.is_player = vehicle_data.is_player
+						new_vehicle.state = vehicle_data.state
+						if vehicle_data.team != 0:
+							new_vehicle.get_node("Transport").m_team = vehicle_data.team
+						if vehicle_data.is_player:
+							new_vehicle.player_name = String(vehicle_data.player_id)
+						$Vehicles.add_child(new_vehicle)
+					vehicles_instantiated = true
+				
+				if not troops_instantiated:
+					for troop_data in troops_data:
+						var troop_scene = load("res://Troops/NPC Troop/Troop.tscn")
+						var new_troop : Troop = troop_scene.instance()
+						new_troop.name = troop_data.name
+						new_troop.translation = troop_data.position
+						new_troop.rotation = troop_data.rotation
+						new_troop.get_node("TroopManager").m_team = troop_data.team
+						if troop_data.is_alive:
+							new_troop.get_node("TroopManager").is_alive = true
+							new_troop.get_node("HealthSystem").health = troop_data.health
+						else:
+							new_troop.get_node("TroopManager").is_alive = false
+							new_troop.get_node("HealthSystem").health = 0
+						set_troop_material(new_troop)
+						new_troop.init()
+						$Troops.add_child(new_troop)
+					troops_instantiated = true
+				
+				if not capital_ships_instantiated:
+					for capital_ship_data in capital_ships_data:
+						var ship_scene = load("res://Capital Ships/CapitalShip.tscn")
+						var new_ship : Spatial = ship_scene.instance()
+						if capital_ship_data.name == "CapitalShip":
+							new_ship.translation = Vector3(0, 2000, 2000)
+							new_ship.rotation_degrees = Vector3(0, 90, 0)
+						elif capital_ship_data.name == "CapitalShip2":
+							new_ship.name = "CapitalShip2"
+							new_ship.translation = Vector3(0, 2000, -2000)
+							new_ship.rotation_degrees = Vector3(0, -90, 0)
+							new_ship.get_node("Label").rect_position.y -= 50
+						new_ship.get_node("HealthSystem").health = capital_ship_data.health
+						if capital_ship_data.health == 0:
+							new_ship._on_HealthSystem_die()
+						$CapitalShips.add_child(new_ship)
+					capital_ships_instantiated = true
 
 sync func spawn_troops(i : int):
 # warning-ignore:integer_division
@@ -259,7 +287,8 @@ func _on_server_disconnected() -> void:
 	get_tree().set_network_peer(null)
 	Network.self_data1 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0,
 	health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
-	Network.self_data2 = Network.self_data1
+	Network.self_data2 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0,
+	health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
 
 func enable_scene_camera4() -> void:
 	var render4 = $Splitscreen.add_player(3)

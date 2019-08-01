@@ -33,6 +33,7 @@ func instance_cp() -> void:
 	cp.m_team = m_team
 	cp.translation = get_parent().translation
 	cp.get_node("MeshInstance").hide()
+	connect("tree_exited", cp, "queue_free")
 	get_node("/root/Main/CommandPosts").add_child(cp)
 	current_cp = cp.get_path()
 

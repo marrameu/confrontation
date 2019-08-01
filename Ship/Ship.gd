@@ -32,13 +32,29 @@ func _process(delta : float) -> void:
 	physics.set_physics_input(final_linear_input, final_angular_input)
 	
 	if state == 1 and get_colliding_bodies().size() > 0:
-		$HealthSystem.take_damage(INF)
+		for body in get_colliding_bodies():
+			if not body.is_in_group("Bullets"):
+				$HealthSystem.take_damage(INF)
+	
+	if is_player and Input.is_key_pressed(KEY_K):
+		if get_tree().has_network_peer():
+			if is_network_master():
+				$HealthSystem.take_damage(INF)
+		else:
+			$HealthSystem.take_damage(INF)
 	
 	if is_player and Input.is_action_just_pressed(jump_action_name):
-		if state == 0:
-			leave()
-		elif state == 1 and landing_areas > 0:
-			land()
+		if get_tree().has_network_peer():
+			if is_network_master():
+				if state == 0:
+					leave()
+				elif state == 1 and landing_areas > 0:
+					land()
+		else:
+			if state == 0:
+				leave()
+			elif state == 1 and landing_areas > 0:
+				land()
 
 func _physics_process(delta : float) -> void:
 	if not get_tree().has_network_peer():
@@ -70,9 +86,10 @@ func land():
 
 func _on_HealthSystem_die():
 	if is_player:
-		var player : Player = ProjectSettings.get("player1") # Cambiar per al multijugador local
-		player.get_node("Interaction").exit_ship()
-		player.get_node("HealthSystem").take_damage(INF)
+		var player : Player = ProjectSettings.get("player" + String(number_of_player))
+		if player != null: # Per al online
+			player.get_node("Interaction").exit_ship()
+			player.get_node("HealthSystem").take_damage(INF)
 	
 	if get_tree().has_network_peer():
 		rpc("die")

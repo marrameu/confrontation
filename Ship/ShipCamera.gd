@@ -49,6 +49,9 @@ func _physics_process(delta : float) -> void:
 	move_camera(delta)
 
 func move_camera(delta : float) -> void:
+	if target == null:
+		return
+	
 	if not Input.is_action_pressed(look_behind_action_name):
 		translation = target.global_transform.origin
 	else:

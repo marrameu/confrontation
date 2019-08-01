@@ -32,12 +32,13 @@ size = Vector2( 2, 2 )
 [sub_resource type="Animation" id=7]
 length = 1.5
 
-[node name="ShipBullet" type="KinematicBody"]
+[node name="ShipBullet" type="KinematicBody" groups=[
+"Bullets",
+]]
 pause_mode = 1
 collision_layer = 8
 collision_mask = 7
 script = ExtResource( 1 )
-bullet_velocity = 700.0
 
 [node name="HitParticles" type="Particles" parent="."]
 pause_mode = 1
@@ -63,6 +64,7 @@ omni_shadow_mode = 0
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 shape = SubResource( 6 )
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/explode = SubResource( 7 )
