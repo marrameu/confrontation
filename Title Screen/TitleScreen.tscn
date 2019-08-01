@@ -30,6 +30,7 @@ __meta__ = {
 }
 
 [node name="Menu" type="VBoxContainer" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -52,6 +53,7 @@ text = "CONFRONTATION"
 align = 1
 
 [node name="Buttons" type="VBoxContainer" parent="Menu"]
+editor/display_folded = true
 margin_top = 85.0
 margin_right = 1680.0
 margin_bottom = 639.0
@@ -69,6 +71,7 @@ custom_fonts/font = ExtResource( 4 )
 text = "Single Player"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Menu/Buttons"]
+editor/display_folded = true
 margin_top = 114.0
 margin_right = 1680.0
 margin_bottom = 208.0
@@ -298,6 +301,7 @@ disabled = true
 text = "Online Play"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MultiplayerMenu"]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -308,6 +312,7 @@ margin_right = 315.0
 margin_bottom = 470.13
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerMenu/HBoxContainer"]
+editor/display_folded = true
 margin_right = 313.0
 margin_bottom = 630.0
 size_flags_horizontal = 3
@@ -332,6 +337,7 @@ align = 1
 valign = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MultiplayerMenu/HBoxContainer"]
+editor/display_folded = true
 margin_left = 317.0
 margin_right = 630.0
 margin_bottom = 630.0
@@ -404,6 +410,7 @@ custom_fonts/font = ExtResource( 4 )
 text = "Back"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SettingsMenu"]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -415,6 +422,7 @@ margin_bottom = 246.5
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingsMenu/ScrollContainer"]
+editor/display_folded = true
 margin_right = 707.0
 margin_bottom = 573.0
 size_flags_horizontal = 3
@@ -422,6 +430,7 @@ custom_constants/separation = 75
 script = ExtResource( 11 )
 
 [node name="Graphics" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+editor/display_folded = true
 margin_right = 707.0
 margin_bottom = 117.0
 custom_constants/separation = 20
@@ -433,6 +442,7 @@ text = "Graphics"
 align = 1
 
 [node name="Buttons" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics"]
+editor/display_folded = true
 margin_top = 49.0
 margin_right = 707.0
 margin_bottom = 117.0
@@ -465,6 +475,7 @@ custom_fonts/font = ExtResource( 4 )
 text = "HIGH"
 
 [node name="Controls" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+editor/display_folded = true
 margin_top = 192.0
 margin_right = 707.0
 margin_bottom = 361.0
@@ -477,6 +488,7 @@ text = "Controls"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
+editor/display_folded = true
 margin_top = 49.0
 margin_right = 707.0
 margin_bottom = 78.0
@@ -499,6 +511,7 @@ text = "Joystick Speed"
 align = 1
 
 [node name="Sliders" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
+editor/display_folded = true
 margin_top = 98.0
 margin_right = 707.0
 margin_bottom = 114.0
@@ -529,6 +542,7 @@ margin_bottom = 169.0
 text = "RESTORE DEFAULT SETTINGS"
 
 [node name="Others" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+editor/display_folded = true
 margin_top = 436.0
 margin_right = 707.0
 margin_bottom = 575.0

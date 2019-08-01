@@ -242,11 +242,10 @@ zoom_ship={
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
 threads/thread_model=2
 quality/directional_shadow/size=8192
 quality/shadows/filter_mode=2
+quality/voxel_cone_tracing/high_quality=false
 environment/default_clear_color=Color( 0.14902, 0.192157, 0.219608, 1 )
 quality/filters/msaa=3
 environment/default_environment="res://Main/main_env.tres"
-quality/voxel_cone_tracing/high_quality=false
