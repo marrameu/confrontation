@@ -62,10 +62,6 @@ func _physics_process(delta : float) -> void:
 	if not capturable:
 		return
 	
-	$HBoxContainer/Team1.text = str(team_count[0])
-	$HBoxContainer/Team2.text = str(team_count[1])
-	$HBoxContainer/Team3.text = str(team_count[2])
-	
 	if team_count[0] > 7 and m_team != 1:
 		m_team = 1
 	elif team_count[1] > 7 and m_team != 2:
@@ -106,18 +102,9 @@ func _physics_process(delta : float) -> void:
 		else:
 			team_count[2] = clamp(team_count[2] + delta * bodies[2], 0, 10)
 
-func _on_Area_body_entered(body : CollisionObject) -> void:
-	if body.is_in_group("Players") and capturable:
-		$HBoxContainer.show()
-
-func _on_Area_body_exited(body : CollisionObject) -> void:
-	if body.is_in_group("Players") and capturable:
-		$HBoxContainer.hide()
-
 func update_button_color(button : Button) -> void:
 	if m_team == 0:
 		button.add_color_override("font_color", Color.white)
-		#PLAYER 111
 	elif m_team == ProjectSettings.get("player1").get_node("TroopManager").m_team:
 		button.add_color_override("font_color", Color("b4c7dc"))
 	else:

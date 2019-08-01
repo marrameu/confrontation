@@ -14,13 +14,11 @@ var _hit := false
 var _time_alive := 7.0
 var _old_translation : Vector3
 
-
-func _ready() -> void:
-	_old_translation = translation
-
-
 func _process(delta : float) -> void:
-	if _hit:  # Per l'animació d'explosió
+	if not _old_translation:
+		_old_translation = translation
+	
+	if _hit: # Per l'animació d'explosió
 		return
 	
 	_time_alive -= delta

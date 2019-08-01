@@ -192,7 +192,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -131, 13.718, 0 )
 shape = SubResource( 11 )
 
 [node name="CommandPosts" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="CommandPost1" parent="CommandPosts" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0 )

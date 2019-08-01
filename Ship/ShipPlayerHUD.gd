@@ -1,7 +1,6 @@
 extends CanvasLayer
 
 var mouse_position := Vector2()
-var cursor_offset := Vector2(-30, -30)
 
 var cursor_visible := false
 
@@ -9,9 +8,9 @@ func _ready() -> void:
 	if LocalMultiplayer.number_of_players > 1:
 		scale = Vector2(0.5, 0.5)
 		
-		$ShipUI/Control/Cursor.rect_scale = Vector2(2, 2)
-		$Crosshair.rect_scale = Vector2(2, 2)
-		$LifeBar.rect_scale = Vector2(3, 3)
+		$ShipUI/Control/Cursor.rect_scale = Vector2(1.5, 1.5)
+		$Crosshair.rect_scale = Vector2(1.5, 1.5)
+		$LifeBar.rect_scale = Vector2(2.25, 2.25)
 		$LeaveIndicator.rect_scale = Vector2(2, 2)
 		$LandingIndicator.rect_scale = Vector2(2, 2)
 

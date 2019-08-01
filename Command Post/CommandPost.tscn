@@ -35,5 +35,3 @@ margin_right = 233.0
 margin_bottom = 68.0
 theme = ExtResource( 2 )
 text = "SPAWN"
-[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
-[connection signal="body_exited" from="Area" to="." method="_on_Area_body_exited"]
