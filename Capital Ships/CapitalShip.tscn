@@ -40,11 +40,26 @@ transform = Transform( 0.015, 0, 0, 0, 0.03, 0, 0, 0, 0.015, -0.506675, -1.18929
 transform = Transform( 1, 0, 0, 0, 1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0 )
 material/0 = ExtResource( 3 )
 
+[node name="col" parent="Scene Root/up" index="0" groups=[
+"FrigatesColliders",
+]]
+editor/display_folded = true
+
 [node name="engines" parent="Scene Root" index="2"]
 material/0 = ExtResource( 3 )
 
+[node name="col" parent="Scene Root/engines" index="0" groups=[
+"FrigatesColliders",
+]]
+editor/display_folded = true
+
 [node name="bottom" parent="Scene Root" index="3"]
 material/0 = ExtResource( 3 )
+
+[node name="col" parent="Scene Root/bottom" index="0" groups=[
+"FrigatesColliders",
+]]
+editor/display_folded = true
 
 [node name="Hangar" parent="." instance=ExtResource( 4 )]
 editor/display_folded = true

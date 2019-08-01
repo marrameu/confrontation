@@ -8,7 +8,7 @@ var shoot_origin := Vector3()
 var shoot_normal := Vector3()
 
 # Particles
-onready var hit_scene = preload("res://Bullets/Particles/HitParticles.tscn")
+const hit_scene = preload("res://Bullets/Particles/HitParticles.tscn")
 
 # Multiplayer
 var action_name := ""

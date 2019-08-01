@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Spatial",
+"class": "CapitalShip",
+"language": "GDScript",
+"path": "res://Capital Ships/CapitalShip.gd"
+}, {
+"base": "Spatial",
 "class": "CommandPost",
 "language": "GDScript",
 "path": "res://Command Post/CommandPost.gd"
@@ -29,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Ship/Ship.gd"
 }, {
+"base": "KinematicBody",
+"class": "ShipBullet",
+"language": "GDScript",
+"path": "res://Bullets/Particles/ShipBullet.gd"
+}, {
 "base": "Node",
 "class": "ShipPhysics",
 "language": "GDScript",
@@ -40,10 +50,12 @@ _global_script_classes=[ {
 "path": "res://Troops/NPC Troop/Troop.gd"
 } ]
 _global_script_class_icons={
+"CapitalShip": "",
 "CommandPost": "",
 "InputManager": "",
 "Player": "",
 "Ship": "",
+"ShipBullet": "",
 "ShipPhysics": "",
 "Troop": ""
 }
@@ -124,31 +136,31 @@ move_left={
  ]
 }
 move_right={
-"deadzone": 0.1,
+"deadzone": 0.2,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":0,"axis_value":1.0,"script":null)
  ]
 }
 move_forward={
-"deadzone": 0.1,
+"deadzone": 0.2,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":-1.0,"script":null)
  ]
 }
 move_backward={
-"deadzone": 0.1,
+"deadzone": 0.2,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":1.0,"script":null)
  ]
 }
 jump={
-"deadzone": 0.5,
+"deadzone": 0.2,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
  ]
 }
 run={
-"deadzone": 0.5,
+"deadzone": 0.2,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":4,"pressure":0.0,"pressed":false,"script":null)
  ]
@@ -165,22 +177,22 @@ shoot={
  ]
 }
 camera_up={
-"deadzone": 0.1,
+"deadzone": 0.2,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":-1.0,"script":null)
  ]
 }
 camera_down={
-"deadzone": 0.1,
+"deadzone": 0.2,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":1.0,"script":null)
  ]
 }
 camera_left={
-"deadzone": 0.1,
+"deadzone": 0.2,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":-1.0,"script":null)
  ]
 }
 camera_right={
-"deadzone": 0.1,
+"deadzone": 0.2,
 "events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":1.0,"script":null)
  ]
 }

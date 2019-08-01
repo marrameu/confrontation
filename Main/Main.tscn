@@ -50,7 +50,7 @@ extents = Vector3( 180.878, 8.5, 66.5561 )
 [sub_resource type="BoxShape" id=11]
 extents = Vector3( 49.822, 8.5, 50.5 )
 
-[sub_resource type="BakedLightmapData" id=13]
+[sub_resource type="BakedLightmapData" id=12]
 bounds = AABB( -200, -10, -200, 400, 20, 400 )
 cell_space_transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 800, 40, 800 )
 cell_subdiv = 12
@@ -343,7 +343,7 @@ environment = ExtResource( 14 )
 [node name="BakedLightmap" type="BakedLightmap" parent="Rendering"]
 visible = false
 bake_extents = Vector3( 200, 10, 200 )
-light_data = SubResource( 13 )
+light_data = SubResource( 12 )
 
 [node name="DebugHUD" type="CanvasLayer" parent="."]
 editor/display_folded = true

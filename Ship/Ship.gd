@@ -16,7 +16,7 @@ puppet var slave_position : Vector3
 puppet var slave_rotation : Vector3
 
 # Vfx
-var explosion_scene : PackedScene = preload("res://Ship/Explosion.tscn")
+const explosion_scene : PackedScene = preload("res://Ship/Explosion.tscn")
 
 var jump_action_name := "jump"
 

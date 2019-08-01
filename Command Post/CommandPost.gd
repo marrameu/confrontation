@@ -2,10 +2,10 @@ extends Spatial
 
 class_name CommandPost
 
-export(bool) var capturable := true
-export(int) var start_team := 0
+export var capturable := true
+export(int, 0, 2) var start_team := 0
 
-var materials := {
+const materials := {
 	0: preload("res://Command Post/Grey.tres"),
 	1: preload("res://Command Post/Blue.tres"),
 	2: preload("res://Command Post/Red.tres"),

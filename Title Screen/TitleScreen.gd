@@ -1,7 +1,7 @@
 extends Control
 
-var loader
-var changing_scene := false
+var loader : ResourceInteractiveLoader
+var changing_scene : bool = false
 
 func _ready() -> void:
 	$Menu/Buttons/SinglePlayer.grab_focus()
@@ -51,7 +51,7 @@ func _on_OnlinePlay_pressed():
 
 func _process(delta : float) -> void:
 	if changing_scene:
-		if loader == null:
+		if not loader:
 			changing_scene = false
 			return
 		

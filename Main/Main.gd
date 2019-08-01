@@ -150,6 +150,7 @@ func _ready() -> void:
 	#	$PauseMenu/Menu/Settings/CheckButton.pressed = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
+
 func _process(delta : float) -> void:
 	if Input.is_key_pressed(KEY_F1):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -236,6 +237,7 @@ func _process(delta : float) -> void:
 						$CapitalShips.add_child(new_ship)
 					capital_ships_instantiated = true
 
+
 sync func spawn_troops(i : int):
 # warning-ignore:integer_division
 	var a = i / 2
@@ -268,6 +270,7 @@ sync func spawn_troops(i : int):
 		# Material
 		set_troop_material(new_troop)
 
+
 func exit_game() -> void:
 	ProjectSettings.set("player1", null)
 	ProjectSettings.set("player2", null)
@@ -281,14 +284,16 @@ func exit_game() -> void:
 	get_tree().change_scene("res://Title Screen/TitleScreen.tscn")
 	get_tree().paused = false
 
+
 func _on_server_disconnected() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	exit_game()
 	get_tree().set_network_peer(null)
 	Network.self_data1 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0,
-	health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
+			health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
 	Network.self_data2 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0,
-	health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
+			health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
+
 
 func enable_scene_camera4() -> void:
 	var render4 = $Splitscreen.add_player(3)
@@ -306,12 +311,14 @@ func enable_scene_camera4() -> void:
 	new_node.name = "Ignore"
 	$SelectionMenus/HBoxContainer/VBoxContainer2.add_child(new_node)
 
+
 func set_troop_material(new_troop : Troop) -> void:
 	# Millorar
 	if new_troop.get_node("TroopManager").m_team == 1:
 		new_troop.get_node("MeshInstance").set_material_override(preload("res://Command Post/Blue.tres"))
 	else:
 		new_troop.get_node("MeshInstance").set_material_override(preload("res://Command Post/Red.tres"))
+
 
 func add_new_player(number : int):
 	pass

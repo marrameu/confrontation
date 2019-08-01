@@ -3,8 +3,8 @@ extends Spatial
 var shoot_range := 1500
 
 # Bullets
-onready var bullet_scene : PackedScene = preload("res://Bullets/Particles/ShipBullet.tscn")
-onready var secondary_bullet_scene : PackedScene = preload("res://Bullets/Particles/ShipBullet2.tscn")
+const bullet_scene : PackedScene = preload("res://Bullets/Particles/ShipBullet.tscn")
+const secondary_bullet_scene : PackedScene = preload("res://Bullets/Particles/ShipBullet2.tscn")
 
 # Timers, fer-ho amb arrays?
 var fire_rates := { 0 : 4.0, 1 : 2.0 }

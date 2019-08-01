@@ -1,112 +1,39 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Command Post/CommandPost.gd" type="Script" id=1]
-[ext_resource path="res://Fonts/montserrat_24.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Interface/Themes/default_theme.tres" type="Theme" id=3]
+[ext_resource path="res://Interface/Themes/default_theme.tres" type="Theme" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.478431, 0.478431, 0.478431, 1 )
 roughness = 0.0
-__meta__ = {
-
-}
 
 [sub_resource type="CylinderMesh" id=2]
 material = SubResource( 1 )
 top_radius = 0.6
 bottom_radius = 0.8
 height = 0.3
-__meta__ = {
-
-}
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 10, 5, 10 )
-__meta__ = {
-
-}
 
 [node name="CommandPost" type="Spatial"]
 pause_mode = 1
 script = ExtResource( 1 )
-__meta__ = {
-
-}
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 2 )
 material/0 = null
-__meta__ = {
-
-}
 
 [node name="Area" type="Area" parent="."]
-__meta__ = {
-
-}
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 3 )
-__meta__ = {
-
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-visible = false
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -319.0
-margin_bottom = 40.0
-__meta__ = {
-
-}
-
-[node name="Team1" type="Label" parent="HBoxContainer"]
-margin_top = 4.0
-margin_right = 103.0
-margin_bottom = 35.0
-size_flags_horizontal = 3
-size_flags_vertical = 6
-custom_fonts/font = ExtResource( 2 )
-text = "0.0"
-__meta__ = {
-
-}
-
-[node name="Team2" type="Label" parent="HBoxContainer"]
-margin_left = 107.0
-margin_top = 4.0
-margin_right = 210.0
-margin_bottom = 35.0
-size_flags_horizontal = 3
-size_flags_vertical = 6
-custom_fonts/font = ExtResource( 2 )
-text = "0.0"
-__meta__ = {
-
-}
-
-[node name="Team3" type="Label" parent="HBoxContainer"]
-margin_left = 214.0
-margin_top = 4.0
-margin_right = 319.0
-margin_bottom = 35.0
-size_flags_horizontal = 3
-size_flags_vertical = 6
-custom_fonts/font = ExtResource( 2 )
-text = "0.0"
-__meta__ = {
-
-}
 
 [node name="Button" type="Button" parent="."]
 visible = false
 margin_right = 233.0
 margin_bottom = 68.0
-theme = ExtResource( 3 )
+theme = ExtResource( 2 )
 text = "SPAWN"
-__meta__ = {
-
-}
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area" to="." method="_on_Area_body_exited"]

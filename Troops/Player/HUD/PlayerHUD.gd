@@ -6,7 +6,7 @@ var camera_width_center := 0.0
 var camera_height_center := 0.0
 var shoot_origin := Vector3()
 var shoot_normal := Vector3()
-onready var life_bar : TextureProgress = preload("res://Troops/Player/HUD/LifeBar.tscn").instance()
+var life_bar : TextureProgress = preload("res://Troops/Player/HUD/LifeBar.tscn").instance()
 var target : Spatial
 
 func _ready() -> void:

@@ -8,7 +8,7 @@ var yaw := 0.0
 var roll := 0.0
 var strafe := 0.0
 var throttle := 0.0
-export(float) var min_throttle := 0.3
+export(float, 0, 1) var min_throttle := 0.3
 
 # How quickly reacts to input
 const THROTTLE_SPEED := 2.5 # Move Towards 0.5

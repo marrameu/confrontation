@@ -1,8 +1,8 @@
 extends Node
 
-export(int) var m_team := 0
+export var m_team := 0
 
-var cp_scene : PackedScene = preload("res://Command Post/CommandPost.tscn")
+const cp_scene : PackedScene = preload("res://Command Post/CommandPost.tscn")
 var current_cp := ""
 
 func _ready() -> void:

@@ -4,7 +4,7 @@ extends Spatial
 var shooting := false
 
 # Particles
-onready var hit_scene : PackedScene = preload("res://Bullets/Particles/HitParticles.tscn")
+const hit_scene : PackedScene = preload("res://Bullets/Particles/HitParticles.tscn")
 
 func _ready() -> void:
 	$RayCast.global_transform.origin = get_parent().global_transform.origin

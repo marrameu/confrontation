@@ -1,22 +1,23 @@
 extends Node
 
 # Aquestes constants defineixen la configuaració necesaria per a crear un client o un servidor
-const DEFAULT_IP = '127.0.0.1' # Per defecte, está definit com a "localhost", es a dir conexió local
-const DEFAULT_PORT = 31406 # Els jugador podrán canviar la ip i el port (aquest es degut a que així ordiandors amb la mateixa xarxa podrán jugar en servidors diferents)
-const MAX_PLAYERS = 5 # El nombre màxim de peers al servidor
+const DEFAULT_IP : String = '127.0.0.1' # Per defecte, está definit com a "localhost", es a dir conexió local
+const DEFAULT_PORT : int = 31406 # Els jugador podrán canviar la ip i el port (aquest es degut a que així ordiandors amb la mateixa xarxa podrán jugar en servidors diferents)
+const MAX_PLAYERS : int = 5 # El nombre màxim de peers al servidor
 
 # La variable players conté tot el llistat de "self_datas" de tots els jugadors, també el propi
-var players1 = { }
-var players2 = { }
+var players1 : Dictionary = { }
+var players2 : Dictionary = { }
+
 # Conté totes les variables de cada peer necesaries per inicialitzar al jugador
-var self_data1 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crounching = false,
-health = 0, is_alive = false, team = 0, is_in_a_vehicle = false } # Classe i is_alive = si té 0 vida
-var self_data2 = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crounching = false,
-health = 0, is_alive = false, team = 0, is_in_a_vehicle = false } # No es pot self_data2 = self_data1
+var self_data1 : Dictionary = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crounching = false,
+		health = 0, is_alive = false, team = 0, is_in_a_vehicle = false } # Classe i is_alive = si té 0 vida
+var self_data2 : Dictionary = self_data1.duplicate() 
 # Crear una nova variable ja que self_data1 es només per a la inicialització i l'equip i classe es poden canviar durant la partida
 # var self_conifg or player_config
+
 # Conté totes les variables de cada peer necesaries per inicialitzar la partida
-var match_data = { recived = false, vehicles_data = [], troops_data = [], capital_ships_data = [] }
+var match_data : Dictionary = { recived = false, vehicles_data = [], troops_data = [], capital_ships_data = [] }
 
 signal player_disconnected
 signal server_disconnected
@@ -108,9 +109,11 @@ remote func _request_players(request_from_id):
 			if peer_id != request_from_id:
 				rpc_id(request_from_id, "_send_player_info", peer_id, players2[peer_id], 2)
 
-# *La paraula clau "remote" fa referència a que la funció s'executarà en tots el peers menys en el que l'execut-hi;
-# d'altra banda, la paraula clau "sync" fa referència a que s'executarà en tots els peers 
-# En aquest cas es fa servir la paraula clau "remote" ja que al iniciar la partida ja s'instancia el jugador local però al servidor no, es a dir que si fos sync el jugador local estaria duplicat
+"""
+La paraula clau "remote" fa referència a que la funció s'executarà en tots el peers menys en el que l'execut-hi;
+d'altra banda, la paraula clau "sync" fa referència a que s'executarà en tots els peers 
+En aquest cas es fa servir la paraula clau "remote" ja que al iniciar la partida ja s'instancia el jugador local però al servidor no, es a dir que si fos sync el jugador local estaria duplicat
+"""
 remote func _send_player_info(id, info, number_of_player):
 	# S'afegeix la informació en l'array "players"
 	if number_of_player == 1:
