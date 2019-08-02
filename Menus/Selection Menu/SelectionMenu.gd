@@ -1,7 +1,7 @@
 extends CanvasLayer
 class_name SelectionMenu
 
-var player : Player
+var player # : Player
 var number_of_player := 0
 var current_cp : CommandPost = null
 
@@ -29,10 +29,7 @@ func _set_team(selected_team : int) -> void:
 	player.get_node("TroopManager").m_team = selected_team
 	
 	if get_tree().has_network_peer():
-		if number_of_player == 1:
-			Network.players1[int(player.name)].team = selected_team
-		else:
-			Network.players2[int(player.name)].team = selected_team
+		Network.players[number_of_player - 1][int(player.name)].team = selected_team
 		Network.rpc("_send_player_config", int(player.name), selected_team, number_of_player)
 	
 	$Container/TeamMenu.hide()

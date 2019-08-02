@@ -27,8 +27,12 @@ func _process(delta : float) -> void:
 	
 	move_and_collide(delta * direction * bullet_velocity)
 	
+	var exclude : Array = []
+	if ship:
+		exclude.push_back(ship)
+	
 	var space_state = get_world().direct_space_state
-	var result = space_state.intersect_ray(translation, _old_translation, [ship])
+	var result = space_state.intersect_ray(translation, _old_translation, exclude)
 	
 	if result:
 		if result.collider.is_in_group("Ships"):

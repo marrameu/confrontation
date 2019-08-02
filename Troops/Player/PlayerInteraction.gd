@@ -47,8 +47,8 @@ func _process(delta : float) -> void:
 			if result:
 				if result.collider.is_in_group("Vehicles"):
 					# Timer
-					result.collider.get_node("InterpolatedCamera").current = true
-					get_parent().get_node("CameraBase/Camera").current = false
+					result.collider.get_node("InterpolatedCamera").make_current()
+					get_parent().get_node("CameraBase/Camera").clear_current()
 				elif result.collider.is_in_group("Ships"):
 					if not result.collider.is_player:
 						enter_ship(result)

@@ -25,10 +25,6 @@ func _ready() -> void:
 	init_mouse_sensitivity = get_parent().mouse_sensitivity * Settings.mouse_sensitivity
 	cam_pos_x = init_cam_pos_x
 	$Camera.fov = Settings.fov
-	
-	# ??? Move to main?
-	ProjectSettings.set("player" + String(get_parent().number_of_player) + "_camera", $Camera)
-	ProjectSettings.set("ship_camera" + String(get_parent().number_of_player), $ShipCamera)
 
 func _process(delta : float) -> void:
 	if action_name == "":

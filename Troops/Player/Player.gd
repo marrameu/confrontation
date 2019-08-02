@@ -1,5 +1,4 @@
 extends KinematicBody
-
 class_name Player
 
 # Camera
@@ -68,7 +67,7 @@ func init(new_nickname, start_position, start_crounching, start_health, start_al
 	#Audio
 	if get_tree().has_network_peer():
 		if not is_network_master():
-			($Listener as Listener).clear_current()
+			$Listener.clear_current()
 
 func _ready() -> void:
 	if LocalMultiplayer.number_of_players == 1:
@@ -87,10 +86,7 @@ func _process(delta : float) -> void:
 			if Input.is_key_pressed(KEY_K):
 				_on_HealthSystem_die()
 		else:
-			if number_of_player == 1 or number_of_player == 0:
-				$TroopManager.m_team = Network.players1[int(name)].team
-			elif number_of_player == 2:
-				$TroopManager.m_team = Network.players2[int(name)].team
+			$TroopManager.m_team = Network.players[number_of_player - 1][int(name)].team
 	else:
 		if Input.is_key_pressed(KEY_K):
 			_on_HealthSystem_die()
@@ -229,31 +225,32 @@ func _on_HealthSystem_die() -> void:
 
 func _on_RespawnTimer_timeout() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	var spawn_menu
-	for menu in get_node("/root/Main/SelectionMenus/HBoxContainer/VBoxContainer").get_children():
-		if menu.number_of_player == number_of_player:
-			spawn_menu = menu.get_node("SpawnMenu")
-	for menu in get_node("/root/Main/SelectionMenus/HBoxContainer/VBoxContainer2").get_children():
-		if menu.number_of_player == number_of_player:
-			spawn_menu = menu.get_node("SpawnMenu")
+	var selection_menu : SelectionMenu = get_node("/root/Main").selection_menus[number_of_player - 1]
+	var spawn_menu = selection_menu.get_node("Container/SpawnMenu")
 	spawn_menu.get_node("SpawnButton").hide()
+	spawn_menu.show()
+	
 	# GRAB FOCUS
 	# get_node("/root/Main/CommandPosts").get_child(0).buttons[number_of_player - 1].grab_focus()
-	spawn_menu.show()
 
 sync func die() -> void:
 	$HealthSystem.health = 0 # Para el HUD (temporal)
 	$TroopManager.is_alive = false
 	# Per a cambiar is_alive
 	if get_tree().has_network_peer(): # Per al mode un jugador
-		update_network_info()
+		if is_network_master():
+			update_network_info()
 	if get_tree().has_network_peer():
 		rpc("disable_components", true)
 	else:
 		disable_components(true)
 	var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(number_of_player))
 	if scene_camera:
-		scene_camera.current = true
+		if get_tree().has_network_peer():
+			if is_network_master():
+				scene_camera.make_current()
+		else:
+			scene_camera.make_current()
 
 sync func respawn() -> void:
 	$TroopManager.is_alive = true
@@ -273,7 +270,11 @@ sync func respawn() -> void:
 		enable_components(true)
 	var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(number_of_player))
 	if scene_camera:
-		scene_camera.current = false
+		if get_tree().has_network_peer():
+			if is_network_master():
+				scene_camera.clear_current()
+		else:
+			scene_camera.clear_current()
 	$HealthSystem.health = $HealthSystem.max_health
 
 sync func disable_components(var disable_interaction : bool) -> void:
@@ -300,9 +301,9 @@ sync func disable_components(var disable_interaction : bool) -> void:
 	$CollisionShape.disabled = true
 	if get_tree().has_network_peer():
 		if is_network_master():
-			$CameraBase/Camera.current = false
+			$CameraBase/Camera.clear_current()
 	else:
-		$CameraBase/Camera.current = false
+		$CameraBase/Camera.clear_current()
 
 sync func enable_components(var enable_interaction : bool) -> void:
 	set_physics_process(true)
@@ -325,9 +326,9 @@ sync func enable_components(var enable_interaction : bool) -> void:
 	$CollisionShape.disabled = false
 	if get_tree().has_network_peer():
 		if is_network_master():
-			$CameraBase/Camera.current = true
+			$CameraBase/Camera.make_current()
 	else:
-		$CameraBase/Camera.current = true
+		$CameraBase/Camera.make_current()
 
 func update_network_info():
 	Network.update_info(int(name), translation, rotation.y, $Crounch.crounching,

@@ -31,7 +31,7 @@ func init(new_target : Position3D, player : int) -> void:
 	translation = target.global_transform.origin
 	rotation = target.global_transform.basis.get_euler()
 	starter_target_position = target.translation
-	set_current(true)
+	make_current()
 
 func _physics_process(delta : float) -> void:
 	if not target:

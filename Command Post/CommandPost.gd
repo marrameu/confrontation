@@ -32,11 +32,14 @@ func _process(delta : float) -> void:
 	update_menus()
 	
 	for i in range(0, old_menus.size()):
-		if old_menus[i].get_node("SpawnMenu").visible and not (ProjectSettings.get("scene_camera_" + String(old_menus[i].get_parent().number_of_player)) as Camera).is_position_behind(translation):
+		var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(old_menus[i].get_parent().number_of_player))
+		
+		if old_menus[i].get_node("SpawnMenu").visible and not scene_camera.is_position_behind(translation):
 			buttons[i].show()
-			buttons[i].rect_position = (ProjectSettings.get("scene_camera_" + String(old_menus[i].get_parent().number_of_player)) as Camera).unproject_position(translation) - Vector2(buttons[i].rect_size.x / 2, buttons[i].rect_size.y / 2) 
-			# Canviar aixó últim per al mode splitscreen
+			buttons[i].rect_position = scene_camera.unproject_position(translation)
+			buttons[i].rect_position -= Vector2(buttons[i].rect_size.x / 2, buttons[i].rect_size.y / 2) # Mirar si es pot treure
 			if LocalMultiplayer.number_of_players == 2:
+				# Millorar
 				buttons[i].rect_position.y *= 2
 				buttons[i].rect_position.x *= 2
 				buttons[i].rect_position.y += 34

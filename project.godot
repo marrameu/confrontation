@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Troops/Player/InputManager.gd"
 }, {
+"base": "Spatial",
+"class": "Main",
+"language": "GDScript",
+"path": "res://Main/Main.gd"
+}, {
 "base": "Control",
 "class": "PauseMenu",
 "language": "GDScript",
@@ -68,6 +73,7 @@ _global_script_class_icons={
 "CapitalShip": "",
 "CommandPost": "",
 "InputManager": "",
+"Main": "",
 "PauseMenu": "",
 "Player": "",
 "PlayerRender": "",
