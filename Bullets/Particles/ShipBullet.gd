@@ -2,7 +2,7 @@ extends KinematicBody
 class_name ShipBullet
 
 # Export variables
-export var damage := 50
+export var damage := 75
 export var bullet_velocity := 700.0
 
 # Public variables

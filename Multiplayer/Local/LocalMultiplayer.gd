@@ -51,7 +51,7 @@ func remap_inputs() -> void:
 			add_action("zoom_ship_player_" + a, JOY_DPAD_UP, Event.JOY_BUTTON, device)
 
 func add_action(action_name : String, event_scancode : int, type : int, device := 0, axis_value := 0.0) -> void:
-	var deadzone := 0.2
+	var deadzone := 0.1
 	InputMap.add_action(action_name, deadzone)
 	var new_event
 	if type == Event.MOUSE_BUTTON:

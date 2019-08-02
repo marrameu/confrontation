@@ -9,12 +9,12 @@ func _ready() -> void:
 	if LocalMultiplayer.number_of_players > 1:
 		scale = Vector2(0.5, 0.5)
 		# Other scales
-	
-	# 2P Màxim per ara
-	if number_of_player == 1:
-		offset = Vector2(480, 0)
-	elif number_of_player == 2:
-		offset = Vector2(480, 540)
+		
+		# 2P Màxim per ara
+		if number_of_player == 1:
+			offset = Vector2(480, 0)
+		elif number_of_player == 2:
+			offset = Vector2(480, 540)
 	
 	if number_of_player == 0:
 		print("ERROR: Number of player unasigned to the selection menu")
