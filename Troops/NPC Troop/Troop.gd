@@ -81,7 +81,7 @@ func _process(delta):
 			($ConquestTimer as Timer).start()
 	
 	# Shoot
-	if current_enemie != null:
+	if current_enemie:
 		if current_enemie.get_node("TroopManager"):
 			if current_enemie.get_node("TroopManager").is_alive:
 				look_at(current_enemie.translation, Vector3(0 , 1, 0))

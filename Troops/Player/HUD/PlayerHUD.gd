@@ -17,6 +17,7 @@ func _process(delta : float) -> void:
 	if get_tree().has_network_peer():
 		if not is_network_master():
 			$PlayerLifeBar.hide()
+			$Nickname.hide()
 			life_bar.hide()
 			return
 			# queue_free()
@@ -25,6 +26,7 @@ func _process(delta : float) -> void:
 	var m_health_system = get_parent().get_node("HealthSystem")
 	if m_health_system.health == 0 or get_node("../Interaction").is_in_a_vehicle:
 		$PlayerLifeBar.hide()
+		$Nickname.hide()
 		life_bar.hide()
 		return
 	else:
@@ -38,7 +40,7 @@ func _process(delta : float) -> void:
 	var current_cam = ProjectSettings.get("player" + String(get_parent().number_of_player) + "_camera")
 	var space_state = get_parent().get_world().direct_space_state
 	
-	if current_cam != null:
+	if current_cam:
 		var viewport = get_node("/root/Main/Splitscreen")._renders[get_parent().number_of_player - 1].viewport
 		camera_width_center = viewport.get_visible_rect().size.x / 2
 		camera_height_center = viewport.get_visible_rect().size.y / 2
@@ -65,7 +67,7 @@ func _process(delta : float) -> void:
 				$Nickname.show()
 				$LifeBarTimer.start()
 	
-	if target != null:
+	if target:
 		if not current_cam.is_position_behind(target.translation) and target.translation.distance_to(get_parent().translation) <= ray_range:
 			if target.get_node("HealthSystem").health == 0:
 				life_bar.value = (float(target.get_node("HealthSystem").health) / float(target.get_node("HealthSystem").max_health)) * 100
@@ -79,6 +81,7 @@ func _process(delta : float) -> void:
 			$Nickname.rect_position = (current_cam as Camera).unproject_position(target.translation + Vector3(0, 2, 0)) - Vector2($Nickname.rect_size.x / 2, $Nickname.rect_size.y / 2) - Vector2(0, 50)
 		else:
 			life_bar.hide()
+			$Nickname.hide()
 
 func _on_LifeBarTimer_timeout():
 	life_bar.hide()

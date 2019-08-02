@@ -30,7 +30,6 @@ __meta__ = {
 }
 
 [node name="Menu" type="VBoxContainer" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -53,7 +52,6 @@ text = "CONFRONTATION"
 align = 1
 
 [node name="Buttons" type="VBoxContainer" parent="Menu"]
-editor/display_folded = true
 margin_top = 85.0
 margin_right = 1680.0
 margin_bottom = 639.0
@@ -71,7 +69,6 @@ custom_fonts/font = ExtResource( 4 )
 text = "Single Player"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Menu/Buttons"]
-editor/display_folded = true
 margin_top = 114.0
 margin_right = 1680.0
 margin_bottom = 208.0
@@ -85,7 +82,7 @@ rect_min_size = Vector2( 360, 60 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Multiplayer (Indev)"
+text = "Multiplayer (Testing)"
 
 [node name="OnlinePlay" type="Button" parent="Menu/Buttons/HBoxContainer"]
 margin_left = 850.0
@@ -613,11 +610,11 @@ text = "CONNECTING TO THE NETWORK..."
 [connection signal="text_changed" from="Lobby/VBoxContainer/HBoxContainer2/IPLine" to="Lobby" method="_on_IPLine_text_changed"]
 [connection signal="pressed" from="Lobby/VBoxContainer/HBoxContainer3/JoinButton" to="Lobby" method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="Lobby/VBoxContainer/HBoxContainer3/CreateButton" to="Lobby" method="_on_CreateButton_pressed"]
-[connection signal="pressed" from="Lobby/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="Lobby/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Lobby/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="timeout" from="Lobby/WaitTimer" to="Lobby" method="_on_WaitTimer_timeout"]
-[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/OnlinePlay" to="." method="_on_OnlinePlay_pressed"]
 [connection signal="pressed" from="SettingsMenu/Back" to="." method="_on_Back_pressed"]

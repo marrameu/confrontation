@@ -32,9 +32,15 @@ func _process(delta : float) -> void:
 	update_menus()
 	
 	for i in range(0, old_menus.size()):
-		if old_menus[i].get_node("SpawnMenu").visible and not (ProjectSettings.get("scene_camera_" + String(old_menus[i].number_of_player)) as Camera).is_position_behind(translation):
+		if old_menus[i].get_node("SpawnMenu").visible and not (ProjectSettings.get("scene_camera_" + String(old_menus[i].get_parent().number_of_player)) as Camera).is_position_behind(translation):
 			buttons[i].show()
-			buttons[i].rect_position = (ProjectSettings.get("scene_camera_" + String(old_menus[i].number_of_player)) as Camera).unproject_position(translation) - Vector2(buttons[i].rect_size.x / 2, buttons[i].rect_size.y / 2)
+			buttons[i].rect_position = (ProjectSettings.get("scene_camera_" + String(old_menus[i].get_parent().number_of_player)) as Camera).unproject_position(translation) - Vector2(buttons[i].rect_size.x / 2, buttons[i].rect_size.y / 2) 
+			# Canviar aixó últim per al mode splitscreen
+			if LocalMultiplayer.number_of_players == 2:
+				buttons[i].rect_position.y *= 2
+				buttons[i].rect_position.x *= 2
+				buttons[i].rect_position.y += 34
+				buttons[i].rect_position.x -= 480 * 2 - 116.5
 			update_button_color(buttons[i])
 		else:
 			buttons[i].hide()
@@ -113,10 +119,9 @@ func update_button_color(button : Button) -> void:
 func update_menus() -> void:
 	var new_menus := []
 	
-	for child in get_node("/root/Main/SelectionMenus/HBoxContainer").get_children():
+	for child in get_node("/root/Main/SelectionMenus").get_children():
 		for menu in child.get_children():
-			if menu.name != "Ignore":
-				new_menus.push_back(menu)
+			new_menus.push_back(menu)
 	
 	var menus_to_remove := []
 	
@@ -136,12 +141,12 @@ func update_menus() -> void:
 		var button : Button = $Button.duplicate(1)
 		remove_child(button)
 		new_menu.get_node("SpawnMenu/Buttons").add_child(button)
-		button.connect("pressed", new_menu, "_on_CommandPostButton_pressed", [self])
+		button.connect("pressed", new_menu.get_parent(), "_on_CommandPostButton_pressed", [self])
 		connect("tree_exiting", button, "queue_free")
 		buttons.push_back(button)
 
 func update_material() -> void:
-	if ProjectSettings.get("player1") == null:
+	if not ProjectSettings.get("player1"):
 		return
 	
 	var player_team : int = ProjectSettings.get("player1").get_node("TroopManager").m_team

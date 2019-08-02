@@ -34,7 +34,7 @@ func init(new_target : Position3D, player : int) -> void:
 	set_current(true)
 
 func _physics_process(delta : float) -> void:
-	if target == null:
+	if not target:
 		return
 	
 	if Input.is_action_just_pressed(zoom_ship_action_name) and target.get_parent().state == 1:
@@ -49,7 +49,7 @@ func _physics_process(delta : float) -> void:
 	move_camera(delta)
 
 func move_camera(delta : float) -> void:
-	if target == null:
+	if not target:
 		return
 	
 	if not Input.is_action_pressed(look_behind_action_name):

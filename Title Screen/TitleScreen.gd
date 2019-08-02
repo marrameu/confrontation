@@ -42,7 +42,7 @@ func _on_Multiplayer_pressed() -> void:
 	$Menu.hide()
 	$MultiplayerMenu/Back.grab_focus()
 
-func _on_OnlinePlay_pressed():
+func _on_OnlinePlay_pressed() -> void:
 	Utilities.play_button_audio()
 	$Lobby.show()
 	$Menu.hide()
@@ -75,6 +75,7 @@ func load_scene(path : String) -> void:
 func update_progress() -> void:
 	var progress : float = float(loader.get_stage()) / loader.get_stage_count()
 
+# Fer-la servir en un futur
 func set_new_scene(scene_resource) -> void:
 	var new_scene = scene_resource.instance()
 	get_node("/root").add_child(new_scene)

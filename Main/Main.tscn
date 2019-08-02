@@ -64,6 +64,7 @@ script = ExtResource( 1 )
 border_width = 0.0
 
 [node name="Map" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Navigation" type="Navigation" parent="Map"]
 editor/display_folded = true
@@ -192,6 +193,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -131, 13.718, 0 )
 shape = SubResource( 11 )
 
 [node name="CommandPosts" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="CommandPost1" parent="CommandPosts" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0 )
@@ -213,6 +215,7 @@ start_team = 2
 [node name="Troops" type="Node" parent="."]
 
 [node name="Vehicles" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Ship" parent="Vehicles" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -105.964, 4.02636, -171.178 )
@@ -306,7 +309,7 @@ transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 2000, 
 margin_top = -129.0
 margin_bottom = -100.0
 
-[node name="SceneCamera" type="Camera" parent="."]
+[node name="SceneCamera1" type="Camera" parent="."]
 transform = Transform( 0.793742, -0.157791, 0.587432, 0, 0.965766, 0.259416, -0.608255, -0.205909, 0.766569, 26.4655, 14.8489, 33.6973 )
 far = 550.0
 
@@ -344,6 +347,8 @@ visible = false
 bake_extents = Vector3( 200, 10, 200 )
 light_data = SubResource( 12 )
 
+[node name="SelectionMenus" type="Node" parent="."]
+
 [node name="DebugHUD" type="CanvasLayer" parent="."]
 editor/display_folded = true
 layer = 3
@@ -356,25 +361,6 @@ margin_right = -1832.0
 margin_bottom = 31.0
 custom_fonts/font = ExtResource( 15 )
 text = "60 FPS"
-
-[node name="SelectionMenus" type="CanvasLayer" parent="."]
-editor/display_folded = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="SelectionMenus"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SelectionMenus/HBoxContainer"]
-margin_right = 1920.0
-margin_bottom = 1080.0
-size_flags_horizontal = 3
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="SelectionMenus/HBoxContainer"]
-visible = false
-margin_left = 962.0
-margin_right = 1920.0
-margin_bottom = 1080.0
-size_flags_horizontal = 3
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 pause_mode = 1

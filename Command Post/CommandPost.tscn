@@ -33,5 +33,6 @@ shape = SubResource( 3 )
 visible = false
 margin_right = 233.0
 margin_bottom = 68.0
+rect_pivot_offset = Vector2( 116.5, 34 )
 theme = ExtResource( 2 )
 text = "SPAWN"

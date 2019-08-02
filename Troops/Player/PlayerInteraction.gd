@@ -34,7 +34,7 @@ func _process(delta : float) -> void:
 			action_name = get_node("../InputManager").input_map.interact
 	
 	if not is_in_a_vehicle:
-		if current_camera != null and Input.is_action_just_pressed(action_name):
+		if current_camera and Input.is_action_just_pressed(action_name):
 			var viewport = get_node("/root/Main/Splitscreen")._renders[get_node("..").number_of_player - 1].viewport
 			camera_width_center = viewport.get_visible_rect().size.x / 2
 			camera_height_center = viewport.get_visible_rect().size.y / 2
@@ -100,6 +100,6 @@ sync func change_ship_player(ship_path : NodePath, status : bool, name : String)
 	else:
 		current_vehicle = null
 	
-	if get_node(ship_path) != null:
+	if get_node(ship_path):
 		get_node(ship_path).is_player = status
 		get_node(ship_path).player_name = name

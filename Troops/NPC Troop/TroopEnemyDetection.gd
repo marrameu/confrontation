@@ -19,8 +19,8 @@ func _process(delta):
 					if health_system.health > 0:
 						enemies.push_back(body)
 	
-	if enemies.size() > 0 and get_parent().current_enemie == null:
+	if enemies.size() > 0 and not get_parent().current_enemie:
 		get_parent().current_enemie = enemies[0]
-	if get_parent().current_enemie != null:
+	if get_parent().current_enemie:
 		if get_parent().current_enemie.translation.distance_to(get_parent().translation) > 30:
 			get_parent().current_enemie = null

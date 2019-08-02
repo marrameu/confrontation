@@ -290,7 +290,7 @@ sync func disable_components(var disable_interaction : bool) -> void:
 		weapon.set_process(false)
 		#HUD
 		var weapon_hud = weapon.get_node("HUD")
-		if weapon_hud != null:
+		if weapon_hud:
 			for child in weapon_hud.get_children():
 				if child.has_method("hide"):
 					child.hide()
@@ -315,7 +315,7 @@ sync func enable_components(var enable_interaction : bool) -> void:
 		weapon.set_process(true)
 		#HUD
 		var weapon_hud = weapon.get_node("HUD")
-		if weapon_hud != null:
+		if weapon_hud:
 			for child in weapon_hud.get_children():
 				if child.has_method("show"):
 					child.show()

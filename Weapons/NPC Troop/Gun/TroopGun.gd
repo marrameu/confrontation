@@ -38,7 +38,7 @@ sync func hit(collider_path : NodePath, point : Vector3) -> void:
 	get_node("/root/Main").add_child(hit)
 	hit.global_transform.origin = point
 	
-	if get_node(collider_path) == null:
+	if not get_node(collider_path):
 		return
 	var collider : CollisionObject = get_node(collider_path)
 	if collider.is_in_group("Players") or collider.is_in_group("Troops"):

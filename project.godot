@@ -24,10 +24,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Troops/Player/InputManager.gd"
 }, {
+"base": "Control",
+"class": "PauseMenu",
+"language": "GDScript",
+"path": "res://Menus/PauseMenu.gd"
+}, {
 "base": "KinematicBody",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Troops/Player/Player.gd"
+}, {
+"base": "TextureRect",
+"class": "PlayerRender",
+"language": "GDScript",
+"path": "res://addons/organicpencil.splitscreen/player_render.gd"
+}, {
+"base": "CanvasLayer",
+"class": "SelectionMenu",
+"language": "GDScript",
+"path": "res://Menus/Selection Menu/SelectionMenu.gd"
 }, {
 "base": "RigidBody",
 "class": "Ship",
@@ -53,7 +68,10 @@ _global_script_class_icons={
 "CapitalShip": "",
 "CommandPost": "",
 "InputManager": "",
+"PauseMenu": "",
 "Player": "",
+"PlayerRender": "",
+"SelectionMenu": "",
 "Ship": "",
 "ShipBullet": "",
 "ShipPhysics": "",

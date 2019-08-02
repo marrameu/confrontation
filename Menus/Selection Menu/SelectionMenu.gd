@@ -1,18 +1,27 @@
-extends Control
-
-# GRAB FOCUS AÚN NO
+extends CanvasLayer
+class_name SelectionMenu
 
 var player : Player
 var number_of_player := 0
 var current_cp : CommandPost = null
 
 func _ready() -> void:
+	if LocalMultiplayer.number_of_players > 1:
+		scale = Vector2(0.5, 0.5)
+		# Other scales
+	
+	# 2P Màxim per ara
+	if number_of_player == 1:
+		offset = Vector2(480, 0)
+	elif number_of_player == 2:
+		offset = Vector2(480, 540)
+	
 	if number_of_player == 0:
 		print("ERROR: Number of player unasigned to the selection menu")
 		breakpoint
 	
 	# GRAB FOCUS
-	# $TeamMenu/VBoxContainer/Team1Button.grab_focus()
+	# $Container/TeamMenu/VBoxContainer/Team1Button.grab_focus()
 
 func _set_team(selected_team : int) -> void:
 	Utilities.play_button_audio()
@@ -26,16 +35,16 @@ func _set_team(selected_team : int) -> void:
 			Network.players2[int(player.name)].team = selected_team
 		Network.rpc("_send_player_config", int(player.name), selected_team, number_of_player)
 	
-	$TeamMenu.hide()
-	$ClassMenu.show()
+	$Container/TeamMenu.hide()
+	$Container/ClassMenu.show()
 	# GRAB FOCUS
-	# $ClassMenu/VBoxContainer2/Class1Button.grab_focus()
+	# $Container/ClassMenu/VBoxContainer2/Class1Button.grab_focus()
 
 func _set_class(s_class : int) -> void:
 	Utilities.play_button_audio()
 	player.get_node("TroopManager").m_class = s_class
-	$ClassMenu.hide()
-	$SpawnMenu.show()
+	$Container/ClassMenu.hide()
+	$Container/SpawnMenu.show()
 	# GRAB FOCUS
 	# get_node(get_node("/root/Main/CommandPosts").get_child(0).button_path).grab_focus()
 	
@@ -46,11 +55,11 @@ func _set_class(s_class : int) -> void:
 		scene_camera.rotation = Vector3(deg2rad(-90), 0, 0)
 
 func _on_SpawnButton_pressed() -> void:
-	if current_cp == null: # For transports
-		$SpawnMenu/SpawnButton.hide()
+	if not current_cp: # For transports
+		$Container/SpawnMenu/SpawnButton.hide()
 		return
 	elif current_cp.m_team != player.get_node("TroopManager").m_team:
-		$SpawnMenu/SpawnButton.hide()
+		$Container/SpawnMenu/SpawnButton.hide()
 		return
 	
 	Utilities.play_button_audio()
@@ -58,7 +67,7 @@ func _on_SpawnButton_pressed() -> void:
 		player.rpc("respawn")
 	else:
 		player.respawn()
-	$SpawnMenu.hide()
+	$Container/SpawnMenu.hide()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if not get_node("/root/Main").game_started:
 		(get_node("/root/Main/Music") as AudioStreamPlayer).play()
@@ -74,7 +83,7 @@ func _on_CommandPostButton_pressed(command_post : CommandPost) -> void:
 	var cp_team : int = command_post.m_team
 	if cp_team == player.get_node("TroopManager").m_team:
 		Utilities.play_button_audio()
-		$SpawnMenu/SpawnButton.show()
+		$Container/SpawnMenu/SpawnButton.show()
 		player.spawn_position = cp_pos + Vector3(0, 2, 0)
 		current_cp = command_post
 

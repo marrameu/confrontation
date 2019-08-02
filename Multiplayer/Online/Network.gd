@@ -6,13 +6,17 @@ const DEFAULT_PORT : int = 31406 # Els jugador podrán canviar la ip i el port (
 const MAX_PLAYERS : int = 5 # El nombre màxim de peers al servidor
 
 # La variable players conté tot el llistat de "self_datas" de tots els jugadors, també el propi
+# Array de diccionaris
 var players1 : Dictionary = { }
 var players2 : Dictionary = { }
 
 # Conté totes les variables de cada peer necesaries per inicialitzar al jugador
+# Array de diccionaris
 var self_data1 : Dictionary = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crounching = false,
 		health = 0, is_alive = false, team = 0, is_in_a_vehicle = false } # Classe i is_alive = si té 0 vida
 var self_data2 : Dictionary = self_data1.duplicate() 
+var self_data3 : Dictionary = self_data1.duplicate()
+var self_data4 : Dictionary = self_data1.duplicate()
 # Crear una nova variable ja que self_data1 es només per a la inicialització i l'equip i classe es poden canviar durant la partida
 # var self_conifg or player_config
 
@@ -131,7 +135,7 @@ remote func _send_player_info(id, info, number_of_player):
 	if number_of_player == 1:
 		$'/root/Main/Splitscreen/Viewport1'.add_child(new_player) # S'afegeix al joc
 	elif number_of_player == 2:
-		if $'/root/Main/Splitscreen/Viewport2' == null:
+		if not $'/root/Main/Splitscreen/Viewport2':
 			var node = Node.new()
 			node.name = "Viewport2"
 			$'/root/Main/Splitscreen'.add_child(node)

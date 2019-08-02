@@ -87,7 +87,7 @@ func land():
 func _on_HealthSystem_die():
 	if is_player:
 		var player : Player = ProjectSettings.get("player" + String(number_of_player))
-		if player != null: # Per al online
+		if player: # Per al online
 			player.get_node("Interaction").exit_ship()
 			player.get_node("HealthSystem").take_damage(INF)
 	

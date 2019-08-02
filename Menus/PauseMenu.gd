@@ -1,4 +1,5 @@
 extends Control
+class_name PauseMenu
 
 var number_of_player := 0
 

@@ -55,7 +55,7 @@ func shoot_target() -> Vector3:
 	var shoot_normal := Vector3()
 	var shoot_target := Vector3()
 	
-	if current_cam != null:
+	if current_cam:
 		var viewport : Viewport
 		if get_tree().has_network_peer():
 			viewport = get_node("/root/Main/Splitscreen")._renders[0].viewport

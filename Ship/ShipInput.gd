@@ -9,7 +9,7 @@ func _ready() -> void:
 	get_parent().set_mode(RigidBody.MODE_KINEMATIC)
 
 func _process(delta: float) -> void:
-	if get_parent().is_player and input_manager == null:
+	if get_parent().is_player and not input_manager:
 		if LocalMultiplayer.number_of_players > 1:
 			if get_tree().has_network_peer():
 				if get_parent().is_network_master():
@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 func set_player_input() -> void:
 	var ship_camera : Camera = ProjectSettings.get("ship_camera" + String(get_parent().number_of_player))
 	var player : Player = ProjectSettings.get("player" + String(get_parent().number_of_player))
-	if player == null: # Mirar si es pot treure aquesta comporvació
+	if not player: # Mirar si es pot treure aquesta comporvació
 		return
 	input_manager = player.get_node("InputManager")
 	input_map = input_manager.input_map

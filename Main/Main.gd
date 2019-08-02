@@ -3,139 +3,28 @@ extends Spatial
 var game_started := false
 
 # Client
-var vehicles_instantiated := false
-var troops_instantiated := false
-var capital_ships_instantiated := false
+var _vehicles_instantiated := false
+var _troops_instantiated := false
+var _capital_ships_instantiated := false
+
+var local_players := [null, null, null, null]
+var selection_menus := [null, null, null, null]
+
 
 # Crear una funció per a crear un nou jugador local
 func _ready() -> void:
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
 	
-	var new_players := [null, null, null, null]
-	var selection_menus := [null, null, null, null]
+	var i := 1
+	while i <= LocalMultiplayer.number_of_players:
+		_add_new_player(i)
+		i += 1
 	
-	if LocalMultiplayer.number_of_players >= 1:
-		var new_player : Player = preload("res://Troops/Player/Player.tscn").instance()
-		new_players[0] = new_player
-		var render = $Splitscreen.add_player(0)
-		render.viewport.msaa = get_tree().get_root().msaa
-		# render.viewport.shadow_atlas_size = get_tree().get_root().shadow_atlas_size # ProjectSettings.get[...]
-		new_players[0].number_of_player = 1
-		render.viewport.add_child(new_players[0])
-		var scene_camera = $SceneCamera # CHANGE
-		remove_child(scene_camera)
-		render.viewport.add_child(scene_camera)
-		scene_camera.current = true
-		var selection_menu : Node = preload("res://Menus/Selection Menu/SelectionMenu.tscn").instance()
-		selection_menu.number_of_player = 1
-		$SelectionMenus/HBoxContainer/VBoxContainer.add_child(selection_menu)
-		selection_menus[0] = selection_menu
-		var pause_menu : Node = preload("res://Menus/PauseMenu.tscn").instance()
-		pause_menu.number_of_player = 1
-		render.add_child(pause_menu)
-		ProjectSettings.set("player1", new_players[0])
-		ProjectSettings.set("scene_camera_1", scene_camera)
-		#
-		new_player.name = str(get_tree().get_network_unique_id())
-		new_player.set_network_master(get_tree().get_network_unique_id())
-		# add_child(new_player)
-		var info = Network.self_data1
-		new_player.init(info.name, info.position, false, info.health, false, false) # O info.is_alive, info.is_in_a_vehicle
-	else:
-		print("ERROR: No players")
-		breakpoint
-	
-	if LocalMultiplayer.number_of_players >= 2:
-		var new_player2 : Player = preload("res://Troops/Player/Player.tscn").instance()
-		new_players[1] = new_player2
-		var render2 = $Splitscreen.add_player(1)
-		render2.viewport.msaa = get_tree().get_root().msaa
-		new_players[1].number_of_player = 2
-		render2.viewport.add_child(new_players[1])
-		var scene_camera2 = $SceneCamera2 # CHANGE
-		remove_child(scene_camera2)
-		render2.viewport.add_child(scene_camera2)
-		scene_camera2.current = true
-		var pause_menu : Node = preload("res://Menus/PauseMenu.tscn").instance()
-		pause_menu.number_of_player = 2
-		render2.add_child(pause_menu)
-		ProjectSettings.set("player2", new_players[1])
-		ProjectSettings.set("scene_camera_2", scene_camera2)
-		#
-		new_player2.name = str(get_tree().get_network_unique_id())
-		new_player2.set_network_master(get_tree().get_network_unique_id())
-		# add_child(new_player2)
-		var info = Network.self_data2
-		new_player2.init(info.name, info.position, false, info.health, false, false)
-	
-	if LocalMultiplayer.number_of_players >= 3:
-		var new_player3 : Player = preload("res://Troops/Player/Player.tscn").instance()
-		new_players[2] = new_player3
-		var render3 = $Splitscreen.add_player(2)
-		render3.viewport.msaa = get_tree().get_root().msaa
-		new_players[2].number_of_player = 3
-		render3.viewport.add_child(new_players[2])
-		var scene_camera3 = $SceneCamera3 # CHANGE
-		remove_child(scene_camera3)
-		render3.viewport.add_child(scene_camera3)
-		scene_camera3.current = true
-		var pause_menu : Node = preload("res://Menus/PauseMenu.tscn").instance()
-		pause_menu.number_of_player = 3
-		render3.add_child(pause_menu)
-		ProjectSettings.set("player3", new_players[2])
-		ProjectSettings.set("scene_camera_3", scene_camera3)
-		var info = Network.self_data1
-		new_player3.init(info.name, info.position, false, info.health, false, false)
-	
-	if LocalMultiplayer.number_of_players == 4:
-		var new_player4 : Player = preload("res://Troops/Player/Player.tscn").instance()
-		new_players[3] = new_player4
-		var render4 = $Splitscreen.add_player(3)
-		render4.viewport.msaa = get_tree().get_root().msaa
-		new_players[3].number_of_player = 4
-		render4.viewport.add_child(new_players[3])
-		var scene_camera4 = $SceneCamera4 # CHANGE
-		remove_child(scene_camera4)
-		render4.viewport.add_child(scene_camera4)
-		scene_camera4.current = true
-		var pause_menu : Node = preload("res://Menus/PauseMenu.tscn").instance()
-		pause_menu.number_of_player = 4
-		render4.add_child(pause_menu)
-		ProjectSettings.set("player4", new_players[3])
-		ProjectSettings.set("scene_camera_4", scene_camera4)
-		var info = Network.self_data1
-		new_player4.init(info.name, info.position, false, info.health, false, false)
-	
-	if LocalMultiplayer.number_of_players == 2:
-		var selection_menu : Node = preload("res://Menus/Selection Menu/SelectionMenu.tscn").instance()
-		selection_menu.number_of_player = 2
-		$SelectionMenus/HBoxContainer/VBoxContainer.add_child(selection_menu)
-		selection_menus[1] = selection_menu
-	elif LocalMultiplayer.number_of_players > 2:
-		var selection_menu : Node = preload("res://Menus/Selection Menu/SelectionMenu.tscn").instance()
-		selection_menu.number_of_player = 2
-		$SelectionMenus/HBoxContainer/VBoxContainer2.show()
-		$SelectionMenus/HBoxContainer/VBoxContainer2.add_child(selection_menu)
-		selection_menus[1] = selection_menu
-	if LocalMultiplayer.number_of_players >= 3:
-		var selection_menu : Node = preload("res://Menus/Selection Menu/SelectionMenu.tscn").instance()
-		selection_menu.number_of_player = 3
-		$SelectionMenus/HBoxContainer/VBoxContainer.add_child(selection_menu)
-		selection_menus[2] = selection_menu
-	if LocalMultiplayer.number_of_players == 4:
-		var selection_menu : Node = preload("res://Menus/Selection Menu/SelectionMenu.tscn").instance()
-		selection_menu.number_of_player = 4
-		$SelectionMenus/HBoxContainer/VBoxContainer2.add_child(selection_menu)
-		selection_menus[3] = selection_menu
-	
+	# Scene Camera 4
 	if LocalMultiplayer.number_of_players == 3:
-		enable_scene_camera4()
+		_enable_scene_camera4()
 	
-	if LocalMultiplayer.number_of_players > 1:
-		for menu in selection_menus:
-			if menu != null:
-				menu.get_node("ClassMenu/VBoxContainer2").rect_scale = Vector2(0.5, 0.5)
-
+	# Destroy vehicles and frigates
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
 			for vehicle in $Vehicles.get_children():
@@ -145,10 +34,11 @@ func _ready() -> void:
 				ship.queue_free()
 	
 	Settings.apply_settings()
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
 	# Pròximament
 	# if Settings.controller_input:
 	#	$PauseMenu/Menu/Settings/CheckButton.pressed = true
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func _process(delta : float) -> void:
@@ -182,7 +72,7 @@ func _process(delta : float) -> void:
 				var troops_data = Network.match_data.troops_data
 				var capital_ships_data = Network.match_data.capital_ships_data
 				
-				if not vehicles_instantiated:
+				if not _vehicles_instantiated:
 					# Passar el nom per match_data en el futur
 					for vehicle_data in vehicles_data:
 						var vehicle_scene = load(vehicle_data.vehicle_res)
@@ -198,9 +88,9 @@ func _process(delta : float) -> void:
 						if vehicle_data.is_player:
 							new_vehicle.player_name = String(vehicle_data.player_id)
 						$Vehicles.add_child(new_vehicle)
-					vehicles_instantiated = true
+					_vehicles_instantiated = true
 				
-				if not troops_instantiated:
+				if not _troops_instantiated:
 					for troop_data in troops_data:
 						var troop_scene = load("res://Troops/NPC Troop/Troop.tscn")
 						var new_troop : Troop = troop_scene.instance()
@@ -217,9 +107,9 @@ func _process(delta : float) -> void:
 						set_troop_material(new_troop)
 						new_troop.init()
 						$Troops.add_child(new_troop)
-					troops_instantiated = true
+					_troops_instantiated = true
 				
-				if not capital_ships_instantiated:
+				if not _capital_ships_instantiated:
 					for capital_ship_data in capital_ships_data:
 						var ship_scene = load("res://Capital Ships/CapitalShip.tscn")
 						var new_ship : Spatial = ship_scene.instance()
@@ -235,7 +125,7 @@ func _process(delta : float) -> void:
 						if capital_ship_data.health == 0:
 							new_ship._on_HealthSystem_die()
 						$CapitalShips.add_child(new_ship)
-					capital_ships_instantiated = true
+					_capital_ships_instantiated = true
 
 
 sync func spawn_troops(i : int):
@@ -295,7 +185,71 @@ func _on_server_disconnected() -> void:
 			health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
 
 
-func enable_scene_camera4() -> void:
+func set_troop_material(new_troop : Troop) -> void:
+	# Millorar
+	if new_troop.get_node("TroopManager").m_team == 1:
+		new_troop.get_node("MeshInstance").set_material_override(preload("res://Command Post/Blue.tres"))
+	else:
+		new_troop.get_node("MeshInstance").set_material_override(preload("res://Command Post/Red.tres"))
+
+
+func _add_new_player(number : int) -> void:
+	# Instance Player
+	var new_player : Player = load("res://Troops/Player/Player.tscn").instance()
+	local_players[number - 1] = new_player
+	local_players[number - 1].number_of_player = number
+	
+	# Render
+	_add_new_render(number)
+	
+	# Canviar
+	ProjectSettings.set("player" + str(number), local_players[number - 1])
+	
+	# Selection Menu
+	_add_selection_menu(number)
+	
+	# Name for online
+	if get_tree().has_network_peer():
+		new_player.name = str(get_tree().get_network_unique_id())
+		new_player.set_network_master(get_tree().get_network_unique_id())
+	else:
+		new_player.name = "Player"
+	
+	var info : Dictionary = Network.get("self_data" + str(number))
+	new_player.init(info.name, info.position, false, info.health, false, false)
+
+
+func _add_new_render(number : int) -> void:
+	var render : PlayerRender = $Splitscreen.add_player(number - 1)
+	
+	# Settings
+	render.viewport.msaa = get_tree().get_root().msaa
+	# Shadows
+	
+	render.viewport.add_child(local_players[number - 1])
+	
+	# Pause Menu (Canvas Scaler)
+	var pause_menu : PauseMenu = load("res://Menus/PauseMenu.tscn").instance()
+	pause_menu.number_of_player = 1
+	render.add_child(pause_menu)
+	
+	# Scene Camera
+	var scene_camera : Camera = get_node("SceneCamera" + str(number))
+	scene_camera.current = true
+	remove_child(scene_camera)
+	render.viewport.add_child(scene_camera)
+	# Canviar
+	ProjectSettings.set("scene_camera_" + str(number), scene_camera)
+
+
+func _add_selection_menu(number : int) -> void:
+	var selection_menu : SelectionMenu = load("res://Menus/Selection Menu/SelectionMenu.tscn").instance()
+	selection_menu.number_of_player = number
+	$SelectionMenus.add_child(selection_menu) # Canviar?
+	selection_menus[number - 1] = selection_menu
+
+
+func _enable_scene_camera4() -> void:
 	var render4 = $Splitscreen.add_player(3)
 	render4.name = "IGNORE"
 	render4.viewport.msaa = get_tree().get_root().msaa
@@ -305,20 +259,3 @@ func enable_scene_camera4() -> void:
 	scene_camera4.current = true
 	scene_camera4.translation = Vector3(0, 300, 0)
 	scene_camera4.rotation = Vector3(deg2rad(-90), 0, 0)
-	var new_node = Control.new()
-	new_node.set_h_size_flags(new_node.SIZE_EXPAND_FILL)
-	new_node.set_v_size_flags(new_node.SIZE_EXPAND_FILL)
-	new_node.name = "Ignore"
-	$SelectionMenus/HBoxContainer/VBoxContainer2.add_child(new_node)
-
-
-func set_troop_material(new_troop : Troop) -> void:
-	# Millorar
-	if new_troop.get_node("TroopManager").m_team == 1:
-		new_troop.get_node("MeshInstance").set_material_override(preload("res://Command Post/Blue.tres"))
-	else:
-		new_troop.get_node("MeshInstance").set_material_override(preload("res://Command Post/Red.tres"))
-
-
-func add_new_player(number : int):
-	pass

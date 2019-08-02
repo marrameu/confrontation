@@ -51,7 +51,7 @@ func shoot() -> void:
 	# RayCast
 	var space_state = get_world().direct_space_state
 	
-	if current_cam != null:
+	if current_cam:
 		var viewport = get_node("/root/Main/Splitscreen")._renders[get_node("../..").number_of_player - 1].viewport
 		camera_width_center = viewport.get_visible_rect().size.x / 2
 		camera_height_center = viewport.get_visible_rect().size.y / 2
@@ -75,7 +75,7 @@ sync func hit(collider_path : NodePath, point : Vector3) -> void:
 	get_node("/root/Main").add_child(hit)
 	hit.global_transform.origin = point
 	
-	if get_node(collider_path) == null:
+	if not get_node(collider_path):
 		return
 	var collider : CollisionObject = get_node(collider_path)
 	if collider.is_in_group("Players") or collider.is_in_group("Troops"):

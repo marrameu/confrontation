@@ -74,6 +74,7 @@ func _input(event):
 func update_hud_position() -> void:
 	if not get_parent().is_player or LocalMultiplayer.number_of_players == 1:
 		return
+	
 	# 2P Màxim per ara
 	if get_parent().number_of_player == 1:
 		offset = Vector2(480, 0)
