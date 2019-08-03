@@ -37,9 +37,9 @@ func load_settings():
 	if "quality" in d:
 		quality = int(d.quality)
 	if "mouse_sensitivity" in d:
-		mouse_sensitivity = int(d.mouse_sensitivity)
+		mouse_sensitivity = float(d.mouse_sensitivity)
 	if "joystick_sensitivity" in d:
-		joystick_sensitivity = int(d.joystick_sensitivity)
+		joystick_sensitivity = float(d.joystick_sensitivity)
 	if "controller_input" in d:
 		controller_input = bool(d.controller_input)
 	if "fov" in d:
