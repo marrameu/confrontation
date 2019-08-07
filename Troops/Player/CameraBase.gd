@@ -45,7 +45,7 @@ func _process(delta : float) -> void:
 
 func _physics_process(delta : float) -> void:
 	if Input.is_action_pressed(action_name):
-		$Camera.fov = lerp($Camera.fov, 35, .15)
+		$Camera.fov = lerp($Camera.fov, Settings.fov / 2, .15)
 		get_parent().mouse_sensitivity = init_mouse_sensitivity / 2
 		get_parent().joystick_sensitivity = init_joystick_sensitivity / 3
 		zooming = true
@@ -81,7 +81,7 @@ func shake_camera() -> void:
 	if not shooting:
 		shooting = true
 		original_cam_rot.x = rotation.x
-	if get_parent().get_node("Crounch").crounching:
+	if get_parent().get_node("Crouch").crouching:
 		multiplier = 0.15
 	elif zooming:
 		multiplier = 0.5

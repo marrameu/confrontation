@@ -63,7 +63,7 @@ func _process(delta : float):
 	if get_parent().is_player and get_parent().state == 1:
 		$LifeBar.show()
 		var m_health_system = get_node("../HealthSystem")
-		$LifeBar.value = float(m_health_system.health) / float(m_health_system.max_health) * 100
+		$LifeBar.value = float(m_health_system.health) / float(m_health_system.MAX_HEALTH) * 100
 	else:
 		$LifeBar.hide()
 

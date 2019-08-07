@@ -30,7 +30,7 @@ func _process(delta : float) -> void:
 		life_bar.hide()
 		return
 	else:
-		$PlayerLifeBar.value = float(m_health_system.health) / float(m_health_system.max_health) * 100
+		$PlayerLifeBar.value = float(m_health_system.health) / float(m_health_system.MAX_HEALTH) * 100
 		$PlayerLifeBar.show()
 		if LocalMultiplayer.number_of_players == 2:
 			$PlayerLifeBar.rect_position = Vector2(897.5, 460)
@@ -70,13 +70,13 @@ func _process(delta : float) -> void:
 	if target:
 		if not current_cam.is_position_behind(target.translation) and target.translation.distance_to(get_parent().translation) <= ray_range:
 			if target.get_node("HealthSystem").health == 0:
-				life_bar.value = (float(target.get_node("HealthSystem").health) / float(target.get_node("HealthSystem").max_health)) * 100
+				life_bar.value = (float(target.get_node("HealthSystem").health) / float(target.get_node("HealthSystem").MAX_HEALTH)) * 100
 				life_bar.hide()
 				$Nickname.hide()
 				target = null
 				return
 			life_bar.show()
-			life_bar.value = (float(target.get_node("HealthSystem").health) / float(target.get_node("HealthSystem").max_health)) * 100
+			life_bar.value = (float(target.get_node("HealthSystem").health) / float(target.get_node("HealthSystem").MAX_HEALTH)) * 100
 			life_bar.rect_position = (current_cam as Camera).unproject_position(target.translation + Vector3(0, 2, 0)) - Vector2(life_bar.rect_size.x / 2, life_bar.rect_size.y / 2)
 			$Nickname.rect_position = (current_cam as Camera).unproject_position(target.translation + Vector3(0, 2, 0)) - Vector2($Nickname.rect_size.x / 2, $Nickname.rect_size.y / 2) - Vector2(0, 50)
 		else:

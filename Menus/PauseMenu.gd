@@ -79,7 +79,7 @@ func respawn_player():
 			if $SelectionMenu.player.get_node("Interaction").is_in_a_vehicle:
 				$SelectionMenu.player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF)
 			else:
-				health_system.take_damage(health_system.max_health)
+				health_system.take_damage(health_system.MAX_HEALTH)
 
 func _on_SettingsButton_pressed():
 	Utilities.play_button_audio()

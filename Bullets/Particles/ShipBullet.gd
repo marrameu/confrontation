@@ -2,7 +2,7 @@ extends KinematicBody
 class_name ShipBullet
 
 # Export variables
-export var damage := 75
+export var damage := 50
 export var bullet_velocity := 700.0
 
 # Public variables
@@ -28,7 +28,8 @@ func _process(delta : float) -> void:
 	move_and_collide(delta * direction * bullet_velocity)
 	
 	var exclude : Array = []
-	if ship:
+	var wr = weakref(ship)
+	if wr.get_ref():
 		exclude.push_back(ship)
 	
 	var space_state = get_world().direct_space_state

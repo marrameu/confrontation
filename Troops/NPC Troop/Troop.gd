@@ -158,7 +158,7 @@ sync func respawn() -> void:
 		if child.has_method("show"):
 			child.show()
 	$CollisionShape.disabled = false
-	$HealthSystem.health = $HealthSystem.max_health
+	$HealthSystem.heal($HealthSystem.MAX_HEALTH)
 
 func _on_ConquestTimer_timeout():
 	conquering = false

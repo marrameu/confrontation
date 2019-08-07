@@ -80,7 +80,7 @@ script = ExtResource( 8 )
 [node name="AI" type="Node" parent="Input"]
 
 [node name="HealthSystem" parent="." instance=ExtResource( 9 )]
-max_health = 1000
+MAX_HEALTH = 900
 
 [node name="VehicleNetwork" type="Node" parent="."]
 script = ExtResource( 10 )

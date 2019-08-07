@@ -3,12 +3,12 @@ extends Node
 signal die
 
 # Health
-export(int) var max_health : int = 150 # const?
+export(int) var MAX_HEALTH : int = 150
 var health : int = 0
 
 func _ready() -> void:
 	if health == 0:
-		health = max_health
+		health = MAX_HEALTH
 
 sync func take_damage(amount : int) -> void:
 	if not health == 0:
@@ -19,4 +19,4 @@ sync func take_damage(amount : int) -> void:
 
 sync func heal(amount : int) -> void:
 	health += amount
-	health = min(health, max_health)
+	health = min(health, MAX_HEALTH)

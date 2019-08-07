@@ -387,7 +387,6 @@ OR START ON THE CONTROLLER"
 align = 1
 
 [node name="SettingsMenu" type="Control" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -407,7 +406,6 @@ custom_fonts/font = ExtResource( 4 )
 text = "Back"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SettingsMenu"]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -419,7 +417,6 @@ margin_bottom = 246.5
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingsMenu/ScrollContainer"]
-editor/display_folded = true
 margin_right = 707.0
 margin_bottom = 573.0
 size_flags_horizontal = 3
@@ -472,7 +469,6 @@ custom_fonts/font = ExtResource( 4 )
 text = "HIGH"
 
 [node name="Controls" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
-editor/display_folded = true
 margin_top = 192.0
 margin_right = 707.0
 margin_bottom = 361.0
@@ -508,7 +504,6 @@ text = "Joystick Speed"
 align = 1
 
 [node name="Sliders" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
-editor/display_folded = true
 margin_top = 98.0
 margin_right = 707.0
 margin_bottom = 114.0
@@ -539,7 +534,6 @@ margin_bottom = 169.0
 text = "RESTORE DEFAULT SETTINGS"
 
 [node name="Others" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
-editor/display_folded = true
 margin_top = 436.0
 margin_right = 707.0
 margin_bottom = 575.0
@@ -610,11 +604,11 @@ text = "CONNECTING TO THE NETWORK..."
 [connection signal="text_changed" from="Lobby/VBoxContainer/HBoxContainer2/IPLine" to="Lobby" method="_on_IPLine_text_changed"]
 [connection signal="pressed" from="Lobby/VBoxContainer/HBoxContainer3/JoinButton" to="Lobby" method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="Lobby/VBoxContainer/HBoxContainer3/CreateButton" to="Lobby" method="_on_CreateButton_pressed"]
-[connection signal="pressed" from="Lobby/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="Lobby/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Lobby/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="timeout" from="Lobby/WaitTimer" to="Lobby" method="_on_WaitTimer_timeout"]
-[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/OnlinePlay" to="." method="_on_OnlinePlay_pressed"]
 [connection signal="pressed" from="SettingsMenu/Back" to="." method="_on_Back_pressed"]

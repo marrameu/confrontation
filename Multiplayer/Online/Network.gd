@@ -23,7 +23,7 @@ signal server_disconnected
 
 func _ready():
 	for i in range(0, self_datas.size()):
-		self_datas[i] = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crounching = false,
+		self_datas[i] = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crouching = false,
 				health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
 	
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
@@ -121,7 +121,7 @@ remote func _send_player_info(id, info, number_of_player):
 		viewport = node
 	viewport.add_child(new_player)
 	
-	new_player.init(info.name, info.position, info.crounching, info.health, info.is_alive, info.is_in_a_vehicle) # S'inicalitza el jugador
+	new_player.init(info.name, info.position, info.crouching, info.health, info.is_alive, info.is_in_a_vehicle) # S'inicalitza el jugador
 
 
 remote func _request_match_info(request_from_id) -> void:
@@ -157,10 +157,10 @@ remote func _send_player_config(id, team, number_of_player):
 	players[number_of_player - 1][id].team = team
 
 
-func update_info(id : int, position : Vector3, rotation : float, crounching : bool, health : int, is_alive : bool, is_in_a_vehicle : bool, number_of_player : int) -> void:
+func update_info(id : int, position : Vector3, rotation : float, crouching : bool, health : int, is_alive : bool, is_in_a_vehicle : bool, number_of_player : int) -> void:
 	players[number_of_player - 1][id].position = position
 	players[number_of_player - 1][id].rotation = rotation
-	players[number_of_player - 1][id].crounching = crounching
+	players[number_of_player - 1][id].crouching = crouching
 	players[number_of_player - 1][id].health = health
 	players[number_of_player - 1][id].is_alive = is_alive
 	players[number_of_player - 1][id].is_in_a_vehicle = is_in_a_vehicle

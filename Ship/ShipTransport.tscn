@@ -6,13 +6,15 @@
 [node name="ShipTransport" index="0" groups=[
 "Transports",
 ] instance=ExtResource( 1 )]
-editor/display_folded = true
 
 [node name="Player" parent="Input" index="0"]
 min_throttle = -0.2
 
 [node name="Transport" type="Node" parent="." index="7"]
 script = ExtResource( 2 )
+
+[node name="HealthSystem" parent="." index="8"]
+MAX_HEALTH = 3600
 [connection signal="die" from="HealthSystem" to="Transport" method="delete_cp"]
 
 [editable path="Scene Root"]

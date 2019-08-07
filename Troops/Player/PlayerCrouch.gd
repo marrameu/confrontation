@@ -1,6 +1,6 @@
 extends Node
 
-var crounching := false
+var crouching := false
 onready var capsule_mesh := get_parent().get_node("MeshInstance") 
 onready var capsule_collision := get_parent().get_node("CollisionShape") 
 
@@ -14,17 +14,17 @@ func _ready() -> void:
 func _process(delta : float) -> void:
 	if action_name == "":
 		if LocalMultiplayer.number_of_players == 1:
-			action_name = "crounch"
+			action_name = "crouch"
 		elif LocalMultiplayer.number_of_players > 1:
-			action_name = get_node("../InputManager").input_map.crounch
+			action_name = get_node("../InputManager").input_map.crouch
 	
 	if Input.is_action_just_pressed(action_name):
-		if not crounching:
+		if not crouching:
 			if get_tree().has_network_peer():
 				if is_network_master():
-					rpc("crounch")
+					rpc("crouch")
 			else:
-				crounch()
+				crouch()
 		else:
 			if get_tree().has_network_peer():
 				if is_network_master():
@@ -32,15 +32,15 @@ func _process(delta : float) -> void:
 			else:
 				get_up()
 
-sync func crounch():
-	crounching = true
+sync func crouch():
+	crouching = true
 	capsule_mesh.mesh.set_mid_height(1.5)
 	capsule_collision.translation += Vector3(0, -0.15, 0)
 	capsule_collision.shape.set_height(1.5)
 	capsule_mesh.translation += Vector3(0, -0.15, 0)
 
 sync func get_up():
-	crounching = false
+	crouching = false
 	capsule_mesh.mesh.set_mid_height(1.8)
 	capsule_collision.translation += Vector3(0, 0.15, 0)
 	capsule_collision.shape.set_height(1.8)

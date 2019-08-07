@@ -46,7 +46,7 @@ puppet var slave_position : = Vector3()
 puppet var slave_rotation : = 0.0
 var nickname := "Noname"
 
-func init(new_nickname, start_position, start_crounching, start_health, start_alive, start_in_a_vehicle) -> void:
+func init(new_nickname, start_position, start_crouching, start_health, start_alive, start_in_a_vehicle) -> void:
 	# Position and Nickname
 	translation = start_position
 	nickname = new_nickname
@@ -56,8 +56,8 @@ func init(new_nickname, start_position, start_crounching, start_health, start_al
 		$HealthSystem.health = start_health
 		if start_in_a_vehicle:
 			disable_components(false)
-		elif start_crounching:
-			$Crounch.crounch()
+		elif start_crouching:
+			$Crouch.crouch()
 	else:
 		if get_tree().has_network_peer():
 			rpc("die") 
@@ -104,7 +104,7 @@ func _process(delta : float) -> void:
 func _physics_process(delta : float) -> void:
 	if get_tree().has_network_peer():
 		if is_network_master():
-			if $CameraBase.zooming or $Crounch.crounching:
+			if $CameraBase.zooming or $Crouch.crouching:
 				can_run = false
 			else:
 				can_run = true
@@ -119,7 +119,7 @@ func _physics_process(delta : float) -> void:
 			translation = slave_position
 			rotation = Vector3(0, slave_rotation, 0)
 	else:
-		if $CameraBase.zooming or $Crounch.crounching:
+		if $CameraBase.zooming or $Crouch.crouching:
 			can_run = false
 		else:
 			can_run = true
@@ -185,11 +185,11 @@ func walk(delta : float) -> void:
 	if Input.is_action_just_pressed(jump_action_name) and has_contact:
 		velocity.y = jump_height
 		has_contact = false
-		if $Crounch.crounching:
+		if $Crouch.crouching:
 			if get_tree().has_network_peer():
-				$Crounch.rpc("get_up")
+				$Crouch.rpc("get_up")
 			else:
-				$Crounch.get_up()
+				$Crouch.get_up()
 	
 	# Move
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0), false, 4, deg2rad(MAX_SLOPE_ANGLE))
@@ -275,14 +275,14 @@ sync func respawn() -> void:
 				scene_camera.clear_current()
 		else:
 			scene_camera.clear_current()
-	$HealthSystem.health = $HealthSystem.max_health
+	$HealthSystem.heal($HealthSystem.MAX_HEALTH)
 
 sync func disable_components(var disable_interaction : bool) -> void:
 	set_physics_process(false)
 	set_process(false)
-	if $Crounch.crounching:
-		$Crounch.get_up()
-	$Crounch.set_process(false)
+	if $Crouch.crouching:
+		$Crouch.get_up()
+	$Crouch.set_process(false)
 	$CameraBase.set_process(false)
 	if disable_interaction:
 		$Interaction.set_process(false)
@@ -308,7 +308,7 @@ sync func disable_components(var disable_interaction : bool) -> void:
 sync func enable_components(var enable_interaction : bool) -> void:
 	set_physics_process(true)
 	set_process(true)
-	$Crounch.set_process(true)
+	$Crouch.set_process(true)
 	$CameraBase.set_process(true)
 	if enable_interaction:
 		$Interaction.set_process(true)
@@ -331,5 +331,5 @@ sync func enable_components(var enable_interaction : bool) -> void:
 		$CameraBase/Camera.make_current()
 
 func update_network_info():
-	Network.update_info(int(name), translation, rotation.y, $Crounch.crounching,
+	Network.update_info(int(name), translation, rotation.y, $Crouch.crouching,
 	$HealthSystem.health, $TroopManager.is_alive, $Interaction.is_in_a_vehicle, number_of_player)

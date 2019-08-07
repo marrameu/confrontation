@@ -16,7 +16,7 @@ var input_map = {
 	#
 	"jump" : "",
 	"run" : "",
-	"crounch" : "",
+	"crouch" : "",
 	#
 	"zoom" : "",
 	"zoom_ship" : "",
@@ -51,7 +51,7 @@ func _ready():
 		input_map.camera_left = "camera_left" + a
 	input_map.jump = "jump" + a
 	input_map.run = "run" + a
-	input_map.crounch = "crounch" + a
+	input_map.crouch = "crouch" + a
 	input_map.zoom = "zoom" + a
 	input_map.zoom_ship = "zoom_ship" + a
 	input_map.change_view = "change_view" + a
