@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Troops/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Troops/Player/CameraBase.gd" type="Script" id=2]
@@ -7,16 +7,18 @@
 [ext_resource path="res://Weapons/Player/Gun/Gun.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Troops/Player/PlayerStateMachine.gd" type="Script" id=6]
 [ext_resource path="res://Troops/Player/StateMachine/Idle.gd" type="Script" id=7]
-[ext_resource path="res://Troops/Player/StateMachine/State.gd" type="Script" id=8]
-[ext_resource path="res://Troops/Player/StateMachine/Interact.gd" type="Script" id=9]
-[ext_resource path="res://Troops/Player/PlayerCrouch.gd" type="Script" id=10]
-[ext_resource path="res://Troops/Player/PlayerInteraction.gd" type="Script" id=11]
-[ext_resource path="res://Health System/HealthSystem.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Troops/TroopManager/TroopManager.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Troops/Player/InputManager.gd" type="Script" id=14]
-[ext_resource path="res://Troops/Player/HUD/PlayerHUD.gd" type="Script" id=15]
-[ext_resource path="res://Troops/Player/HUD/LifeBar.tscn" type="PackedScene" id=16]
-[ext_resource path="res://Fonts/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=17]
+[ext_resource path="res://Troops/Player/StateMachine/Aim.gd" type="Script" id=8]
+[ext_resource path="res://Troops/Player/StateMachine/Move.gd" type="Script" id=9]
+[ext_resource path="res://Troops/Player/StateMachine/State.gd" type="Script" id=10]
+[ext_resource path="res://Troops/Player/StateMachine/Interact.gd" type="Script" id=11]
+[ext_resource path="res://Troops/Player/PlayerCrouch.gd" type="Script" id=12]
+[ext_resource path="res://Troops/Player/PlayerInteraction.gd" type="Script" id=13]
+[ext_resource path="res://Health System/HealthSystem.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Troops/TroopManager/TroopManager.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Troops/Player/InputManager.gd" type="Script" id=16]
+[ext_resource path="res://Troops/Player/HUD/PlayerHUD.gd" type="Script" id=17]
+[ext_resource path="res://Troops/Player/HUD/LifeBar.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Fonts/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=19]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.6
@@ -29,7 +31,7 @@ height = 1.8
 [sub_resource type="DynamicFont" id=3]
 size = 24
 use_filter = true
-font_data = ExtResource( 17 )
+font_data = ExtResource( 19 )
 
 [node name="Player" type="KinematicBody" groups=[
 "Players",
@@ -83,6 +85,7 @@ script = ExtResource( 6 )
 START_STATE = NodePath("Movement/Idle")
 
 [node name="Movement" type="Node" parent="StateMachine"]
+editor/display_folded = true
 
 [node name="Idle" type="Node" parent="StateMachine/Movement"]
 script = ExtResource( 7 )
@@ -91,58 +94,61 @@ script = ExtResource( 7 )
 script = ExtResource( 8 )
 
 [node name="Move" type="Node" parent="StateMachine/Movement"]
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="Jump" type="Node" parent="StateMachine/Movement"]
-script = ExtResource( 8 )
+script = ExtResource( 10 )
 
 [node name="Crouch" type="Node" parent="StateMachine/Movement"]
-script = ExtResource( 8 )
+script = ExtResource( 10 )
+
+[node name="Dodge" type="Node" parent="StateMachine/Movement"]
+script = ExtResource( 10 )
 
 [node name="Interact" type="Node" parent="StateMachine"]
-script = ExtResource( 9 )
+script = ExtResource( 11 )
 
 [node name="Attack" type="Node" parent="StateMachine"]
 
 [node name="Shoot" type="Node" parent="StateMachine/Attack"]
-script = ExtResource( 8 )
-
-[node name="Melee" type="Node" parent="StateMachine/Attack"]
-script = ExtResource( 8 )
-
-[node name="Stagger" type="Node" parent="StateMachine"]
-script = ExtResource( 8 )
-
-[node name="Spawn" type="Node" parent="StateMachine"]
-script = ExtResource( 8 )
-
-[node name="Die" type="Node" parent="StateMachine"]
-script = ExtResource( 8 )
-
-[node name="Crouch" type="Node" parent="."]
 script = ExtResource( 10 )
 
+[node name="Melee" type="Node" parent="StateMachine/Attack"]
+script = ExtResource( 10 )
+
+[node name="Stagger" type="Node" parent="StateMachine"]
+script = ExtResource( 10 )
+
+[node name="Spawn" type="Node" parent="StateMachine"]
+script = ExtResource( 10 )
+
+[node name="Die" type="Node" parent="StateMachine"]
+script = ExtResource( 10 )
+
+[node name="Crouch" type="Node" parent="."]
+script = ExtResource( 12 )
+
 [node name="Interaction" type="Node" parent="."]
-script = ExtResource( 11 )
+script = ExtResource( 13 )
 
-[node name="HealthSystem" parent="." instance=ExtResource( 12 )]
+[node name="HealthSystem" parent="." instance=ExtResource( 14 )]
 
-[node name="TroopManager" parent="." instance=ExtResource( 13 )]
+[node name="TroopManager" parent="." instance=ExtResource( 15 )]
 
 [node name="InputManager" type="Node" parent="."]
-script = ExtResource( 14 )
+script = ExtResource( 16 )
 
 [node name="RespawnTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
-script = ExtResource( 15 )
+script = ExtResource( 17 )
 
 [node name="LifeBarTimer" type="Timer" parent="HUD"]
 one_shot = true
 
-[node name="PlayerLifeBar" parent="HUD" instance=ExtResource( 16 )]
+[node name="PlayerLifeBar" parent="HUD" instance=ExtResource( 18 )]
 editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0

@@ -12,7 +12,6 @@ var _troops_instantiated := false
 var _capital_ships_instantiated := false
 
 
-# Crear una funció per a crear un nou jugador local
 func _ready() -> void:
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
 	
@@ -239,6 +238,7 @@ func _add_new_frigate(frigate_data : Dictionary) -> void:
 	if frigate_data.health == 0:
 		new_ship._on_HealthSystem_die()
 	$CapitalShips.add_child(new_ship)
+
 
 func _add_new_troop(troop_data : Dictionary) -> void:
 	var troop_scene = load("res://Troops/NPC Troop/Troop.tscn")

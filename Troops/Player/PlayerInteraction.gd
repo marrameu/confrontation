@@ -16,7 +16,7 @@ var is_in_a_vehicle := false
 var current_vehicle : Spatial
 
 # Multiplayer
-var action_name := ""
+var action := ""
 
 func _ready() -> void:
 	current_camera = get_node("../CameraBase/Camera")
@@ -27,14 +27,11 @@ func _process(delta : float) -> void:
 		if not is_network_master():
 			return
 	
-	if action_name == "":
-		if LocalMultiplayer.number_of_players == 1:
-			action_name = "interact"
-		elif LocalMultiplayer.number_of_players > 1:
-			action_name = get_node("../InputManager").input_map.interact
+	if action == "":
+		action = "interact" if LocalMultiplayer.number_of_players == 1 else get_node("../InputManager").input_map.interact
 	
 	if not is_in_a_vehicle:
-		if current_camera and Input.is_action_just_pressed(action_name):
+		if current_camera and Input.is_action_just_pressed(action):
 			var viewport = get_node("/root/Main/Splitscreen")._renders[get_node("..").number_of_player - 1].viewport
 			camera_width_center = viewport.get_visible_rect().size.x / 2
 			camera_height_center = viewport.get_visible_rect().size.y / 2
@@ -53,7 +50,7 @@ func _process(delta : float) -> void:
 					if not result.collider.is_player:
 						enter_ship(result)
 	else:
-		if Input.is_action_just_pressed(action_name) and current_vehicle.state == 0:
+		if Input.is_action_just_pressed(action) and current_vehicle.state == 0:
 			exit_ship()
 
 func enter_ship(result):
@@ -78,7 +75,7 @@ func exit_ship() -> void:
 	ship_camera.target = null
 	
 	current_vehicle.number_of_player = 0
-	current_vehicle.set_linear_velocity(Vector3.ZERO)
+	current_vehicle.set_linear_velocity(Vector3())
 	current_vehicle.get_node("CameraPosition").translation = Vector3(0, 6, -30) # Change when adding slerp or other ships
 	get_parent().translation = current_vehicle.translation
 	

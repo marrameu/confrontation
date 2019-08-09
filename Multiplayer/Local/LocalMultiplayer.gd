@@ -1,7 +1,7 @@
 extends Node
 
 var number_of_players := 1
-var controller_of_each_player := [0, 0, 0, 0]
+var controller_of_each_player : PoolIntArray = [0, 0, 0, 0]
 
 enum Event { KEY, MOUSE_BUTTON, JOY_BUTTON, AXIS }
 
@@ -50,9 +50,9 @@ func remap_inputs() -> void:
 			add_action("look_behind_player_" + a, JOY_DPAD_DOWN, Event.JOY_BUTTON, device)
 			add_action("zoom_ship_player_" + a, JOY_DPAD_UP, Event.JOY_BUTTON, device)
 
-func add_action(action_name : String, event_scancode : int, type : int, device := 0, axis_value := 0.0) -> void:
+func add_action(action : String, event_scancode : int, type : int, device := 0, axis_value := 0.0) -> void:
 	var deadzone := 0.1
-	InputMap.add_action(action_name, deadzone)
+	InputMap.add_action(action, deadzone)
 	var new_event
 	if type == Event.MOUSE_BUTTON:
 		new_event = InputEventMouseButton.new()
@@ -69,4 +69,4 @@ func add_action(action_name : String, event_scancode : int, type : int, device :
 		new_event.set_device(device)
 		new_event.set_axis(event_scancode)
 		new_event.set_axis_value(axis_value)
-	InputMap.action_add_event(action_name, new_event)
+	InputMap.action_add_event(action, new_event)

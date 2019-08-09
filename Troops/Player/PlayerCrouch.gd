@@ -5,20 +5,17 @@ onready var capsule_mesh := get_parent().get_node("MeshInstance")
 onready var capsule_collision := get_parent().get_node("CollisionShape") 
 
 # Multiplayer
-var action_name := ""
+var action := ""
 
 func _ready() -> void:
 	capsule_mesh.mesh = capsule_mesh.mesh.duplicate()
 	capsule_collision.shape = capsule_collision.shape.duplicate()
 
 func _process(delta : float) -> void:
-	if action_name == "":
-		if LocalMultiplayer.number_of_players == 1:
-			action_name = "crouch"
-		elif LocalMultiplayer.number_of_players > 1:
-			action_name = get_node("../InputManager").input_map.crouch
+	if action == "":
+		action = "crouch" if LocalMultiplayer.number_of_players == 1 else get_node("../InputManager").input_map.crouch
 	
-	if Input.is_action_just_pressed(action_name):
+	if Input.is_action_just_pressed(action):
 		if not crouching:
 			if get_tree().has_network_peer():
 				if is_network_master():

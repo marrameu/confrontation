@@ -7,7 +7,7 @@ export var bullet_velocity := 700.0
 
 # Public variables
 var direction : Vector3
-var ship : Ship
+var ship # : Ship
 
 # Private variables
 var _hit := false
@@ -36,8 +36,9 @@ func _process(delta : float) -> void:
 	var result = space_state.intersect_ray(translation, _old_translation, exclude)
 	
 	if result:
+		# Explosió, overlap_shpere()
 		if result.collider.is_in_group("Ships"):
-			var ship : Ship = result.collider
+			var ship = result.collider # : Ship
 			if get_tree().has_network_peer():
 				if get_tree().is_network_server():
 					ship.get_node("HealthSystem").rpc("take_damage", damage)

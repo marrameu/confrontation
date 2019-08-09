@@ -3,7 +3,8 @@ extends Node
 signal die
 
 # Health
-export(int) var MAX_HEALTH : int = 150
+export(int) var MAX_HEALTH : int = 150 
+# 150 Tropes d'assalt, 1200 Caces estelars, 800 Interceptors, 2100 Bombarders, 3600 Naus de transport, 600000 Creuers 
 var health : int = 0
 
 func _ready() -> void:

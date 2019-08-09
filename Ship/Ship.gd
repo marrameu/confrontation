@@ -18,7 +18,7 @@ puppet var slave_rotation : Vector3
 # Vfx
 const explosion_scene : PackedScene = preload("res://Ship/Explosion.tscn")
 
-var jump_action_name := "jump"
+var jump_action := "jump"
 
 func _ready():
 	slave_position = translation
@@ -43,7 +43,7 @@ func _process(delta : float) -> void:
 		else:
 			$HealthSystem.take_damage(INF)
 	
-	if is_player and Input.is_action_just_pressed(jump_action_name):
+	if is_player and Input.is_action_just_pressed(jump_action):
 		if get_tree().has_network_peer():
 			if is_network_master():
 				if state == 0:
@@ -81,8 +81,8 @@ func _on_LeaveTimer_timeout():
 
 func land():
 	state = 3
-	(get_node("Physics") as ShipPhysics).desired_linear_force = Vector3.ZERO
-	(get_node("Physics") as ShipPhysics).desired_angular_force = Vector3.ZERO
+	(get_node("Physics") as ShipPhysics).desired_linear_force = Vector3()
+	(get_node("Physics") as ShipPhysics).desired_angular_force = Vector3()
 
 func _on_HealthSystem_die():
 	if is_player:

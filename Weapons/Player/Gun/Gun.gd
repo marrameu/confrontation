@@ -11,7 +11,7 @@ var shoot_normal := Vector3()
 const hit_scene = preload("res://Bullets/Particles/HitParticles.tscn")
 
 # Multiplayer
-var action_name := ""
+var action := ""
 
 func _ready() -> void:
 	# $AudioStreamPlayer3D.translation = get_node("../../").translation
@@ -24,13 +24,13 @@ func _process(delta : float) -> void:
 			$HUD/Hitmarker.hide()
 			return
 	
-	if action_name == "":
-		action_name = get_parent().shoot_action_name
+	if action == "":
+		action = get_parent().shoot_action
 		return
 	
-	if Input.is_action_just_pressed(action_name):
+	if Input.is_action_just_pressed(action):
 		($Timer as Timer).start()
-	elif not Input.is_action_pressed(action_name):
+	elif not Input.is_action_pressed(action):
 		($Timer as Timer).stop()
 		var current_cam = ProjectSettings.get("player" + String(get_node("../..").number_of_player) + "_camera")
 		if current_cam:

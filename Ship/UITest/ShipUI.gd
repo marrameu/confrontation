@@ -1,9 +1,7 @@
 extends Control
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-var ship_sensitivity := 75.0 # Antes 100
+var cursor_limit := 450
+var ship_sensitivity := 75.0 # Abans 100
 onready var initial_pos : Vector2 = $Control/Cursor.rect_position
 
 var input : Vector2 
@@ -17,7 +15,7 @@ func _ready():
 func _physics_process(delta):
 	if visible:
 		$Control/Cursor.rect_position += Utilities.mouse_movement * delta * ship_sensitivity # Mouse speed?
-		$Control/Cursor.rect_position = $Control/Cursor.rect_position.clamped(400)
+		$Control/Cursor.rect_position = $Control/Cursor.rect_position.clamped(cursor_limit)
 	
-		input.x = ($Control/Cursor.rect_position.x - initial_pos.x) / 400
-		input.y = -($Control/Cursor.rect_position.y - initial_pos.y) / 400
+		input.x = ($Control/Cursor.rect_position.x - initial_pos.x) / cursor_limit
+		input.y = -($Control/Cursor.rect_position.y - initial_pos.y) / cursor_limit

@@ -18,7 +18,8 @@ var multiplier := 1.0
 var recoil_density := Vector2()
 
 # Multiplayer
-var action_name := ""
+var zoom_action := ""
+var change_view_action := ""
 
 func _ready() -> void:
 	init_joystick_sensitivity = get_parent().joystick_sensitivity * Settings.joystick_sensitivity
@@ -27,29 +28,24 @@ func _ready() -> void:
 	$Camera.fov = Settings.fov
 
 func _process(delta : float) -> void:
-	if action_name == "":
-		if LocalMultiplayer.number_of_players == 1:
-			action_name = "zoom"
-		elif LocalMultiplayer.number_of_players > 1:
-			action_name = get_node("../InputManager").input_map.zoom
+	if zoom_action == "":
+		zoom_action = "zoom" if LocalMultiplayer.number_of_players == 1 else get_node("../InputManager").input_map.zoom
+	if change_view_action == "":
+		change_view_action = "change_view" if LocalMultiplayer.number_of_players == 1 else get_node("../InputManager").input_map.change_view
 	
 	# Change View Side
-	if LocalMultiplayer.number_of_players == 1:
-		if Input.is_action_just_pressed("change_view"):
-			move_camera()
-	elif LocalMultiplayer.number_of_players > 1:
-		if Input.is_action_just_pressed(get_node("../InputManager").input_map.change_view):
-			move_camera()
+	if Input.is_action_just_pressed(change_view_action):
+		move_camera()
 	
 	$Camera.translation.x = cam_pos_x
 
 func _physics_process(delta : float) -> void:
-	if Input.is_action_pressed(action_name):
+	if Input.is_action_pressed(zoom_action):
 		$Camera.fov = lerp($Camera.fov, Settings.fov / 2, .15)
 		get_parent().mouse_sensitivity = init_mouse_sensitivity / 2
 		get_parent().joystick_sensitivity = init_joystick_sensitivity / 3
 		zooming = true
-	elif not Input.is_action_pressed(action_name):
+	elif not Input.is_action_pressed(zoom_action):
 		$Camera.fov = lerp($Camera.fov, Settings.fov, .15)
 		get_parent().mouse_sensitivity = init_mouse_sensitivity
 		get_parent().joystick_sensitivity = init_joystick_sensitivity

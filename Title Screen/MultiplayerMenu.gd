@@ -1,9 +1,9 @@
 extends Control
 
-var joypads_connected := [] # QUITAR ¿?
-var keyboard_connected := false # QUITAR ¿?
-var players_connected := 0 # QUITAR ¿?
-var controller_of_each_player := [0, 0, 0, 0]
+var joypads_connected : PoolIntArray = [0, 0, 0, 0]
+var keyboard_connected := false
+var players_connected := 0
+var controller_of_each_player : PoolIntArray = [0, 0, 0, 0]
 
 func _process(delta : float) -> void:
 	if players_connected > 1:

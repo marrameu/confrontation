@@ -11,8 +11,8 @@ var fire_rates := { 0 : 4.0, 1 : 2.0 }
 var next_times_to_fire := { 0 : 0.0, 1 : 0.0}
 var time_now := 0.0
 
-var shoot_action_name := "shoot"
-var zoom_action_name := "zoom"
+var shoot_action := "shoot"
+var zoom_action := "zoom"
 
 func _ready() -> void:
 	pass
@@ -30,14 +30,14 @@ func _process(delta : float) -> void:
 		elif not get_parent().is_network_master():
 			return
 	
-	if Input.is_action_pressed(shoot_action_name) and time_now >= next_times_to_fire[0]:
+	if Input.is_action_pressed(shoot_action) and time_now >= next_times_to_fire[0]:
 		next_times_to_fire[0] = time_now + 1.0 / fire_rates[0]
 		if get_tree().has_network_peer():
 			rpc("shoot", 0, shoot_target())
 		else:
 			shoot(0, shoot_target())
 	
-	if Input.is_action_pressed(zoom_action_name) and time_now >= next_times_to_fire[1]:
+	if Input.is_action_pressed(zoom_action) and time_now >= next_times_to_fire[1]:
 		next_times_to_fire[1] = time_now + 1.0 / fire_rates[1]
 		if get_tree().has_network_peer():
 			rpc("shoot", 1, shoot_target())

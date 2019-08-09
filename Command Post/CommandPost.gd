@@ -13,7 +13,7 @@ const materials := {
 }
 var team_count := [0.0, 0.0, 0.0]
 var m_team : int = 0
-var bodies := [0, 0, 0]
+var bodies : PoolIntArray = [0, 0, 0]
 
 var old_menus := []
 var buttons := []
@@ -141,8 +141,7 @@ func update_menus() -> void:
 	for new_menu in new_menus:
 		old_menus.push_back(new_menu)
 		
-		var button : Button = $Button.duplicate(1)
-		remove_child(button)
+		var button : Button = load("res://Command Post/CPButton.tscn").instance()
 		new_menu.get_node("SpawnMenu/Buttons").add_child(button)
 		button.connect("pressed", new_menu.get_parent(), "_on_CommandPostButton_pressed", [self])
 		connect("tree_exiting", button, "queue_free")

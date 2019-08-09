@@ -6,14 +6,14 @@ onready var ship = get_parent()
 
 var force_multiplier := 1.0
 
-var linear_force := Vector3(50, 50, 200)
-var angular_force := Vector3(75, 75, 35) / 100.0
+var linear_force := Vector3(0, 0, 200)
+var angular_force := Vector3(90, 90, 175) / 100.0
 
-var applied_linear_force := Vector3.ZERO
-var applied_angular_force := Vector3.ZERO
+var applied_linear_force := Vector3()
+var applied_angular_force := Vector3()
 
-var desired_linear_force := Vector3.ZERO
-var desired_angular_force := Vector3.ZERO
+var desired_linear_force := Vector3()
+var desired_angular_force := Vector3()
 
 var angular_drag := 3.5 # ¿?
 var linear_drag := 2.0 # ¿?
@@ -54,5 +54,5 @@ func add_torque(torque : Vector3, delta : float):
 	ship.angular_velocity = ship.global_transform.basis.xform(desired_angular_force)
 
 func stabilize_rotation(delta : float) -> void:
-	var des_rot = get_parent().rotation.linear_interpolate(Vector3.ZERO, 1.2 * delta)
+	var des_rot = get_parent().rotation.linear_interpolate(Vector3(), 1.2 * delta)
 	get_parent().rotation = Vector3(des_rot.x, get_parent().rotation.y, des_rot.z)

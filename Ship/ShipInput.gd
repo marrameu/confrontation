@@ -36,25 +36,25 @@ func set_player_input() -> void:
 	
 	$Player.input_device = input_manager.number_of_device
 	
-	$Player.move_right_action_name = input_map.move_right
-	$Player.move_left_action_name = input_map.move_left
-	$Player.move_forward_action_name = input_map.move_forward
-	$Player.move_backward_action_name = input_map.move_backward
+	$Player.move_right_action = input_map.move_right
+	$Player.move_left_action = input_map.move_left
+	$Player.move_forward_action = input_map.move_forward
+	$Player.move_backward_action = input_map.move_backward
 	
-	$Player.camera_right_action_name = input_map.camera_right
-	$Player.camera_left_action_name = input_map.camera_left
-	$Player.camera_up_action_name = input_map.camera_up
-	$Player.camera_down_action_name = input_map.camera_down
+	$Player.camera_right_action = input_map.camera_right
+	$Player.camera_left_action = input_map.camera_left
+	$Player.camera_up_action = input_map.camera_up
+	$Player.camera_down_action = input_map.camera_down
 	
-	get_parent().jump_action_name = input_map.jump
-	get_node("../Shooting").shoot_action_name = input_map.shoot
-	get_node("../Shooting").zoom_action_name = input_map.zoom
+	get_parent().jump_action = input_map.jump
+	get_node("../Shooting").shoot_action = input_map.shoot
+	get_node("../Shooting").zoom_action = input_map.zoom
 	
 	ship_camera.input_device = input_manager.number_of_device
 	
-	ship_camera.zoom_ship_action_name = input_map.zoom_ship
-	ship_camera.look_behind_action_name = input_map.look_behind
-	ship_camera.camera_right_action_name = input_map.camera_right
-	ship_camera.camera_left_action_name = input_map.camera_left
-	ship_camera.camera_up_action_name = input_map.camera_up
-	ship_camera.camera_down_action_name = input_map.camera_down
+	ship_camera.zoom_ship_action = input_map.zoom_ship
+	ship_camera.look_behind_action = input_map.look_behind
+	ship_camera.camera_right_action = input_map.camera_right
+	ship_camera.camera_left_action = input_map.camera_left
+	ship_camera.camera_up_action = input_map.camera_up
+	ship_camera.camera_down_action = input_map.camera_down
