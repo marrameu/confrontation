@@ -11,7 +11,7 @@ func _process(delta):
 	
 	enemies = []
 	for body in $Area.get_overlapping_bodies():
-		if body.is_in_group("Players") or body.is_in_group("Troops"):
+		if body.is_in_group("Troops"):
 			var troop_manager : Node = body.get_node("TroopManager")
 			if troop_manager:
 				if troop_manager.m_team != get_parent().get_node("TroopManager").m_team:

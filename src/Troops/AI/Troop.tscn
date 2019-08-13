@@ -9,9 +9,6 @@
 [ext_resource path="res://src/Troops/TroopManager/TroopManager.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/Troops/AI/TroopNetwork.gd" type="Script" id=8]
 
-
-
-
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.6
 height = 2.4
@@ -21,6 +18,7 @@ extents = Vector3( 7, 3, 11 )
 
 [node name="Troop" type="StaticBody" groups=[
 "Troops",
+"AI",
 ]]
 pause_mode = 1
 collision_layer = 2

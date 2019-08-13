@@ -50,7 +50,7 @@ func _process(delta : float) -> void:
 		
 		var result = space_state.intersect_ray(shoot_origin, shoot_normal, [get_parent()], 2)
 		if result:
-			if result.collider.is_in_group("Players") or result.collider.is_in_group("Troops"):
+			if result.collider.is_in_group("Troops"):
 				target = result.collider
 				if result.collider.get_node("TroopManager").m_team == get_node("../TroopManager").m_team:
 					(life_bar as TextureProgress).tint_progress = Color("96006aff")

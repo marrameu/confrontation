@@ -55,7 +55,7 @@ func _process(delta : float) -> void:
 	bodies[1] = 0
 	bodies[2] = 0
 	for body in $Area.get_overlapping_bodies():
-		if body.is_in_group("Players") or body.is_in_group("Troops"):
+		if body.is_in_group("Troops"):
 			var troop_manager : Node = body.get_node("TroopManager")
 			if troop_manager:
 				var health_system : Node = body.get_node("HealthSystem")
@@ -133,11 +133,8 @@ func update_menus() -> void:
 			if new_menus[i] == old_menu:
 				menus_to_remove.push_back(i)
 	
-	# reomve -> erase
-	var a := 0
 	for i in range(0, menus_to_remove.size()):
-		new_menus.remove(menus_to_remove[i - a])
-		a += 1
+		new_menus.erase(menus_to_remove[i])
 	
 	for new_menu in new_menus:
 		old_menus.push_back(new_menu)

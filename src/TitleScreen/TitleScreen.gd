@@ -3,8 +3,10 @@ extends Control
 var loader : ResourceInteractiveLoader
 var changing_scene : bool = false
 
+
 func _ready() -> void:
 	$Menu/Buttons/SinglePlayer.grab_focus()
+
 
 func _on_Play_pressed() -> void:
 	if LocalMultiplayer.number_of_players == 0:
@@ -16,8 +18,10 @@ func _on_Play_pressed() -> void:
 	LocalMultiplayer.remap_inputs()
 	load_scene("res://src/Main/Main.tscn")
 
+
 func _on_Quit_pressed() -> void:
 	get_tree().quit()
+
 
 func _on_Back_pressed() -> void:
 	Utilities.play_button_audio()
@@ -27,8 +31,10 @@ func _on_Back_pressed() -> void:
 	$MultiplayerMenu.hide()
 	$Menu/Buttons/SinglePlayer.grab_focus()
 
+
 func _on_MultiplayerBack_pressed():
 	$MultiplayerMenu.reset_players()
+
 
 func _on_Settings_pressed() -> void:
 	Utilities.play_button_audio()
@@ -36,11 +42,13 @@ func _on_Settings_pressed() -> void:
 	$Menu.hide()
 	$SettingsMenu/Back.grab_focus()
 
+
 func _on_Multiplayer_pressed() -> void:
 	Utilities.play_button_audio()
 	$MultiplayerMenu.show()
 	$Menu.hide()
 	$MultiplayerMenu/Back.grab_focus()
+
 
 func _on_OnlinePlay_pressed() -> void:
 	Utilities.play_button_audio()
@@ -48,6 +56,7 @@ func _on_OnlinePlay_pressed() -> void:
 	$Menu.hide()
 	$MultiplayerMenu.hide()
 	$Lobby/Back.grab_focus()
+
 
 func _process(delta : float) -> void:
 	if changing_scene:
@@ -65,6 +74,7 @@ func _process(delta : float) -> void:
 		else: # Error during loading
 			loader = null
 
+
 func load_scene(path : String) -> void:
 	loader = ResourceLoader.load_interactive(path)
 	if loader == null:
@@ -72,8 +82,11 @@ func load_scene(path : String) -> void:
 	changing_scene = true
 	$LoadingScreen.show()
 
+
+# Fer-la servir en un futur
 func update_progress() -> void:
 	var progress : float = float(loader.get_stage()) / loader.get_stage_count()
+
 
 # Fer-la servir en un futur
 func set_new_scene(scene_resource) -> void:

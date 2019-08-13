@@ -52,7 +52,7 @@ sync func hit(collider_path : NodePath, point : Vector3) -> void:
 		return
 	var damage := shot_damage
 	var collider : CollisionObject = get_node(collider_path)
-	if collider.is_in_group("Players") or collider.is_in_group("Troops"):
+	if collider.is_in_group("Troops"):
 		if collider.get_node("TroopManager").m_team !=  get_node("../../TroopManager").m_team:
 			if collider.translation.y > collider.get_global_transform().origin.y + 0.85:
 				damage = headshot_damage
