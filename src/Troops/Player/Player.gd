@@ -136,7 +136,7 @@ sync func die() -> void:
 		rpc("disable_components", true)
 	else:
 		disable_components(true)
-	var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(number_of_player))
+	var scene_camera : Camera = get_node("/root/Main").players_cameras[number_of_player - 1].scene_camera
 	if scene_camera:
 		if get_tree().has_network_peer():
 			if is_network_master():
@@ -161,7 +161,7 @@ sync func respawn() -> void:
 		rpc("enable_components", true)
 	else:
 		enable_components(true)
-	var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(number_of_player))
+	var scene_camera : Camera = get_node("/root/Main").players_cameras[number_of_player - 1].scene_camera
 	if scene_camera:
 		if get_tree().has_network_peer():
 			if is_network_master():

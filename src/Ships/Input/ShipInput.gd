@@ -27,8 +27,8 @@ func _process(delta: float) -> void:
 		$Player.strafe = 0.0
 
 func set_player_input() -> void:
-	var ship_camera : Camera = ProjectSettings.get("ship_camera" + String(get_parent().number_of_player))
-	var player : Player = ProjectSettings.get("player" + String(get_parent().number_of_player))
+	var ship_camera : Camera = get_node("/root/Main").players_cameras[get_parent().number_of_player - 1].ship_camera
+	var player : Player = get_node("/root/Main").local_players[get_parent().number_of_player - 1]
 	if not player: # Mirar si es pot treure aquesta comporvació
 		return
 	input_manager = player.get_node("InputManager")

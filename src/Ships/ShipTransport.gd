@@ -13,10 +13,10 @@ func _process(delta : float) -> void:
 	var mesh : MeshInstance = get_node("../Scene Root/RootNode (gltf orientation matrix)/RootNode (model correction matrix)/Collada visual scene group/A-Wing/Hull/Hull_Dorsal/Material1")
 	if m_team == 0:
 		pass
-	elif m_team == ProjectSettings.get("player1").get_node("TroopManager").m_team:
-		mesh.set_material_override(preload("res://assets/materials/command_post/blue.tres"))
+	elif m_team == get_node("/root/Main").local_players[0].get_node("TroopManager").m_team:
+		mesh.set_material_override(load("res://assets/materials/command_post/blue.tres"))
 	else:
-		mesh.set_material_override(preload("res://assets/materials/command_post/red.tres"))
+		mesh.set_material_override(load("res://assets/materials/command_post/red.tres"))
 	
 	if get_parent().state == 0 and current_cp == "":
 		instance_cp()

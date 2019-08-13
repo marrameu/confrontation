@@ -6,6 +6,12 @@ var game_started := false
 var local_players := [null, null, null, null]
 var selection_menus := [null, null, null, null]
 
+var players_cameras := [ { }, { }, { }, { } ]
+
+# Players //
+# Players Cameras (Ship and Troop) //
+# Scene Cameras //
+
 # Clients
 var _vehicles_instantiated := false
 var _troops_instantiated := false
@@ -14,6 +20,9 @@ var _capital_ships_instantiated := false
 
 func _ready() -> void:
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
+	
+	for i in range(0, players_cameras.size()):
+		players_cameras[i] = { troop_camera = null, ship_camera = null, scene_camera = null }
 	
 	var i := 1
 	while i <= LocalMultiplayer.number_of_players:
@@ -139,16 +148,14 @@ func _on_server_disconnected() -> void:
 func _add_new_player(number : int) -> void:
 	# Instance Player
 	var new_player : Player = load("res://src/Troops/Player/Player.tscn").instance()
+	new_player.number_of_player = number
 	local_players[number - 1] = new_player
-	local_players[number - 1].number_of_player = number
+	
+	players_cameras[number - 1].troop_camera = new_player.get_node("CameraBase/Camera")
+	players_cameras[number - 1].ship_camera = new_player.get_node("CameraBase/ShipCamera")
 	
 	# Render
 	_add_new_render(number)
-	
-	# Canviar
-	ProjectSettings.set("player" + str(number), local_players[number - 1])
-	ProjectSettings.set("player" + str(number) + "_camera", new_player.get_node("CameraBase/Camera"))
-	ProjectSettings.set("ship_camera" + str(number), new_player.get_node("CameraBase/ShipCamera"))
 	
 	# Selection Menu
 	_add_selection_menu(number)
@@ -183,8 +190,8 @@ func _add_new_render(number : int) -> void:
 	scene_camera.make_current()
 	$Cameras.remove_child(scene_camera)
 	render.viewport.add_child(scene_camera)
-	# Canviar
-	ProjectSettings.set("scene_camera_" + str(number), scene_camera)
+	
+	players_cameras[number - 1].scene_camera = scene_camera
 
 
 func _add_selection_menu(number : int) -> void:

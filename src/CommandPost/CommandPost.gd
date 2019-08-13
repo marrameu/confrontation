@@ -32,7 +32,7 @@ func _process(delta : float) -> void:
 	update_menus()
 	
 	for i in range(0, old_menus.size()):
-		var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(old_menus[i].get_parent().number_of_player))
+		var scene_camera : Camera = get_node("/root/Main").players_cameras[old_menus[i].get_parent().number_of_player - 1].scene_camera
 		
 		if old_menus[i].get_node("SpawnMenu").visible and not scene_camera.is_position_behind(translation):
 			buttons[i].show()
@@ -114,7 +114,7 @@ func _physics_process(delta : float) -> void:
 func update_button_color(button : Button) -> void:
 	if m_team == 0:
 		button.add_color_override("font_color", Color.white)
-	elif m_team == ProjectSettings.get("player1").get_node("TroopManager").m_team:
+	elif m_team == get_node("/root/Main").local_players[0].get_node("TroopManager").m_team:
 		button.add_color_override("font_color", Color("b4c7dc"))
 	else:
 		button.add_color_override("font_color", Color("dcb4b4"))
@@ -149,10 +149,10 @@ func update_menus() -> void:
 		buttons.push_back(button)
 
 func update_material() -> void:
-	if not ProjectSettings.get("player1"):
+	if not get_node("/root/Main").local_players[0]:
 		return
 	
-	var player_team : int = ProjectSettings.get("player1").get_node("TroopManager").m_team
+	var player_team : int = get_node("/root/Main").local_players[0].get_node("TroopManager").m_team
 	if m_team == 0:
 		$MeshInstance.set_material_override(materials[0])
 	elif m_team == 3:

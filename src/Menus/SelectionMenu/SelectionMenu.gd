@@ -25,7 +25,7 @@ func _ready() -> void:
 
 func _set_team(selected_team : int) -> void:
 	Utilities.play_button_audio()
-	player = ProjectSettings.get("player" + String(number_of_player))
+	player = get_node("/root/Main").local_players[number_of_player - 1]
 	player.get_node("TroopManager").m_team = selected_team
 	
 	if get_tree().has_network_peer():
@@ -46,13 +46,13 @@ func _set_class(s_class : int) -> void:
 	# get_node(get_node("/root/Main/CommandPosts").get_child(0).button_path).grab_focus()
 	
 	# Scene Camera 
-	var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(number_of_player))
+	var scene_camera : Camera = get_node("/root/Main").players_cameras[number_of_player - 1].scene_camera
 	if scene_camera:
 		scene_camera.translation = Vector3(0, 300, 0)
 		scene_camera.rotation = Vector3(deg2rad(-90), 0, 0)
 
 func _on_SpawnButton_pressed() -> void:
-	if not current_cp: # For transports
+	if not current_cp: # Per als transports
 		$Container/SpawnMenu/SpawnButton.hide()
 		return
 	elif current_cp.m_team != player.get_node("TroopManager").m_team:
@@ -86,7 +86,7 @@ func _on_CommandPostButton_pressed(command_post : CommandPost) -> void:
 
 func _on_ViewButton_pressed():
 	Utilities.play_button_audio()
-	var scene_camera : Camera = ProjectSettings.get("scene_camera_" + String(number_of_player))
+	var scene_camera : Camera = get_node("/root/Main").players_cameras[number_of_player - 1].scene_camera
 	if scene_camera:
 		if scene_camera.translation.y > 300:
 			scene_camera.translation = Vector3(0, 300, 0)

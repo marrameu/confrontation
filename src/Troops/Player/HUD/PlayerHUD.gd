@@ -37,7 +37,7 @@ func _process(delta : float) -> void:
 		elif LocalMultiplayer.number_of_players > 2:
 			$PlayerLifeBar.rect_position = Vector2(448.75, 460)
 	
-	var current_cam = ProjectSettings.get("player" + String(get_parent().number_of_player) + "_camera")
+	var current_cam : Camera = get_node("/root/Main").players_cameras[get_parent().number_of_player - 1].troop_camera
 	var space_state = get_parent().get_world().direct_space_state
 	
 	if current_cam:

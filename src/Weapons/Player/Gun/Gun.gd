@@ -39,7 +39,7 @@ func _process(delta : float) -> void:
 	elif not Input.is_action_pressed(action):
 		get_parent().attacking = false # Canviar
 		($Timer as Timer).stop()
-		var current_cam = ProjectSettings.get("player" + String(get_node("../..").number_of_player) + "_camera")
+		var current_cam : Camera = get_node("/root/Main").players_cameras[get_node("../..").number_of_player - 1].troop_camera
 		if current_cam:
 			current_cam.get_parent().stop_shake_camera()
 
@@ -53,7 +53,7 @@ func shoot() -> void:
 		$AudioStreamPlayer3D.play()
 	
 	# Shake Camera
-	var current_cam = ProjectSettings.get("player" + String(get_node("../..").number_of_player) + "_camera")
+	var current_cam : Camera = get_node("/root/Main").players_cameras[get_node("../..").number_of_player - 1].troop_camera
 	current_cam.get_parent().shake_camera()
 	
 	# RayCast

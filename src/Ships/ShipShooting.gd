@@ -46,7 +46,7 @@ func _process(delta : float) -> void:
 
 func shoot_target() -> Vector3:
 	# Camera
-	var current_cam = ProjectSettings.get("ship_camera" + String(get_parent().number_of_player))
+	var current_cam : Camera = get_node("/root/Main").players_cameras[get_parent().number_of_player - 1].ship_camera
 	var space_state = get_world().direct_space_state
 	
 	var camera_width_center := 0.0
