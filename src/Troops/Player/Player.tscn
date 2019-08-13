@@ -61,6 +61,7 @@ enabled = true
 cast_to = Vector3( 0, -0.4, 0 )
 
 [node name="CameraBase" type="Spatial" parent="."]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0 )
 script = ExtResource( 3 )
 
@@ -77,6 +78,7 @@ far = 5000.0
 script = ExtResource( 4 )
 
 [node name="Weapons" type="Spatial" parent="."]
+editor/display_folded = true
 script = ExtResource( 5 )
 
 [node name="Gun" parent="Weapons" instance=ExtResource( 6 )]
@@ -86,6 +88,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.8, -0.3 )
 current = true
 
 [node name="StateMachine" type="Node" parent="."]
+editor/display_folded = true
 script = ExtResource( 7 )
 START_STATE = NodePath("Movement/Idle")
 

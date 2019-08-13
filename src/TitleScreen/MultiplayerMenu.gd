@@ -47,7 +47,6 @@ func _process(delta : float) -> void:
 					if joypad == joypad_connected:
 						 return
 			
-			print(players_connected)
 			
 			if players_connected == 0:
 				get_node("HBoxContainer/VBoxContainer/1Player").text = "1P JOYPAD " + String(joypad)

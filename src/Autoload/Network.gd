@@ -1,7 +1,7 @@
 extends Node
 
 # Aquestes constants defineixen la configuaració necesaria per a crear un client o un servidor
-const DEFAULT_IP : String = '127.0.0.1' # Per defecte, está definit com a "localhost", es a dir conexió local
+const DEFAULT_IP : String = "127.0.0.1" # Per defecte, está definit com a "localhost", es a dir conexió local
 const DEFAULT_PORT : int = 31406
 const MAX_PLAYERS : int = 5 
 
@@ -23,7 +23,7 @@ signal server_disconnected
 
 func _ready():
 	for i in range(0, self_datas.size()):
-		self_datas[i] = { name = "", position = Vector3(0, 2, 0), rotation = 0.0, crouching = false,
+		self_datas[i] = { name = "Noname", position = Vector3(0, 2, 0), rotation = 0.0, crouching = false,
 				health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
 	
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')

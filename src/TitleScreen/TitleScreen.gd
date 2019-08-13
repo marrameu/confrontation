@@ -89,6 +89,6 @@ func update_progress() -> void:
 
 
 # Fer-la servir en un futur
-func set_new_scene(scene_resource) -> void:
+func set_new_scene(scene_resource : PackedScene) -> void:
 	var new_scene = scene_resource.instance()
 	get_node("/root").add_child(new_scene)

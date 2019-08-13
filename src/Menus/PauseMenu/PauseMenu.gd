@@ -11,7 +11,7 @@ var paused := false
 
 func _ready() -> void:
 	if number_of_player == 0:
-		print("ERROR: Number of player unasigned to the selection menu")
+		print("ERROR: Number of player unasigned to the pause menu")
 		breakpoint
 
 func _process(delta : float) -> void:
@@ -66,13 +66,10 @@ func resume_game():
 	paused = false
 
 func respawn_player():
-	print("AÚN NO DISPONIBLE EN EL MODO MULTIJUGADOR")
-	
 	return
-	# TODOS LOS PLAYERS?
+	
 	Utilities.play_button_audio()
 	resume_game()
-	# foreach?
 	if $SelectionMenu.player:
 		var health_system = $SelectionMenu.player.get_node("HealthSystem")
 		if health_system.health != 0:

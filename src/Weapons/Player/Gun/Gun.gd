@@ -91,7 +91,7 @@ sync func hit(collider_path : NodePath, point : Vector3) -> void:
 	var damage := shot_damage
 	if collider.is_in_group("Troops"):
 		if collider.get_node("TroopManager").m_team != get_node("../../TroopManager").m_team:
-			if point.y > collider.get_global_transform().origin.y + 0.85:
+			if point.y > collider.get_global_transform().origin.y + 1.1:
 				damage = headshot_damage
 				$HUD/Hitmarker.texture = preload("res://assets/interface/hitmarkers/hitmarker_yellow.png")
 				$HUD/HitmarkerTimer.start()

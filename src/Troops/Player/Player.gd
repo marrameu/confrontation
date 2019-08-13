@@ -128,7 +128,7 @@ func _on_RespawnTimer_timeout() -> void:
 sync func die() -> void:
 	$HealthSystem.health = 0 # Para el HUD (temporal)
 	$TroopManager.is_alive = false
-	# Per a cambiar is_alive
+	
 	if get_tree().has_network_peer(): # Per al mode un jugador
 		if is_network_master():
 			update_network_info()
@@ -197,8 +197,10 @@ sync func disable_components(var disable_interaction : bool) -> void:
 	if get_tree().has_network_peer():
 		if is_network_master():
 			$CameraBase/Camera.clear_current()
+			$Listener.clear_current()
 	else:
 		$CameraBase/Camera.clear_current()
+		$Listener.clear_current()
 
 
 sync func enable_components(var enable_interaction : bool) -> void:
@@ -224,8 +226,10 @@ sync func enable_components(var enable_interaction : bool) -> void:
 	if get_tree().has_network_peer():
 		if is_network_master():
 			$CameraBase/Camera.make_current()
+			$Listener.make_current()
 	else:
 		$CameraBase/Camera.make_current()
+		$Listener.make_current()
 
 
 func update_network_info() -> void:

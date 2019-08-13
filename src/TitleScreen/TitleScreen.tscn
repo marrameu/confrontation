@@ -53,7 +53,6 @@ text = "CONFRONTATION"
 align = 1
 
 [node name="Buttons" type="VBoxContainer" parent="Menu"]
-editor/display_folded = true
 margin_top = 85.0
 margin_right = 1680.0
 margin_bottom = 920.0
@@ -408,6 +407,7 @@ custom_fonts/font = ExtResource( 4 )
 text = "Back"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SettingsMenu"]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -419,6 +419,7 @@ margin_bottom = 246.5
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingsMenu/ScrollContainer"]
+editor/display_folded = true
 margin_right = 707.0
 margin_bottom = 573.0
 size_flags_horizontal = 3
@@ -471,6 +472,7 @@ custom_fonts/font = ExtResource( 4 )
 text = "HIGH"
 
 [node name="Controls" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+editor/display_folded = true
 margin_top = 190.0
 margin_right = 707.0
 margin_bottom = 359.0
@@ -515,8 +517,8 @@ margin_right = 351.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 min_value = 20.0
-max_value = 200.0
-value = 100.0
+max_value = 175.0
+value = 75.0
 ticks_on_borders = true
 
 [node name="HSliderJoystick" type="HSlider" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders"]
@@ -525,8 +527,8 @@ margin_right = 707.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 min_value = 20.0
-max_value = 200.0
-value = 100.0
+max_value = 175.0
+value = 60.0
 ticks_on_borders = true
 
 [node name="SensitivityDefaultsButton" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
@@ -536,6 +538,7 @@ margin_bottom = 169.0
 text = "RESTORE DEFAULT SETTINGS"
 
 [node name="Others" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+editor/display_folded = true
 margin_top = 434.0
 margin_right = 707.0
 margin_bottom = 573.0

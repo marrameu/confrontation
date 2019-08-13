@@ -30,7 +30,6 @@ func stop_shooting() -> void:
 
 # Millorar per l'online i altres?
 func shoot() -> void:
-	# $AudioStreamPlayer3D.play() Volver a activar cuando configure el audio y las zonas 3d
 	# Shoot Offset
 	$RayCast.cast_to = Vector3(rand_range(-60, 60), rand_range(-60, 60), $RayCast.cast_to.z)
 	var collider = ($RayCast as RayCast).get_collider()
@@ -44,24 +43,31 @@ func _on_Timer_timeout() -> void:
 
 
 sync func hit(collider_path : NodePath, point : Vector3) -> void:
+	# Sound
+	$AudioStreamPlayer3D.play()
+	
+	# Particles
 	var hit : Particles = hit_scene.instance()
 	get_node("/root/Main").add_child(hit)
 	hit.global_transform.origin = point
 	
 	if not get_node(collider_path):
 		return
-	var damage := shot_damage
+	
 	var collider : CollisionObject = get_node(collider_path)
+	var damage := shot_damage
+	
 	if collider.is_in_group("Troops"):
-		if collider.get_node("TroopManager").m_team !=  get_node("../../TroopManager").m_team:
-			if collider.translation.y > collider.get_global_transform().origin.y + 0.85:
+		if collider.get_node("TroopManager").m_team != get_node("../../TroopManager").m_team:
+			if point.y > collider.get_global_transform().origin.y + 1.1:
 				damage = headshot_damage
-			# Server
+			
 			if get_tree().has_network_peer():
 				if get_tree().is_network_server():
 					collider.get_node("HealthSystem").rpc("take_damage", damage)
 			else:
 				collider.get_node("HealthSystem").take_damage(damage)
+		
 	elif collider.is_in_group("Ships"):
 		if get_tree().has_network_peer():
 			if get_tree().is_network_server():

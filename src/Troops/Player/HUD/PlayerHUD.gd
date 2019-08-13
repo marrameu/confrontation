@@ -12,6 +12,9 @@ var target : Spatial
 func _ready() -> void:
 	add_child(life_bar)
 	life_bar.hide()
+	
+	if LocalMultiplayer.number_of_players > 1:
+		pass # Canvas Scaler
 
 func _process(delta : float) -> void:
 	if get_tree().has_network_peer():
