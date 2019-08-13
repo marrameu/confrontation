@@ -133,8 +133,10 @@ func update_menus() -> void:
 			if new_menus[i] == old_menu:
 				menus_to_remove.push_back(i)
 	
+	var elements_removed := 0
 	for i in range(0, menus_to_remove.size()):
-		new_menus.erase(menus_to_remove[i])
+		new_menus.remove(menus_to_remove[i - elements_removed])
+		elements_removed += 1
 	
 	for new_menu in new_menus:
 		old_menus.push_back(new_menu)
