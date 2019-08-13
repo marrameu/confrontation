@@ -1,0 +1,179 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://src/Ships/Ship.gd" type="Script" id=1]
+[ext_resource path="res://assets/a_wing/model/scene.gltf" type="PackedScene" id=2]
+[ext_resource path="res://src/Ships/ShipShooting.gd" type="Script" id=3]
+[ext_resource path="res://assets/audio/shot.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/audio/ship_secondary_shoot.wav" type="AudioStream" id=5]
+[ext_resource path="res://src/Ships/ShipPhysics.gd" type="Script" id=6]
+[ext_resource path="res://src/Ships/Input/ShipInput.gd" type="Script" id=7]
+[ext_resource path="res://src/Ships/Input/ShipPlayerInput.gd" type="Script" id=8]
+[ext_resource path="res://src/HealthSystem/HealthSystem.tscn" type="PackedScene" id=9]
+[ext_resource path="res://src/Ships/VehicleNetwork.gd" type="Script" id=10]
+[ext_resource path="res://src/Ships/UI/ShipPlayerHUD.gd" type="Script" id=11]
+[ext_resource path="res://assets/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=12]
+[ext_resource path="res://src/Troops/Player/HUD/LifeBar.tscn" type="PackedScene" id=13]
+[ext_resource path="res://assets/interface/crosshair.png" type="Texture" id=14]
+[ext_resource path="res://src/Ships/UI/ShipUI.tscn" type="PackedScene" id=15]
+
+
+
+
+
+
+
+
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 6.5, 2.5, 9.6 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+use_filter = true
+font_data = ExtResource( 12 )
+
+[node name="Ship" type="RigidBody" groups=[
+"Ships",
+]]
+pause_mode = 1
+collision_layer = 4
+mode = 3
+gravity_scale = 0.0
+continuous_cd = true
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ]
+}
+
+[node name="Scene Root" parent="." instance=ExtResource( 2 )]
+editor/display_folded = true
+transform = Transform( 0.025, 0, 0, 0, 0.025, 0, 0, 0, 0.025, -0.2, 0, -1.5 )
+
+[node name="Pilot" parent="Scene Root/RootNode (gltf orientation matrix)/RootNode (model correction matrix)/Collada visual scene group/A-Wing/Cockpit_Inside" index="2"]
+visible = false
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Tail" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0 )
+enabled = true
+cast_to = Vector3( 0, -1.5, 0 )
+
+[node name="CameraPosition" type="Position3D" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 6, -30 )
+
+[node name="Shooting" type="Spatial" parent="."]
+editor/display_folded = true
+script = ExtResource( 3 )
+
+[node name="Audio" type="AudioStreamPlayer" parent="Shooting"]
+stream = ExtResource( 4 )
+
+[node name="Audio2" type="AudioStreamPlayer" parent="Shooting"]
+stream = ExtResource( 5 )
+
+[node name="Physics" type="Node" parent="."]
+script = ExtResource( 6 )
+
+[node name="Input" type="Node" parent="."]
+script = ExtResource( 7 )
+
+[node name="Player" type="Node" parent="Input"]
+script = ExtResource( 8 )
+
+[node name="AI" type="Node" parent="Input"]
+
+[node name="HealthSystem" parent="." instance=ExtResource( 9 )]
+MAX_HEALTH = 1200
+
+[node name="VehicleNetwork" type="Node" parent="."]
+script = ExtResource( 10 )
+
+[node name="LeaveTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="PlayerHUD" type="CanvasLayer" parent="."]
+script = ExtResource( 11 )
+
+[node name="LandingIndicator" type="Label" parent="PlayerHUD"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -117.0
+margin_top = 150.0
+margin_right = 117.0
+margin_bottom = 179.0
+rect_pivot_offset = Vector2( 117, 14.5 )
+custom_fonts/font = SubResource( 2 )
+text = "Press \"Space\" to land."
+
+[node name="LeaveIndicator" type="Label" parent="PlayerHUD"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -135.0
+margin_top = -390.0
+margin_right = 135.0
+margin_bottom = -361.0
+rect_pivot_offset = Vector2( 122.5, 14.5 )
+custom_fonts/font = SubResource( 2 )
+text = "Press \"Space\" to take off."
+
+[node name="LifeBar" parent="PlayerHUD" instance=ExtResource( 13 )]
+editor/display_folded = true
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -62.5
+margin_top = -100.0
+margin_right = 62.5
+margin_bottom = -80.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 62, 10 )
+tint_progress = Color( 1, 1, 1, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="PlayerHUD/LifeBar"]
+modulate = Color( 0.290196, 0.290196, 0.290196, 0.588235 )
+show_behind_parent = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.5
+margin_top = -14.0
+margin_right = 66.5
+margin_bottom = 14.0
+
+[node name="Crosshair" type="TextureRect" parent="PlayerHUD"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -27.5
+margin_top = -27.5
+margin_right = 27.5
+margin_bottom = 27.5
+rect_rotation = 45.0
+rect_pivot_offset = Vector2( 27, 27 )
+texture = ExtResource( 14 )
+expand = true
+
+[node name="ShipUI" parent="PlayerHUD" instance=ExtResource( 15 )]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+margin_left = -1920.0
+margin_top = -1080.0
+[connection signal="die" from="HealthSystem" to="." method="_on_HealthSystem_die"]
+[connection signal="timeout" from="LeaveTimer" to="." method="_on_LeaveTimer_timeout"]
+
+[editable path="Scene Root"]

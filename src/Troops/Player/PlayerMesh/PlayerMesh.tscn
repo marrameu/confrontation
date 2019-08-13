@@ -1,0 +1,26 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/models/mannequiny/mannequiny-full.escn" type="PackedScene" id=1]
+[ext_resource path="res://src/Troops/Player/PlayerMesh/PlayerMesh.gd" type="Script" id=2]
+[ext_resource path="res://assets/models/mannequiny/Azul.material" type="Material" id=3]
+[ext_resource path="res://assets/models/mannequiny/Blanco.material" type="Material" id=4]
+[ext_resource path="res://assets/models/mannequiny/Azul_L.material" type="Material" id=5]
+[ext_resource path="res://assets/models/mannequiny/Negro.material" type="Material" id=6]
+[ext_resource path="res://assets/models/mannequiny/Azul_R.material" type="Material" id=7]
+
+
+
+[node name="PlayerMesh" index="0" instance=ExtResource( 1 )]
+transform = Transform( -2, 0, -1.74846e-07, 0, 2, 0, 1.74846e-07, 0, -2, 0, -1.8, 0 )
+script = ExtResource( 2 )
+
+[node name="body" parent="rig" index="1"]
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )
+material/2 = ExtResource( 5 )
+material/3 = ExtResource( 6 )
+material/4 = ExtResource( 7 )
+
+[node name="head" parent="rig" index="2"]
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/hitmarker.wav-5d68e44e3ee7af16be926369504c1108.sample"
+
+[deps]
+
+source_file="res://assets/audio/hitmarker.wav"
+dest_files=[ "res://.import/hitmarker.wav-5d68e44e3ee7af16be926369504c1108.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

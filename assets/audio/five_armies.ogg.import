@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/five_armies.ogg-2005608f1ae6bf5772332a6514fa57ab.oggstr"
+
+[deps]
+
+source_file="res://assets/audio/five_armies.ogg"
+dest_files=[ "res://.import/five_armies.ogg-2005608f1ae6bf5772332a6514fa57ab.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

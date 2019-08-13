@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/CommandPost/CommandPost.gd" type="Script" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.478431, 0.478431, 0.478431, 1 )
+roughness = 0.0
+
+[sub_resource type="CylinderMesh" id=2]
+material = SubResource( 1 )
+top_radius = 0.6
+bottom_radius = 0.8
+height = 0.3
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 10, 5, 10 )
+
+[node name="CommandPost" type="Spatial"]
+pause_mode = 1
+script = ExtResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Area" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+shape = SubResource( 3 )
