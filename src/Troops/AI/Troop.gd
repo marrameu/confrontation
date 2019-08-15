@@ -8,8 +8,7 @@ export var body : NodePath
 # Atack
 var current_enemie : Spatial
 
-# State
-# Enum
+# States (State Machine)
 var idle := false
 var conquering := false
 
@@ -18,6 +17,7 @@ var nickname := "Troop"
 # Networking
 puppet var slave_position : = Vector3()
 puppet var slave_rotation : = 0.0
+
 
 # Client
 func init() -> void:
@@ -28,8 +28,9 @@ func init() -> void:
 	else:
 		die()
 
+
 func _process(delta):
-	$PlayerMesh.moving = !$PathMaker.finished
+	# $PlayerMesh.moving = !$PathMaker.finished
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
 			return
@@ -100,6 +101,7 @@ func _process(delta):
 	if $Weapons/TroopGun.shooting:
 		$Weapons/TroopGun.stop_shooting()
 
+
 func _physics_process(delta : float) -> void:
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
@@ -108,6 +110,7 @@ func _physics_process(delta : float) -> void:
 		else:
 			translation = slave_position
 			rotation = Vector3(0, slave_rotation, 0)
+
 
 func _on_HealthSystem_die() -> void:
 	if get_tree().has_network_peer():
@@ -118,12 +121,14 @@ func _on_HealthSystem_die() -> void:
 		($RespawnTimer as Timer).start()
 		die()
 
+
 func _on_RespawnTimer_timeout():
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
 			rpc("respawn")
 	else:
 		respawn()
+
 
 sync func die() -> void:
 	conquering = false
@@ -148,6 +153,7 @@ sync func die() -> void:
 	for weapon in $Weapons.get_children():
 		weapon.get_node("Timer").stop()
 		weapon.shooting = false
+
 
 sync func respawn() -> void:
 	$TroopManager.is_alive = true
@@ -174,5 +180,13 @@ sync func respawn() -> void:
 	
 	$HealthSystem.heal($HealthSystem.MAX_HEALTH)
 
+
 func _on_ConquestTimer_timeout():
 	conquering = false
+
+
+func set_material() -> void:
+	if get_node("TroopManager").m_team == get_node("/root/Main").local_players[0].get_node("TroopManager").m_team:
+		get_node(body).set_surface_material(2, load("res://assets/models/mannequiny/Azul_R.material"))
+	else:
+		get_node(body).set_surface_material(4, load("res://assets/models/mannequiny/Azul_L.material"))

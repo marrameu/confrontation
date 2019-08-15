@@ -38,8 +38,8 @@ func _process(delta : float) -> void:
 	update_throttle(move_forward_action, move_backward_action, delta)
 
 func update_yaw_and_ptich() -> void:
-	mouse_input.x = get_node("../../PlayerHUD/ShipUI").input.x
-	mouse_input.y = -get_node("../../PlayerHUD/ShipUI").input.y
+	mouse_input.x = get_node("../../PlayerHUD").input.x
+	mouse_input.y = -get_node("../../PlayerHUD").input.y
 	
 	pitch = mouse_input.y if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action)
 	yaw = -mouse_input.x if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_left_action) - Input.get_action_strength(camera_right_action)

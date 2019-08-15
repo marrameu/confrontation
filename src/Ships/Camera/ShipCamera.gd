@@ -76,21 +76,21 @@ func update_target(delta : float):
 	# Mirar si la nau esta en moviment, si ho està, resetejar la posició del target i no fer res més
 	if target.get_parent().state != 1:
 		target.translation = target.translation.linear_interpolate(Vector3(0, 6, -30), delta)
-		horizontal_lean(target.get_node("../Scene Root"), 0.0)
+		horizontal_lean(target.get_node("../ShipMesh"), 0.0)
 		return
 	
 	var mouse_position : Vector2 = Utilities.mouse_position
 	var mouse_screen_x : float
 	var mouse_screen_y : float
 	
-	mouse_screen_x = target.get_node("../PlayerHUD/ShipUI").input.x if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_right_action) - Input.get_action_strength(camera_left_action)
-	mouse_screen_y = target.get_node("../PlayerHUD/ShipUI").input.y if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_up_action) - Input.get_action_strength(camera_down_action)
+	mouse_screen_x = target.get_node("../PlayerHUD").input.x if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_right_action) - Input.get_action_strength(camera_left_action)
+	mouse_screen_y = target.get_node("../PlayerHUD").input.y if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_up_action) - Input.get_action_strength(camera_down_action)
 	var viewport_size = get_tree().root.get_visible_rect().size
 	
 	mouse_screen_x = clamp(mouse_screen_x, -1, 1)
 	mouse_screen_y = clamp(mouse_screen_y, -1, 1)
 	
-	horizontal_lean(target.get_node("../Scene Root"), mouse_screen_x)
+	horizontal_lean(target.get_node("../ShipMesh"), mouse_screen_x)
 	
 	var horizontal := horizontal_turn_move * mouse_screen_x
 	var vertical := 0.0

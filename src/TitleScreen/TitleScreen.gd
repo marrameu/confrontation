@@ -2,6 +2,9 @@ extends Control
 
 var loader : ResourceInteractiveLoader
 var changing_scene : bool = false
+var emit_signal : bool = false
+
+signal finished_loading
 
 
 func _ready() -> void:
@@ -12,11 +15,9 @@ func _on_Play_pressed() -> void:
 	if LocalMultiplayer.number_of_players == 0:
 		return
 	Utilities.play_button_audio()
-	$Menu.hide()
-	$MultiplayerMenu.hide()
-	$LoadingScreen/SinglePlayer.show()
 	LocalMultiplayer.remap_inputs()
-	load_scene("res://src/Main/Main.tscn")
+	show_loading_screen(false)
+	load_scene("res://src/Main/Main.tscn", true)
 
 
 func _on_Quit_pressed() -> void:
@@ -58,37 +59,59 @@ func _on_OnlinePlay_pressed() -> void:
 	$Lobby/Back.grab_focus()
 
 
+func show_loading_screen(online : bool) -> void:
+	$Menu.hide()
+	$Lobby.hide()
+	$MultiplayerMenu.hide()
+	$LoadingScreen.show()
+	
+	$LoadingScreen/Multiplayer.visible = online
+	$LoadingScreen/SinglePlayer.visible = !online
+	$LoadingScreen/ProgressBar.visible = !online
+
+
+func hide_loading_screen() -> void:
+	$LoadingScreen.hide()
+	$LoadingScreen/Multiplayer.hide()
+	$LoadingScreen/SinglePlayer.hide()
+	$LoadingScreen/ProgressBar.hide()
+
+
 func _process(delta : float) -> void:
 	if changing_scene:
 		if not loader:
 			changing_scene = false
 			return
 		
-		var err = loader.poll()
+		_process_load_scene()
+
+
+func _process_load_scene() -> void:
+	 var err = loader.poll()
 		if err == ERR_FILE_EOF: # Finished loading
 			var resource = loader.get_resource()
 			loader = null
-			get_tree().change_scene_to(resource)
+			
+			if emit_signal:
+				emit_signal("finished_loading", resource)
+			else:
+				get_tree().change_scene_to(resource)
+			
 		elif err == OK:
 			update_progress()
+			
 		else: # Error during loading
 			loader = null
 
 
-func load_scene(path : String) -> void:
+func load_scene(path : String, instant_load : bool) -> void:
 	loader = ResourceLoader.load_interactive(path)
+	emit_signal = !instant_load
 	if loader == null:
 		return
 	changing_scene = true
-	$LoadingScreen.show()
 
 
-# Fer-la servir en un futur
 func update_progress() -> void:
 	var progress : float = float(loader.get_stage()) / loader.get_stage_count()
-
-
-# Fer-la servir en un futur
-func set_new_scene(scene_resource : PackedScene) -> void:
-	var new_scene = scene_resource.instance()
-	get_node("/root").add_child(new_scene)
+	$LoadingScreen/ProgressBar.value = progress * 100

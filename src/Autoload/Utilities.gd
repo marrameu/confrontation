@@ -1,8 +1,10 @@
 extends Node
 
+# Mouse
 var mouse_position := Vector2()
 var mouse_movement := Vector2()
-var mouse_acceleration := Vector2()
+var mouse_acceleration := Vector2() # Not ready
+
 
 func play_button_audio() -> void:
 	var button_audio : AudioStreamPlayer = AudioStreamPlayer.new()
@@ -12,12 +14,12 @@ func play_button_audio() -> void:
 	current_scene.add_child(button_audio)
 	button_audio.play()
 
+
 func _input(event):
 	if event is InputEventMouseMotion:
 		mouse_movement = event.relative
-		# mouse_acceleration
 		mouse_position = event.position
 
+
 func _process(delta):
-	# mouse_acceleration
 	mouse_movement = Vector2() # millorar-ho

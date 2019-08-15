@@ -35,8 +35,8 @@ use_filter = true
 font_data = ExtResource( 20 )
 
 [node name="Player" type="KinematicBody" groups=[
-"Players",
 "Troops",
+"Players",
 ]]
 pause_mode = 1
 collision_layer = 2
@@ -61,21 +61,20 @@ enabled = true
 cast_to = Vector3( 0, -0.4, 0 )
 
 [node name="CameraBase" type="Spatial" parent="."]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0 )
 script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="CameraBase"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 4.15 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 4 )
 far = 5000.0
-
-[node name="Tween" type="Tween" parent="CameraBase"]
 
 [node name="ShipCamera" type="Camera" parent="CameraBase"]
 pause_mode = 1
 visible = false
 far = 5000.0
 script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="CameraBase"]
 
 [node name="Weapons" type="Spatial" parent="."]
 editor/display_folded = true
@@ -163,9 +162,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -62.5
-margin_top = -100.0
+margin_top = -105.0
 margin_right = 62.5005
-margin_bottom = -80.0
+margin_bottom = -85.0
 rect_scale = Vector2( 1.5, 1.5 )
 rect_pivot_offset = Vector2( 62, 10 )
 tint_over = Color( 1, 1, 1, 0 )

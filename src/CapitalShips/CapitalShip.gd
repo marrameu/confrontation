@@ -17,11 +17,11 @@ func _on_HealthSystem_die() -> void:
 func _on_DestructionTimer_timeout() -> void:
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc("explode")
+			rpc("_explode")
 	else:
-		explode()
+		_explode()
 
 
-sync func explode() -> void:
+sync func _explode() -> void:
 	# Anim 
 	queue_free()

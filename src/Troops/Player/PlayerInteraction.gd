@@ -61,7 +61,7 @@ func enter_ship(result):
 		change_ship_player(result.collider.get_path(), true, get_parent().name)
 		get_parent().disable_components(false)
 	
-	result.collider.get_node("PlayerHUD/ShipUI/Control/Cursor").rect_position = Vector2(-0.5, -0.5)
+	result.collider.get_node("PlayerHUD/Center/CursorPivot/Cursor").rect_position = Vector2()
 	result.collider.number_of_player = get_parent().number_of_player
 	ship_camera.init(result.collider.get_node("CameraPosition"), get_parent().number_of_player)
 	if get_tree().has_network_peer():

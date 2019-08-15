@@ -113,7 +113,7 @@ remote func _send_player_info(id, info, number_of_player):
 	new_player.set_network_master(id) # S'estableix com a "network master", així que el sistema local serà el "master" d'aquest node
 	new_player.number_of_player = number_of_player
 	
-	var viewport : Node = get_node("/root/Main/Splitscreen/Viewport" + str(number_of_player))
+	var viewport : Viewport = get_node("/root/Main/Splitscreen/Viewport" + str(number_of_player))
 	if not viewport:
 		var node = Node.new()
 		node.name = "Viewport" + str(number_of_player)

@@ -2,8 +2,6 @@
 
 [ext_resource path="res://src/Ships/LandingArea/LandingArea.tscn" type="PackedScene" id=1]
 
-
-
 [sub_resource type="CubeMesh" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -17,7 +15,7 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
 
 [sub_resource type="BoxShape" id=5]
-extents = Vector3( 205, 13, 110 )
+extents = Vector3( 205, 15, 110 )
 
 [node name="Hangar" type="Spatial"]
 
@@ -50,7 +48,6 @@ collision_mask = 2
 shape = SubResource( 4 )
 
 [node name="LandingArea" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0 )
 
 [node name="CollisionShape" parent="LandingArea" index="0"]
 shape = SubResource( 5 )

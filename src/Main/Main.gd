@@ -128,7 +128,7 @@ sync func spawn_troops(i : int):
 		$Troops.add_child(new_troop)
 		
 		# Material
-		set_troop_material(new_troop)
+		new_troop.set_material()
 
 
 func exit_game() -> void:
@@ -260,14 +260,5 @@ func _add_new_troop(troop_data : Dictionary) -> void:
 	else:
 		new_troop.get_node("TroopManager").is_alive = false
 		new_troop.get_node("HealthSystem").health = 0
-	set_troop_material(new_troop)
 	new_troop.init()
 	$Troops.add_child(new_troop)
-
-
-func set_troop_material(new_troop : Troop) -> void:
-	# Millorar
-	if new_troop.get_node("TroopManager").m_team == local_players[0].get_node("TroopManager").m_team:
-		new_troop.get_node(new_troop.body).set_surface_material(2, load("res://assets/models/mannequiny/Azul_R.material"))
-	else:
-		new_troop.get_node(new_troop.body).set_surface_material(4, load("res://assets/models/mannequiny/Azul_L.material"))

@@ -6,12 +6,15 @@ var quality := 1 # Medium
 # Controls
 var mouse_sensitivity := 1.0
 var joystick_sensitivity := 1.0
-
 var controller_input := false
+
+# Others
 var fov := 70
+
 
 func _ready() -> void:
 	load_settings()
+
 
 func apply_settings():
 	if quality == 0:
@@ -22,8 +25,9 @@ func apply_settings():
 		ProjectSettings["rendering/quality/voxel_cone_tracing/high_quality"] = false
 		get_tree().get_root().msaa = Viewport.MSAA_4X
 	elif quality == 2:
-		ProjectSettings["rendering/quality/voxel_cone_tracing/high_quality"] = false # true cuando añada Landscape GI
+		ProjectSettings["rendering/quality/voxel_cone_tracing/high_quality"] = false # Canviar en un futur
 		get_tree().get_root().msaa = Viewport.MSAA_8X
+
 
 func load_settings():
 	var f = File.new()
@@ -44,6 +48,7 @@ func load_settings():
 		controller_input = bool(d.controller_input)
 	if "fov" in d:
 		fov = int(d.fov)
+
 
 func save_settings():
 	var f = File.new()

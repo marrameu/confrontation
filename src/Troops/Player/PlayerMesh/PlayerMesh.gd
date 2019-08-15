@@ -1,7 +1,6 @@
 extends Spatial
 
 var moving := false
-var jumping := false
 
 
 func _process(delta : float) -> void:

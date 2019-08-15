@@ -40,7 +40,7 @@ func _on_HSliderMouse_value_changed(value : float) -> void:
 
 func _on_SensitivityDefaultsButton_pressed() -> void:
 	Utilities.play_button_audio()
-	$Controls/Sliders/HSliderMouse.value = 75
+	$Controls/Sliders/HSliderMouse.value = 65
 	$Controls/Sliders/HSliderJoystick.value = 60
 
 

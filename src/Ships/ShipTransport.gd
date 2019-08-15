@@ -1,6 +1,7 @@
 extends Node
 
 export var m_team := 0
+export var mesh : NodePath
 
 const cp_scene : PackedScene = preload("res://src/CommandPost/CommandPost.tscn")
 var current_cp := ""
@@ -10,13 +11,7 @@ func _ready() -> void:
 
 func _process(delta : float) -> void:
 	# Cambiar quan les naus tinguin models propis
-	var mesh : MeshInstance = get_node("../Scene Root/RootNode (gltf orientation matrix)/RootNode (model correction matrix)/Collada visual scene group/A-Wing/Hull/Hull_Dorsal/Material1")
-	if m_team == 0:
-		pass
-	elif m_team == get_node("/root/Main").local_players[0].get_node("TroopManager").m_team:
-		mesh.set_material_override(load("res://assets/materials/command_post/blue.tres"))
-	else:
-		mesh.set_material_override(load("res://assets/materials/command_post/red.tres"))
+	set_material()
 	
 	if get_parent().state == 0 and current_cp == "":
 		instance_cp()
@@ -42,3 +37,12 @@ func delete_cp() -> void:
 		return
 	get_node(current_cp).queue_free()
 	current_cp = ""
+
+func set_material() -> void:
+	if m_team == 0:
+		pass
+	elif m_team == get_node("/root/Main").local_players[0].get_node("TroopManager").m_team:
+		get_node(mesh).set_material_override(load("res://assets/materials/command_post/blue.tres"))
+	else:
+		get_node(mesh).set_material_override(load("res://assets/materials/command_post/red.tres"))
+	

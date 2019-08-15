@@ -30,7 +30,6 @@ __meta__ = {
 }
 
 [node name="Menu" type="VBoxContainer" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -53,6 +52,7 @@ text = "CONFRONTATION"
 align = 1
 
 [node name="Buttons" type="VBoxContainer" parent="Menu"]
+editor/display_folded = true
 margin_top = 85.0
 margin_right = 1680.0
 margin_bottom = 920.0
@@ -112,6 +112,7 @@ margin_bottom = 444.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
+disabled = true
 text = "Profile (Not Ready)"
 
 [node name="Quit" type="Button" parent="Menu/Buttons"]
@@ -133,8 +134,8 @@ Credits:
 -Textures: CC0 Textures
 -Engine: Godot Engine (godotengine.org/license)
 
-Version 2019.3 Alpha - Multiplayer
-Vora Game Studios / Aleix R. B."
+Version 0.1.6 Alpha
+Indev build \"multiplayer\""
 
 [node name="Lobby" type="Control" parent="."]
 editor/display_folded = true
@@ -166,6 +167,7 @@ text = "Lobby"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Lobby/VBoxContainer"]
+editor/display_folded = true
 margin_top = 111.0
 margin_right = 800.0
 margin_bottom = 177.0
@@ -188,6 +190,7 @@ align = 1
 max_length = 12
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Lobby/VBoxContainer"]
+editor/display_folded = true
 margin_top = 207.0
 margin_right = 800.0
 margin_bottom = 273.0
@@ -213,6 +216,7 @@ __meta__ = {
 }
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Lobby/VBoxContainer"]
+editor/display_folded = true
 margin_top = 303.0
 margin_right = 800.0
 margin_bottom = 461.0
@@ -508,6 +512,7 @@ text = "Joystick Speed"
 align = 1
 
 [node name="Sliders" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
+editor/display_folded = true
 margin_top = 98.0
 margin_right = 707.0
 margin_bottom = 114.0
@@ -518,7 +523,7 @@ margin_bottom = 16.0
 size_flags_horizontal = 3
 min_value = 20.0
 max_value = 175.0
-value = 75.0
+value = 65.0
 ticks_on_borders = true
 
 [node name="HSliderJoystick" type="HSlider" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders"]
@@ -600,6 +605,18 @@ margin_right = 537.5
 margin_bottom = 42.0
 custom_fonts/font = ExtResource( 3 )
 text = "CONNECTING TO THE NETWORK..."
+
+[node name="ProgressBar" type="ProgressBar" parent="LoadingScreen"]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -175.0
+margin_top = -429.0
+margin_right = 175.0
+margin_bottom = -400.0
+[connection signal="finished_loading" from="." to="Lobby" method="_on_TitleScreen_finished_loading"]
 [connection signal="pressed" from="Menu/Buttons/SinglePlayer" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Menu/Buttons/HBoxContainer/Multiplayer" to="." method="_on_Multiplayer_pressed"]
 [connection signal="pressed" from="Menu/Buttons/HBoxContainer/OnlinePlay" to="." method="_on_OnlinePlay_pressed"]

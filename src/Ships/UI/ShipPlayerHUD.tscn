@@ -1,0 +1,123 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/Ships/UI/ShipPlayerHUD.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/interface/crosshair.png" type="Texture" id=3]
+[ext_resource path="res://assets/interface/ship_cursor.png" type="Texture" id=4]
+[ext_resource path="res://assets/interface/life_bar.png" type="Texture" id=5]
+[ext_resource path="res://src/Troops/Player/HUD/LifeBar.tscn" type="PackedScene" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+use_filter = true
+font_data = ExtResource( 2 )
+
+[node name="PlayerHUD" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="Indicators" type="Node" parent="."]
+
+[node name="LandingIndicator" type="Label" parent="Indicators"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -117.0
+margin_top = 150.0
+margin_right = 117.0
+margin_bottom = 179.0
+rect_pivot_offset = Vector2( 117, 14.5 )
+custom_fonts/font = SubResource( 1 )
+text = "Press \"Space\" to land."
+
+[node name="LeaveIndicator" type="Label" parent="Indicators"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -135.0
+margin_top = -390.0
+margin_right = 135.0
+margin_bottom = -361.0
+rect_pivot_offset = Vector2( 122.5, 14.5 )
+custom_fonts/font = SubResource( 1 )
+text = "Press \"Space\" to take off."
+
+[node name="Center" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Crosshair" type="TextureRect" parent="Center"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 912.5
+margin_top = 492.5
+margin_right = 967.5
+margin_bottom = 547.5
+rect_pivot_offset = Vector2( 27, 27 )
+texture = ExtResource( 3 )
+expand = true
+
+[node name="CursorPivot" type="Control" parent="Center"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 909.5
+margin_top = 489.5
+margin_right = 909.5
+margin_bottom = 489.5
+
+[node name="Cursor" type="TextureRect" parent="Center/CursorPivot"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_right = 60.0
+margin_bottom = 60.0
+rect_pivot_offset = Vector2( 30, 30 )
+texture = ExtResource( 4 )
+expand = true
+
+[node name="Point" type="TextureRect" parent="Center/CursorPivot/Cursor"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -1.5
+margin_top = -1.5
+margin_right = 1.5
+margin_bottom = 1.5
+rect_pivot_offset = Vector2( 1.5, 1.5 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="LifeBar" parent="." instance=ExtResource( 6 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -62.5
+margin_top = -105.0
+margin_right = 62.5005
+margin_bottom = -85.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 62, 10 )
+tint_over = Color( 1, 1, 1, 0 )
+tint_progress = Color( 1, 1, 1, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="LifeBar"]
+modulate = Color( 0.290196, 0.290196, 0.290196, 0.588235 )
+show_behind_parent = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.5
+margin_top = -14.0
+margin_right = 66.5
+margin_bottom = 14.0

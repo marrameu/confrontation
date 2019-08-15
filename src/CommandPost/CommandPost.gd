@@ -20,6 +20,7 @@ var buttons := []
 
 puppet var slave_team_count := [0.0, 0.0, 0.0]
 
+
 func _ready() -> void:
 	if start_team == 1:
 		team_count[0] = 10
@@ -27,6 +28,7 @@ func _ready() -> void:
 		team_count[1] = 10
 	elif start_team == 3:
 		team_count[2] = 10
+
 
 func _process(delta : float) -> void:
 	update_menus()
@@ -67,6 +69,7 @@ func _process(delta : float) -> void:
 					elif troop_manager.m_team == 3:
 						bodies[2] += 1
 
+
 func _physics_process(delta : float) -> void:
 	if not capturable:
 		return
@@ -89,6 +92,7 @@ func _physics_process(delta : float) -> void:
 			team_count = slave_team_count
 			return
 	
+	# Sphagetti Code
 	if bodies[0] > 0 and bodies[1] + bodies[2] == 0:
 		# Team 1 Conquering
 		if team_count[1] + team_count[2] > 0:
@@ -96,6 +100,7 @@ func _physics_process(delta : float) -> void:
 			team_count[2] = clamp(team_count[2] - delta * bodies[0], 0, 10)
 		else:
 			team_count[0] = clamp(team_count[0] + delta * bodies[0], 0, 10)
+		
 	elif bodies[1] > 0 and bodies[0] + bodies[2] == 0:
 		# Team 2 Conquering
 		if team_count[0] + team_count[2] > 0:
@@ -103,6 +108,7 @@ func _physics_process(delta : float) -> void:
 			team_count[2] = clamp(team_count[2] - delta * bodies[1], 0, 10)
 		else:
 			team_count[1] = clamp(team_count[1] + delta * bodies[1], 0, 10)
+		
 	elif bodies[2] > 0 and bodies[0] + bodies[1] == 0:
 		# Team 3 Conquering
 		if team_count[0] + team_count[1] > 0:
@@ -110,6 +116,7 @@ func _physics_process(delta : float) -> void:
 			team_count[1] = clamp(team_count[1] - delta * bodies[2], 0, 10)
 		else:
 			team_count[2] = clamp(team_count[2] + delta * bodies[2], 0, 10)
+
 
 func update_button_color(button : Button) -> void:
 	if m_team == 0:
@@ -146,6 +153,7 @@ func update_menus() -> void:
 		button.connect("pressed", new_menu.get_parent(), "_on_CommandPostButton_pressed", [self])
 		connect("tree_exiting", button, "queue_free")
 		buttons.push_back(button)
+
 
 func update_material() -> void:
 	if not get_node("/root/Main").local_players[0]:

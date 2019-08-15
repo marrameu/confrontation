@@ -64,10 +64,17 @@ func shoot() -> void:
 		camera_width_center = viewport.get_visible_rect().size.x / 2
 		camera_height_center = viewport.get_visible_rect().size.y / 2
 		
+		# TEST
+		var a = current_cam.translation.z
+		current_cam.translation.z = 0
+		
 		shoot_origin = current_cam.project_ray_origin(Vector2(camera_width_center, camera_height_center))
 		shoot_normal = shoot_origin + current_cam.project_ray_normal(Vector2(camera_width_center, camera_height_center)) * shoot_range
 		
-		var result = space_state.intersect_ray(shoot_origin, shoot_normal, [])
+		# TEST
+		current_cam.translation.z = a
+		
+		var result = space_state.intersect_ray(shoot_origin, shoot_normal, [get_node("../..")])
 		if result:
 			if get_tree().has_network_peer():
 				rpc("hit", result.collider.get_path(), result.position)
@@ -79,7 +86,7 @@ func _on_Timer_timeout() -> void:
 	shoot()
 
 
-# Millorar per l'online, si no es el servidor no té que fer tots els calculs?
+# Millorar per l'online, si no es el servidor o el master no té que fer tots els calculs?
 sync func hit(collider_path : NodePath, point : Vector3) -> void:
 	var hit : Particles = hit_scene.instance()
 	get_node("/root/Main").add_child(hit)

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=2]
+[gd_resource type="Theme" load_steps=11 format=2]
 
 [ext_resource path="res://assets/interface/themes/lineedit_styleboxflat.tres" type="StyleBox" id=1]
 [ext_resource path="res://assets/fonts/roboto_24.tres" type="DynamicFont" id=2]
@@ -66,6 +66,23 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="StyleBoxFlat" id=7]
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.188235, 0.188235, 0.188235, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [resource]
 default_font = ExtResource( 2 )
 Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
@@ -100,3 +117,8 @@ LineEdit/icons/clear = null
 LineEdit/styles/focus = SubResource( 5 )
 LineEdit/styles/normal = SubResource( 6 )
 LineEdit/styles/read_only = null
+ProgressBar/colors/font_color = Color( 0.941176, 0.941176, 0.941176, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = SubResource( 7 )
+ProgressBar/styles/fg = SubResource( 8 )

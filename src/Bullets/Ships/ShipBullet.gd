@@ -1,18 +1,16 @@
 extends KinematicBody
 class_name ShipBullet
 
-# Export variables
 export var damage := 50
 export var bullet_velocity := 700.0
 
-# Public variables
 var direction : Vector3
 var ship # : Ship
 
-# Private variables
 var _hit := false
 var _time_alive := 7.0
 var _old_translation : Vector3
+
 
 func _process(delta : float) -> void:
 	if not _old_translation:

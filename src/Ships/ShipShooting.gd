@@ -65,7 +65,7 @@ func shoot_target() -> Vector3:
 		camera_height_center = viewport.get_visible_rect().size.y / 2
 		
 		# TEST
-		var cursor_pos = get_node("../PlayerHUD/ShipUI/Control/Cursor").rect_position # .clamped(350)
+		var cursor_pos = get_node("../PlayerHUD/Center/CursorPivot/Cursor").rect_position # .clamped(350)
 		if LocalMultiplayer.number_of_players > 1:
 			cursor_pos /= 2
 		camera_width_center += cursor_pos.x

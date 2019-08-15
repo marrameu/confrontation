@@ -80,7 +80,7 @@ func _process(delta : float) -> void:
 								Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action))
 	joystick_movement *= joystick_sensitivity
 	
-	$PlayerMesh.moving = true if $StateMachine/Movement/Move.direction else false
+	# $PlayerMesh.moving = true if $StateMachine/Movement/Move.direction else false
 
 
 func _physics_process(delta : float) -> void:

@@ -40,16 +40,11 @@ func _process(delta : float) -> void:
 	$Camera.translation.x = cam_pos_x
 
 func _physics_process(delta : float) -> void:
-	if Input.is_action_pressed(zoom_action):
-		$Camera.fov = lerp($Camera.fov, Settings.fov / 2, .15)
-		get_parent().mouse_sensitivity = init_mouse_sensitivity / 2
-		get_parent().joystick_sensitivity = init_joystick_sensitivity / 3
-		zooming = true
-	elif not Input.is_action_pressed(zoom_action):
-		$Camera.fov = lerp($Camera.fov, Settings.fov, .15)
-		get_parent().mouse_sensitivity = init_mouse_sensitivity
-		get_parent().joystick_sensitivity = init_joystick_sensitivity
-		zooming = false
+	zooming = Input.is_action_pressed(zoom_action)
+	
+	$Camera.fov = lerp($Camera.fov, Settings.fov / 2.0, .15) if zooming else lerp($Camera.fov, Settings.fov, .15)
+	get_parent().mouse_sensitivity = init_mouse_sensitivity / 2 if zooming else init_mouse_sensitivity
+	get_parent().joystick_sensitivity = init_joystick_sensitivity / 3 if zooming else init_joystick_sensitivity
 	
 	# Shake
 	if input_movement.length() > 0:
