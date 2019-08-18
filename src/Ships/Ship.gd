@@ -1,21 +1,19 @@
 extends RigidBody
-
 class_name Ship
+
+enum State { LANDED, FLYING, LEAVING, LANDING }
 
 var landing_areas := 0
 
 var is_player := false
-var player_name := "" # Player id
+var player_name := "" # Player ID
 var number_of_player := 0
 var state := 0
-# 0 = Parado # 1 = Volando # 2 = Levantándose # 3 = Aparcando
 
-# Networking
 puppet var slave_state := 0
 puppet var slave_position : Vector3
 puppet var slave_rotation : Vector3
 
-# Vfx
 const explosion_scene : PackedScene = preload("res://src/Ships/Explosion/Explosion.tscn")
 
 var jump_action := "jump"
@@ -26,12 +24,11 @@ func _ready():
 
 func _process(delta : float) -> void:
 	var input = $Input/Player
-	var physics = $Physics
 	var final_linear_input := Vector3(input.strafe, 0.0, input.throttle)
 	var final_angular_input :=  Vector3(input.pitch, input.yaw, input.roll)
-	physics.set_physics_input(final_linear_input, final_angular_input)
+	$Physics.set_physics_input(final_linear_input, final_angular_input)
 	
-	if state == 1 and get_colliding_bodies().size() > 0:
+	if state == State.FLYING and get_colliding_bodies().size() > 0:
 		for body in get_colliding_bodies():
 			if not body.is_in_group("Bullets"):
 				$HealthSystem.take_damage(INF)
@@ -46,14 +43,14 @@ func _process(delta : float) -> void:
 	if is_player and Input.is_action_just_pressed(jump_action):
 		if get_tree().has_network_peer():
 			if is_network_master():
-				if state == 0:
+				if state == State.LANDED:
 					leave()
-				elif state == 1 and landing_areas > 0:
+				elif state == State.FLYING and landing_areas > 0:
 					land()
 		else:
-			if state == 0:
+			if state == State.LANDED:
 				leave()
-			elif state == 1 and landing_areas > 0:
+			elif state == State.FLYING and landing_areas > 0:
 				land()
 
 func _physics_process(delta : float) -> void:
@@ -73,21 +70,21 @@ func _physics_process(delta : float) -> void:
 
 func leave() -> void:
 	set_mode(RigidBody.MODE_RIGID)
-	state = 2
+	state = State.LEAVING
 	$LeaveTimer.start()
 
 func _on_LeaveTimer_timeout():
-	state = 1
+	state = State.FLYING
 
 func land():
-	state = 3
-	(get_node("Physics") as ShipPhysics).desired_linear_force = Vector3()
-	(get_node("Physics") as ShipPhysics).desired_angular_force = Vector3()
+	state = State.LANDING
+	get_node("Physics").desired_linear_force = Vector3()
+	get_node("Physics").desired_angular_force = Vector3()
 
 func _on_HealthSystem_die():
 	if is_player:
 		var player : Player = get_node("/root/Main").local_players[number_of_player - 1]
-		if player: # Per al online
+		if player: # Per al online, si es desconecta i està en una nau
 			player.get_node("Interaction").exit_ship()
 			player.get_node("HealthSystem").take_damage(INF)
 	

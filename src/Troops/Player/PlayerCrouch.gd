@@ -1,14 +1,12 @@
 extends Node
 
 var crouching := false
-onready var capsule_mesh := get_parent().get_node("MeshInstance") 
 onready var capsule_collision := get_parent().get_node("CollisionShape") 
 
 # Multiplayer
 var action := ""
 
 func _ready() -> void:
-	capsule_mesh.mesh = capsule_mesh.mesh.duplicate()
 	capsule_collision.shape = capsule_collision.shape.duplicate()
 
 func _process(delta : float) -> void:
@@ -31,14 +29,12 @@ func _process(delta : float) -> void:
 
 sync func crouch():
 	crouching = true
-	capsule_mesh.mesh.set_mid_height(1.9)
+	# Anim
 	capsule_collision.translation += Vector3(0, -0.25, 0)
 	capsule_collision.shape.set_height(1.9)
-	capsule_mesh.translation += Vector3(0, -0.25, 0)
 
 sync func get_up():
 	crouching = false
-	capsule_mesh.mesh.set_mid_height(2.4)
+	# Anim
 	capsule_collision.translation += Vector3(0, 0.25, 0)
 	capsule_collision.shape.set_height(2.4)
-	capsule_mesh.translation += Vector3(0, 0.25, 0)

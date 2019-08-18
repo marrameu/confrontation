@@ -30,6 +30,7 @@ __meta__ = {
 }
 
 [node name="Menu" type="VBoxContainer" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -38,6 +39,7 @@ margin_left = -840.0
 margin_top = -460.0
 margin_right = 840.0
 margin_bottom = 460.0
+custom_constants/separation = 10
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -53,7 +55,7 @@ align = 1
 
 [node name="Buttons" type="VBoxContainer" parent="Menu"]
 editor/display_folded = true
-margin_top = 85.0
+margin_top = 91.0
 margin_right = 1680.0
 margin_bottom = 920.0
 size_flags_horizontal = 3
@@ -63,7 +65,7 @@ alignment = 1
 
 [node name="SinglePlayer" type="Button" parent="Menu/Buttons"]
 margin_right = 1680.0
-margin_bottom = 96.0
+margin_bottom = 95.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
@@ -71,15 +73,15 @@ text = "Single Player"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Menu/Buttons"]
 editor/display_folded = true
-margin_top = 116.0
+margin_top = 115.0
 margin_right = 1680.0
-margin_bottom = 212.0
+margin_bottom = 210.0
 size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Multiplayer" type="Button" parent="Menu/Buttons/HBoxContainer"]
 margin_right = 830.0
-margin_bottom = 96.0
+margin_bottom = 95.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -89,7 +91,7 @@ text = "Multiplayer"
 [node name="OnlinePlay" type="Button" parent="Menu/Buttons/HBoxContainer"]
 margin_left = 850.0
 margin_right = 1680.0
-margin_bottom = 96.0
+margin_bottom = 95.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -97,37 +99,37 @@ custom_fonts/font = ExtResource( 4 )
 text = "Online Play"
 
 [node name="Settings" type="Button" parent="Menu/Buttons"]
-margin_top = 232.0
+margin_top = 230.0
 margin_right = 1680.0
-margin_bottom = 328.0
+margin_bottom = 325.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
 text = "Settings"
 
 [node name="Profile" type="Button" parent="Menu/Buttons"]
-margin_top = 348.0
+margin_top = 345.0
 margin_right = 1680.0
-margin_bottom = 444.0
+margin_bottom = 440.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
 disabled = true
-text = "Profile (Not Ready)"
+text = "Profile"
 
 [node name="Quit" type="Button" parent="Menu/Buttons"]
-margin_top = 464.0
+margin_top = 460.0
 margin_right = 1680.0
-margin_bottom = 560.0
+margin_bottom = 555.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
 text = "Quit"
 
 [node name="VersionLabel" type="Label" parent="Menu/Buttons"]
-margin_top = 580.0
+margin_top = 575.0
 margin_right = 1680.0
-margin_bottom = 833.0
+margin_bottom = 828.0
 text = "
 Credits:
 -Music & Sounds: Gustav Holst & Kevin -----

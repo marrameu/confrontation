@@ -13,12 +13,12 @@ func _process(delta : float) -> void:
 	# Cambiar quan les naus tinguin models propis
 	set_material()
 	
-	if get_parent().state == 0 and current_cp == "":
+	if get_parent().state == get_parent().State.LANDED and current_cp == "":
 		instance_cp()
-	elif get_parent().state != 0 and current_cp != "":
+	elif get_parent().state != get_parent().State.LANDED and current_cp != "":
 		delete_cp()
 	
-	if get_parent().state == 0 and current_cp != "":
+	if get_parent().state == get_parent().State.LANDED and current_cp != "":
 		if get_node(current_cp).translation != get_parent().translation:
 			get_node(current_cp).translation = get_parent().translation
 

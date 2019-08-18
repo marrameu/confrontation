@@ -4,8 +4,8 @@ extends Node
 var quality := 1 # Medium
 
 # Controls
-var mouse_sensitivity := 1.0
-var joystick_sensitivity := 1.0
+var mouse_sensitivity := 0.6
+var joystick_sensitivity := 0.6
 var controller_input := false
 
 # Others

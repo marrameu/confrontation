@@ -1,7 +1,7 @@
 extends KinematicBody
 class_name ShipBullet
 
-export var damage := 50
+export var damage := 100
 export var bullet_velocity := 700.0
 
 var direction : Vector3

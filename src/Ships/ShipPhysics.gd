@@ -26,14 +26,14 @@ var DESIRED_DESCENSE_VEL := 5.0
 
 
 func _process(delta : float) -> void:
-	if get_parent().state == 1:
+	if get_parent().state == get_parent().State.FLYING:
 		add_force(applied_linear_force * force_multiplier, delta)
 		add_torque(applied_angular_force * force_multiplier, delta)
 		
-	elif get_parent().state == 2:
+	elif get_parent().state == get_parent().State.LEAVING:
 		get_parent().set_linear_velocity(Vector3(0, 2.5, 0)) 
 		
-	elif get_parent().state == 3:
+	elif get_parent().state == get_parent().State.LANDING:
 		get_parent().set_mode(RigidBody.MODE_KINEMATIC)
 		if not stabilized and not stabilizing:
 			_stabilize_rotation()
@@ -48,7 +48,7 @@ func _process(delta : float) -> void:
 				stabilizing = false
 				stabilized = false
 		
-	elif get_parent().state == 0:
+	elif get_parent().state == get_parent().State.LANDED:
 		get_parent().set_mode(RigidBody.MODE_KINEMATIC)
 
 

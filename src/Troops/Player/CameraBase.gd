@@ -70,6 +70,7 @@ func _physics_process(delta : float) -> void:
 
 func shake_camera(shake_force := Vector2(1, 1)) -> void:
 	# Els eixos estan invertits per a la rotació
+	# En un futur moure la càmara enrere
 	if not shooting:
 		shooting = true
 		original_cam_rot.x = rotation.x

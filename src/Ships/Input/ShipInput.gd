@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 	elif not get_parent().is_player:
 		input_manager = null
 	
-	if get_parent().is_player and get_parent().state == 1:
+	if get_parent().is_player and get_parent().state == get_parent().State.FLYING:
 		$Player.set_process(true)
 	else:
 		$Player.set_process(false)

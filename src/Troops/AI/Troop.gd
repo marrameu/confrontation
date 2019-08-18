@@ -37,7 +37,7 @@ func _process(delta):
 	
 	# Rotate
 	look_at($PathMaker.end, Vector3(0, 1, 0))
-	rotation = Vector3(0, rotation.y, 0)
+	rotation_degrees = Vector3(0, rotation.y + 180, 0)
 	
 	# Walk
 	# Si ha acabat de caminar
@@ -77,29 +77,28 @@ func _process(delta):
 			# Si no hi han CP enemics
 			else:
 				idle = true
-				$PathMaker.begin = get_node("/root/Main/Navigation").get_closest_point(get_translation())
-				$PathMaker.end = Vector3(rand_range(-100, 100), 0, rand_range(-100, 100))
+				$PathMaker.begin = get_node("/root/Main/Map/Navigation").get_closest_point(get_translation())
+				$PathMaker.end = Vector3(rand_range(-200, 200), 0, rand_range(-200, 200))
 				$PathMaker.update_path()
 	
 	# Shoot
 	if current_enemie:
 		if current_enemie.get_node("TroopManager"):
 			if current_enemie.get_node("TroopManager").is_alive:
-				look_at(current_enemie.translation, Vector3(0 , 1, 0))
-				rotation = Vector3(0, rotation.y, 0)
-				if not $Weapons/TroopGun.shooting:
-					$Weapons/TroopGun.start_shooting()
+				look_at(current_enemie.translation, Vector3(0, 1, 0))
+				rotation_degrees = Vector3(0, rotation.y + 180, 0)
+				if not $Weapons/AIGun.shooting:
+					$Weapons/AIGun.shooting = true
 				return
 			else:
-				# Si al morir el enemigo no se sale del area "exit area" (como el los CP) hay que sacarlo del array de otra forma, así:
 				for i in range(0, $EnemyDetection.enemies.size()):
 					if not $EnemyDetection.enemies.size() > i:
 						return
 					if $EnemyDetection.enemies[i] == current_enemie:
 						$EnemyDetection.enemies.remove(i)
 				current_enemie = null
-	if $Weapons/TroopGun.shooting:
-		$Weapons/TroopGun.stop_shooting()
+	if $Weapons/AIGun.shooting:
+		$Weapons/AIGun.shooting = false
 
 
 func _physics_process(delta : float) -> void:
@@ -151,7 +150,6 @@ sync func die() -> void:
 	
 	# Weapons
 	for weapon in $Weapons.get_children():
-		weapon.get_node("Timer").stop()
 		weapon.shooting = false
 
 
@@ -167,7 +165,7 @@ sync func respawn() -> void:
 			translation = Vector3(rand_range(-100, 100), 1.6515, rand_range(-100, 100))
 		else:
 			var pos = command_posts[randi()%command_posts.size()].translation
-			translation = Vector3(pos.x, 1.6515, pos.z)
+			translation = Vector3(pos.x, 1.815, pos.z)
 	
 	set_process(true)
 	$PathMaker.set_process(true)

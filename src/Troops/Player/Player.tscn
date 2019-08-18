@@ -1,11 +1,11 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://src/Troops/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://src/Troops/Player/PlayerMesh/PlayerMesh.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/Troops/Player/CameraBase.gd" type="Script" id=3]
 [ext_resource path="res://src/Ships/Camera/ShipCamera.gd" type="Script" id=4]
 [ext_resource path="res://src/Troops/Player/Weapons.gd" type="Script" id=5]
-[ext_resource path="res://src/Weapons/Player/Gun/Gun.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/Weapons/Player/Gun/PlayerGun.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/Troops/Player/PlayerStateMachine.gd" type="Script" id=7]
 [ext_resource path="res://src/Troops/Player/StateMachine/Idle.gd" type="Script" id=8]
 [ext_resource path="res://src/Troops/Player/StateMachine/Aim.gd" type="Script" id=9]
@@ -21,15 +21,11 @@
 [ext_resource path="res://src/Troops/Player/HUD/LifeBar.tscn" type="PackedScene" id=19]
 [ext_resource path="res://assets/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=20]
 
-[sub_resource type="CapsuleMesh" id=1]
-radius = 0.6
-mid_height = 2.4
-
-[sub_resource type="CapsuleShape" id=2]
+[sub_resource type="CapsuleShape" id=1]
 radius = 0.6
 height = 2.4
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 24
 use_filter = true
 font_data = ExtResource( 20 )
@@ -44,16 +40,11 @@ collision_mask = 25
 script = ExtResource( 1 )
 
 [node name="PlayerMesh" parent="." instance=ExtResource( 2 )]
-
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-visible = false
-mesh = SubResource( 1 )
-material/0 = null
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1.8, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="Tail" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8, 0 )
@@ -61,7 +52,8 @@ enabled = true
 cast_to = Vector3( 0, -0.4, 0 )
 
 [node name="CameraBase" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0 )
+editor/display_folded = true
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.1, 0 )
 script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="CameraBase"]
@@ -80,10 +72,13 @@ script = ExtResource( 4 )
 editor/display_folded = true
 script = ExtResource( 5 )
 
-[node name="Gun" parent="Weapons" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.8, -0.3 )
+[node name="PlayerGun" parent="Weapons" instance=ExtResource( 6 )]
+transform = Transform( -1, 1.32005e-14, 1.50996e-07, 0, -1, 8.74228e-08, 1.50996e-07, 8.74228e-08, 1, -0.7, 0.8, 0.3 )
+continuous = false
+cam = NodePath("../../CameraBase/Camera")
 
 [node name="Listener" type="Listener" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.5, 0 )
 current = true
 
 [node name="StateMachine" type="Node" parent="."]
@@ -116,6 +111,7 @@ script = ExtResource( 11 )
 script = ExtResource( 12 )
 
 [node name="Attack" type="Node" parent="StateMachine"]
+editor/display_folded = true
 
 [node name="Shoot" type="Node" parent="StateMachine/Attack"]
 script = ExtResource( 11 )
@@ -124,12 +120,6 @@ script = ExtResource( 11 )
 script = ExtResource( 11 )
 
 [node name="Stagger" type="Node" parent="StateMachine"]
-script = ExtResource( 11 )
-
-[node name="Spawn" type="Node" parent="StateMachine"]
-script = ExtResource( 11 )
-
-[node name="Die" type="Node" parent="StateMachine"]
 script = ExtResource( 11 )
 
 [node name="Crouch" type="Node" parent="."]
@@ -150,6 +140,7 @@ wait_time = 5.0
 one_shot = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
+editor/display_folded = true
 script = ExtResource( 18 )
 
 [node name="LifeBarTimer" type="Timer" parent="HUD"]
@@ -193,7 +184,7 @@ margin_top = -315.5
 margin_right = 115.0
 margin_bottom = -284.5
 rect_pivot_offset = Vector2( 115, 15.5 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 0.447059, 0.447059, 1 )
 text = "Noname"
 align = 1

@@ -182,7 +182,7 @@ sync func disable_components(var disable_interaction : bool) -> void:
 	if disable_interaction:
 		$Interaction.set_process(false)
 	for weapon in $Weapons.get_children():
-		weapon.get_node("Timer").stop()
+		weapon.shooting = false
 		weapon.set_process(false)
 		#HUD
 		var weapon_hud = weapon.get_node("HUD")
@@ -220,8 +220,7 @@ sync func enable_components(var enable_interaction : bool) -> void:
 					child.show()
 	for child in get_children():
 		if child.has_method("show"):
-			if child != $MeshInstance: # Canviar
-				child.show()
+			child.show()
 	$CollisionShape.disabled = false
 	if get_tree().has_network_peer():
 		if is_network_master():

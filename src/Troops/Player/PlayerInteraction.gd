@@ -50,7 +50,7 @@ func _process(delta : float) -> void:
 					if not result.collider.is_player:
 						enter_ship(result)
 	else:
-		if Input.is_action_just_pressed(action) and current_vehicle.state == 0:
+		if Input.is_action_just_pressed(action) and current_vehicle.state == current_vehicle.State.LANDED:
 			exit_ship()
 
 func enter_ship(result):

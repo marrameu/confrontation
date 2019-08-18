@@ -5,6 +5,8 @@ var mouse_position := Vector2()
 var mouse_movement := Vector2()
 var mouse_acceleration := Vector2() # Not ready
 
+# Time
+var time := 0.0
 
 func play_button_audio() -> void:
 	var button_audio : AudioStreamPlayer = AudioStreamPlayer.new()
@@ -15,11 +17,12 @@ func play_button_audio() -> void:
 	button_audio.play()
 
 
-func _input(event):
+func _input(event : InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_movement = event.relative
 		mouse_position = event.position
 
 
-func _process(delta):
-	mouse_movement = Vector2() # millorar-ho
+func _process(delta : float) -> void:
+	mouse_movement = Vector2()
+	time = OS.get_ticks_msec() / 1000.0 # Pausa?

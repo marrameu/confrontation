@@ -8,8 +8,6 @@
 [ext_resource path="res://assets/models/mannequiny/Negro.material" type="Material" id=6]
 [ext_resource path="res://assets/models/mannequiny/Azul_R.material" type="Material" id=7]
 
-
-
 [node name="PlayerMesh" index="0" instance=ExtResource( 1 )]
 transform = Transform( -2, 0, -1.74846e-07, 0, 2, 0, 1.74846e-07, 0, -2, 0, -1.8, 0 )
 script = ExtResource( 2 )
@@ -24,3 +22,7 @@ material/4 = ExtResource( 7 )
 [node name="head" parent="rig" index="2"]
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
+
+[node name="Camera" parent="." index="2"]
+transform = Transform( 0.280686, -0.0831728, 0.956189, -0.0146632, 0.99575, 0.0909183, -0.959688, -0.0395403, 0.278274, 5.78536, 1.34155, 1.70563 )
+visible = false

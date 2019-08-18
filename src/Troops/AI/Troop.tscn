@@ -2,9 +2,9 @@
 
 [ext_resource path="res://src/Troops/AI/Troop.gd" type="Script" id=1]
 [ext_resource path="res://src/Troops/Player/PlayerMesh/PlayerMesh.tscn" type="PackedScene" id=2]
-[ext_resource path="res://src/Weapons/AI/Gun/TroopGun.tscn" type="PackedScene" id=3]
-[ext_resource path="res://src/Troops/AI/TroopPathMaker.gd" type="Script" id=4]
-[ext_resource path="res://src/Troops/AI/TroopEnemyDetection.gd" type="Script" id=5]
+[ext_resource path="res://src/Weapons/AI/Gun/AIGun.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/Troops/AI/TroopEnemyDetection.gd" type="Script" id=4]
+[ext_resource path="res://src/Troops/AI/TroopPathMaker.gd" type="Script" id=5]
 [ext_resource path="res://src/HealthSystem/HealthSystem.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/Troops/TroopManager/TroopManager.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/Troops/AI/TroopNetwork.gd" type="Script" id=8]
@@ -17,8 +17,8 @@ height = 2.4
 extents = Vector3( 7, 3, 11 )
 
 [node name="Troop" type="StaticBody" groups=[
-"Troops",
 "AI",
+"Troops",
 ]]
 pause_mode = 1
 collision_layer = 2
@@ -28,6 +28,7 @@ body = NodePath("PlayerMesh/rig/body")
 
 [node name="PlayerMesh" parent="." instance=ExtResource( 2 )]
 editor/display_folded = true
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1.8, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
@@ -35,20 +36,21 @@ shape = SubResource( 1 )
 
 [node name="Weapons" type="Spatial" parent="."]
 
-[node name="TroopGun" parent="Weapons" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.8, -0.3 )
-
-[node name="PathMaker" type="Node" parent="."]
-script = ExtResource( 4 )
+[node name="AIGun" parent="Weapons" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.8, 0.3 )
 
 [node name="EnemyDetection" type="Spatial" parent="."]
-script = ExtResource( 5 )
+editor/display_folded = true
+script = ExtResource( 4 )
 
 [node name="Area" type="Area" parent="EnemyDetection"]
 
 [node name="CollisionShape" type="CollisionShape" parent="EnemyDetection/Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -6 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 6 )
 shape = SubResource( 2 )
+
+[node name="PathMaker" type="Node" parent="."]
+script = ExtResource( 5 )
 
 [node name="HealthSystem" parent="." instance=ExtResource( 6 )]
 

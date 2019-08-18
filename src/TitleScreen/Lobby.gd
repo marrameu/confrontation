@@ -12,6 +12,7 @@ var scene_resource : Resource
 func _ready() -> void:
 	set_process(false)
 
+
 func _process(delta : float):
 	if connecting:
 		if get_tree().network_peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:

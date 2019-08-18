@@ -30,13 +30,13 @@ func _process(delta : float) -> void:
 	
 	_update_hud_position()
 	
-	if Input.is_key_pressed(KEY_F1):
-		_cursor_visible = true
-	elif Input.is_key_pressed(KEY_F2):
-		_cursor_visible = false
-	
 	# Debug
 	if get_parent().is_player:
+		if Input.is_key_pressed(KEY_F1):
+			_cursor_visible = true
+		elif Input.is_key_pressed(KEY_F2):
+			_cursor_visible = false
+		
 		if not _cursor_visible:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		else:
@@ -47,19 +47,19 @@ func _process(delta : float) -> void:
 	$Center.visible = get_parent().is_player
 	
 	if get_parent().is_player:
-		if get_parent().state == 0:
-			$Indicators/LeaveIndicator.show()
-			$Indicators/LandingIndicator.hide()
-		elif get_parent().state == 1:
+		$Indicators/LeaveIndicator.visible = get_parent().state == get_parent().State.LANDED
+		
+		if get_parent().state == get_parent().State.FLYING:
 			$Indicators/LandingIndicator.visible = get_parent().landing_areas > 0
-			$Indicators/LeaveIndicator.hide()
-			
 			$LifeBar.show()
 			$LifeBar.value = float(get_node("../HealthSystem").health) / float(get_node("../HealthSystem").MAX_HEALTH) * 100
+		else:
+			$Indicators/LandingIndicator.hide()
+			$LifeBar.hide()
+		
 	else:
 		$Indicators/LeaveIndicator.hide()
 		$Indicators/LandingIndicator.hide()
-		
 		$LifeBar.hide()
 
 
@@ -70,8 +70,8 @@ func _physics_process(delta : float) -> void:
 			$Center/CursorPivot/Cursor.rect_position = $Center/CursorPivot/Cursor.rect_position.clamped(_cursor_limit)
 			
 			if $Center/CursorPivot/Cursor.rect_position.length() > _min_position:
-				input.x = ($Center/CursorPivot/Cursor.rect_position.x) / _cursor_limit
-				input.y = -($Center/CursorPivot/Cursor.rect_position.y) / _cursor_limit
+				input.x = $Center/CursorPivot/Cursor.rect_position.x / _cursor_limit
+				input.y = -$Center/CursorPivot/Cursor.rect_position.y / _cursor_limit
 			else:
 				input = Vector2()
 		else:

@@ -35,8 +35,8 @@ func walk(delta : float) -> void:
 	
 	# Check input and change the direction
 	var aim : Basis = player.get_global_transform().basis
-	direction += aim.x * (Input.get_action_strength(move_right_action) - Input.get_action_strength(move_left_action))
-	direction += aim.z * (Input.get_action_strength(move_backward_action) - Input.get_action_strength(move_forward_action))
+	direction += aim.x * (Input.get_action_strength(move_left_action) - Input.get_action_strength(move_right_action))
+	direction += aim.z * (Input.get_action_strength(move_forward_action) - Input.get_action_strength(move_backward_action))
 	
 	direction.y = 0
 	direction = direction.normalized()

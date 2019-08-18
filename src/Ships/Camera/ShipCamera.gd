@@ -1,11 +1,11 @@
 extends Camera
 
-var target : Position3D
+var target : Position3D = null
 var starter_target_position := Vector3()
 var rotate_speed := 90.0
 
-var move_speed_test := 90.0
-var rotate_speed_test := 80.0
+# var move_speed_test := 90.0
+# var rotate_speed_test := 80.0
 
 var horizontal_turn_move := 6.0
 var vertical_turn_up_move := 6.0
@@ -25,22 +25,26 @@ var camera_down_action := "camera_down"
 func init(new_target : Position3D, player : int) -> void:
 	var root = get_tree().get_root()
 	var current_scene = root.get_child(root.get_child_count() - 1)
+	
 	get_parent().remove_child(self)
-	current_scene.get_node("Splitscreen").get_player(player - 1).viewport.add_child(self) #CAMBIAR
+	current_scene.get_node("Splitscreen").get_player(player - 1).viewport.add_child(self)
+	
 	target = new_target
 	translation = target.global_transform.origin
 	rotation = target.global_transform.basis.get_euler()
 	starter_target_position = target.translation
+	
 	make_current()
 
 func _physics_process(delta : float) -> void:
 	if not target:
+		fov = 40 # Si al final trec l'efecte, canviar el nombre a 70
 		return
 	
-	if Input.is_action_just_pressed(zoom_ship_action) and target.get_parent().state == 1:
+	if Input.is_action_just_pressed(zoom_ship_action) and target.get_parent().state == target.get_parent().State.FLYING:
 		zooming = !zooming
 	
-	if zooming and target.get_parent().state == 1:
+	if zooming and target.get_parent().state == target.get_parent().State.FLYING:
 		fov = lerp(fov, 40, .15)
 	else:
 		zooming = false
@@ -74,7 +78,7 @@ func move_camera(delta : float) -> void:
 
 func update_target(delta : float):
 	# Mirar si la nau esta en moviment, si ho està, resetejar la posició del target i no fer res més
-	if target.get_parent().state != 1:
+	if target.get_parent().state != target.get_parent().State.FLYING:
 		target.translation = target.translation.linear_interpolate(Vector3(0, 6, -30), delta)
 		horizontal_lean(target.get_node("../ShipMesh"), 0.0)
 		return

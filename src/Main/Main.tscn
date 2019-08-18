@@ -257,27 +257,15 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 105.964
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -150, 4, 0 )
 
-[node name="Scene Root" parent="Vehicles/ShipTransport" index="0"]
-editor/display_folded = false
-
 [node name="Transport" parent="Vehicles/ShipTransport" index="7"]
 m_team = 1
-
-[node name="LifeBar" parent="Vehicles/ShipTransport/PlayerHUD" index="2"]
-editor/display_folded = false
 
 [node name="ShipTransport2" parent="Vehicles" instance=ExtResource( 13 )]
 editor/display_folded = true
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 150, 4, 0 )
 
-[node name="Scene Root" parent="Vehicles/ShipTransport2" index="0"]
-editor/display_folded = false
-
 [node name="Transport" parent="Vehicles/ShipTransport2" index="7"]
 m_team = 2
-
-[node name="LifeBar" parent="Vehicles/ShipTransport2/PlayerHUD" index="2"]
-editor/display_folded = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Vehicles/ShipTransport2"]
 editor/display_folded = true

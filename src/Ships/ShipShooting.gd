@@ -1,4 +1,4 @@
-extends Spatial
+extends Node
 
 var shoot_range := 1500
 
@@ -20,7 +20,7 @@ func _ready() -> void:
 func _process(delta : float) -> void:
 	time_now += delta
 	
-	if not get_parent().is_player or not get_parent().state == 1:
+	if not get_parent().is_player or not get_parent().state == get_parent().State.FLYING:
 		return
 	
 	# Passar també el jugador?
@@ -47,7 +47,7 @@ func _process(delta : float) -> void:
 func shoot_target() -> Vector3:
 	# Camera
 	var current_cam : Camera = get_node("/root/Main").players_cameras[get_parent().number_of_player - 1].ship_camera
-	var space_state = get_world().direct_space_state
+	var space_state = get_parent().get_world().direct_space_state
 	
 	var camera_width_center := 0.0
 	var camera_height_center := 0.0
@@ -96,7 +96,7 @@ sync func shoot(bullet_type : int, shoot_target) -> void:
 	elif bullet_type == 1:
 		bullet = secondary_bullet_scene.instance()
 	get_node("/root/Main").add_child(bullet)
-	var shoot_from := global_transform.origin
+	var shoot_from : Vector3 = get_parent().global_transform.origin # Canons
 	bullet.global_transform.origin = shoot_from
 	bullet.direction = (shoot_target - shoot_from).normalized() 
 	bullet.ship = get_parent()
