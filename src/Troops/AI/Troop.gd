@@ -37,7 +37,7 @@ func _process(delta):
 	
 	# Rotate
 	look_at($PathMaker.end, Vector3(0, 1, 0))
-	rotation_degrees = Vector3(0, rotation.y + 180, 0)
+	rotation = Vector3(0, rotation.y + deg2rad(180), 0)
 	
 	# Walk
 	# Si ha acabat de caminar
@@ -86,7 +86,7 @@ func _process(delta):
 		if current_enemie.get_node("TroopManager"):
 			if current_enemie.get_node("TroopManager").is_alive:
 				look_at(current_enemie.translation, Vector3(0, 1, 0))
-				rotation_degrees = Vector3(0, rotation.y + 180, 0)
+				rotation = Vector3(0, rotation.y + deg2rad(180), 0)
 				if not $Weapons/AIGun.shooting:
 					$Weapons/AIGun.shooting = true
 				return

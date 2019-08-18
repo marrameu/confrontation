@@ -35,7 +35,7 @@ func _process(delta : float) -> void:
 	var cam_basis : Basis = get_node(cam).global_transform.basis
 	$RayCast.global_transform.origin = get_node(cam).global_transform.origin
 	global_transform.basis = cam_basis.get_euler() + Vector3(deg2rad(180), 0, 0)
-
+	
 	if m_team != get_node("../../TroopManager").m_team: # On value changed
 		m_team = get_node("../../TroopManager").m_team
 	
