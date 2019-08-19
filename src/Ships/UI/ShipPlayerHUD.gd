@@ -15,7 +15,7 @@ func _ready() -> void:
 		
 		$Center/CursorPivot/Cursor.rect_scale = Vector2(1.5, 1.5)
 		$Center/Crosshair.rect_scale = Vector2(1.5, 1.5)
-		$LifeBar.rect_scale = Vector2(2.25, 2.25)
+		$LifeBar.rect_scale = Vector2(2.25, 2.25) # No coincideix amb la del jugador
 		$Indicators/LeaveIndicator.rect_scale = Vector2(2, 2)
 		$Indicators/LandingIndicator.rect_scale = Vector2(2, 2)
 		

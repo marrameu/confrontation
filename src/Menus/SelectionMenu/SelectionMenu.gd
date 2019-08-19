@@ -80,9 +80,9 @@ func _on_SpawnButton_pressed() -> void:
 		get_node("/root/Main").game_started = true
 	
 	if get_tree().has_network_peer():
-		player.rpc("respawn")
+		player.get_node("HealthSystem").rpc("respawn")
 	else:
-		player.respawn()
+		player.get_node("HealthSystem").respawn()
 
 
 func _on_CommandPostButton_pressed(command_post : CommandPost) -> void:

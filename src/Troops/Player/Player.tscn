@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://src/Troops/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://src/Troops/Player/PlayerMesh/PlayerMesh.tscn" type="PackedScene" id=2]
@@ -15,11 +15,12 @@
 [ext_resource path="res://src/Troops/Player/PlayerCrouch.gd" type="Script" id=13]
 [ext_resource path="res://src/Troops/Player/PlayerInteraction.gd" type="Script" id=14]
 [ext_resource path="res://src/HealthSystem/HealthSystem.tscn" type="PackedScene" id=15]
-[ext_resource path="res://src/Troops/TroopManager/TroopManager.tscn" type="PackedScene" id=16]
-[ext_resource path="res://src/Troops/Player/InputManager.gd" type="Script" id=17]
-[ext_resource path="res://src/Troops/Player/HUD/PlayerHUD.gd" type="Script" id=18]
-[ext_resource path="res://src/Troops/Player/HUD/LifeBar.tscn" type="PackedScene" id=19]
-[ext_resource path="res://assets/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=20]
+[ext_resource path="res://src/HealthSystem/PlayerHealthSystem.gd" type="Script" id=16]
+[ext_resource path="res://src/Troops/TroopManager/TroopManager.tscn" type="PackedScene" id=17]
+[ext_resource path="res://src/Troops/Player/InputManager.gd" type="Script" id=18]
+[ext_resource path="res://src/Troops/Player/HUD/PlayerHUD.gd" type="Script" id=19]
+[ext_resource path="res://src/Troops/Player/HUD/LifeBar.tscn" type="PackedScene" id=20]
+[ext_resource path="res://assets/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=21]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.6
@@ -28,11 +29,11 @@ height = 2.4
 [sub_resource type="DynamicFont" id=2]
 size = 24
 use_filter = true
-font_data = ExtResource( 20 )
+font_data = ExtResource( 21 )
 
 [node name="Player" type="KinematicBody" groups=[
-"Troops",
 "Players",
+"Troops",
 ]]
 pause_mode = 1
 collision_layer = 2
@@ -69,12 +70,10 @@ script = ExtResource( 4 )
 [node name="Tween" type="Tween" parent="CameraBase"]
 
 [node name="Weapons" type="Spatial" parent="."]
-editor/display_folded = true
 script = ExtResource( 5 )
 
 [node name="PlayerGun" parent="Weapons" instance=ExtResource( 6 )]
 transform = Transform( -1, 1.32005e-14, 1.50996e-07, 0, -1, 8.74228e-08, 1.50996e-07, 8.74228e-08, 1, -0.7, 0.8, 0.3 )
-continuous = false
 cam = NodePath("../../CameraBase/Camera")
 
 [node name="Listener" type="Listener" parent="."]
@@ -129,11 +128,12 @@ script = ExtResource( 13 )
 script = ExtResource( 14 )
 
 [node name="HealthSystem" parent="." instance=ExtResource( 15 )]
+script = ExtResource( 16 )
 
-[node name="TroopManager" parent="." instance=ExtResource( 16 )]
+[node name="TroopManager" parent="." instance=ExtResource( 17 )]
 
 [node name="InputManager" type="Node" parent="."]
-script = ExtResource( 17 )
+script = ExtResource( 18 )
 
 [node name="RespawnTimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -141,12 +141,12 @@ one_shot = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
 editor/display_folded = true
-script = ExtResource( 18 )
+script = ExtResource( 19 )
 
 [node name="LifeBarTimer" type="Timer" parent="HUD"]
 one_shot = true
 
-[node name="PlayerLifeBar" parent="HUD" instance=ExtResource( 19 )]
+[node name="PlayerLifeBar" parent="HUD" instance=ExtResource( 20 )]
 editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
@@ -192,6 +192,6 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="die" from="HealthSystem" to="." method="_on_HealthSystem_die"]
-[connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
+[connection signal="die" from="HealthSystem" to="HealthSystem" method="_on_HealthSystem_die"]
+[connection signal="timeout" from="RespawnTimer" to="HealthSystem" method="_on_RespawnTimer_timeout"]
 [connection signal="timeout" from="HUD/LifeBarTimer" to="HUD" method="_on_LifeBarTimer_timeout"]

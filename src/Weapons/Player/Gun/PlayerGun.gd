@@ -21,7 +21,7 @@ func _get_configuration_warning() -> String:
 func _ready() -> void:
 	if get_tree().has_network_peer():
 		if not is_network_master():
-			$HUD/Crosshair.hide()
+			$HUD/Crosshair.queue_free()
 
 
 func _process(delta : float) -> void:
@@ -60,11 +60,23 @@ func _shake_camera():
 func _on_shot(collider_path : NodePath):
 	$HUD/Hitmarker.texture = hitmarkers[0]
 	$HUD/Hitmarker/Timer.start()
+	
+	_on_kill(collider_path)
 
 
 func _on_headshot(collider_path : NodePath):
 	$HUD/Hitmarker.texture = hitmarkers[1]
 	$HUD/Hitmarker/Timer.start()
+	
+	_on_kill(collider_path)
+
+
+func _on_kill(collider_path : NodePath) -> void:
+	var collider = get_node(collider_path)
+	if collider.is_in_group("Troops") or collider.is_in_group("Ships"):
+		if collider.get_node("HealthSystem").health - shot_damage <= 0:
+			$HUD/Hitmarker.texture = hitmarkers[2]
+			$HUD/Hitmarker/Audio.play()
 
 
 func _on_Hitmarker_timeout():

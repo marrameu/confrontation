@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://src/Weapons/Gun.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/Weapons/Player/Gun/PlayerGun.gd" type="Script" id=2]
 [ext_resource path="res://assets/interface/crosshair.png" type="Texture" id=3]
+[ext_resource path="res://assets/audio/hitmarker.wav" type="AudioStream" id=4]
 
 [node name="PlayerGun" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -40,6 +41,7 @@ expand = true
 [node name="Timer" type="Timer" parent="HUD/Hitmarker" index="0"]
 
 [node name="Audio" type="AudioStreamPlayer" parent="HUD/Hitmarker" index="1"]
+stream = ExtResource( 4 )
 [connection signal="headshot" from="." to="." method="_on_headshot"]
 [connection signal="shoot" from="." to="." method="_shake_camera"]
 [connection signal="shot" from="." to="." method="_on_shot"]

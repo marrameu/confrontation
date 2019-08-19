@@ -56,10 +56,10 @@ func _process(delta : float) -> void:
 func enter_ship(result):
 	if get_tree().has_network_peer():
 		rpc("change_ship_player", result.collider.get_path(), true, get_parent().name)
-		get_parent().rpc("disable_components", false)
+		get_node("../HealthSystem").rpc("disable_components", false)
 	else:
 		change_ship_player(result.collider.get_path(), true, get_parent().name)
-		get_parent().disable_components(false)
+		get_node("../HealthSystem").disable_components(false)
 	
 	result.collider.get_node("PlayerHUD/Center/CursorPivot/Cursor").rect_position = Vector2()
 	result.collider.number_of_player = get_parent().number_of_player
@@ -81,10 +81,10 @@ func exit_ship() -> void:
 	
 	if get_tree().has_network_peer():
 		rpc("change_ship_player", current_vehicle.get_path(), false, "")
-		get_parent().rpc("enable_components", false)
+		get_node("../HealthSystem").rpc("enable_components", false)
 	else:
 		change_ship_player(current_vehicle.get_path(), false, "")
-		get_parent().enable_components(false)
+		get_node("../HealthSystem").enable_components(false)
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if get_tree().has_network_peer():
