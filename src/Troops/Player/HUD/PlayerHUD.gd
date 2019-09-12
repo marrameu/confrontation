@@ -14,7 +14,9 @@ func _ready() -> void:
 	life_bar.hide()
 	
 	if LocalMultiplayer.number_of_players > 1:
-		pass # Canvas Scaler
+		# Canviar l'escala d'alguns objectes
+		pass
+		# $PlayerLifeBar.rect_scale /= 1.5
 
 func _process(delta : float) -> void:
 	if get_tree().has_network_peer():

@@ -20,26 +20,32 @@ script = ExtResource( 1 )
 [node name="LandingIndicator" type="Label" parent="Indicators"]
 visible = false
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = -124.5
-margin_top = 150.0
-margin_right = 124.5
-margin_bottom = 179.0
-rect_pivot_offset = Vector2( 117, 14.5 )
+anchor_bottom = 0.5
+margin_left = -130.0
+margin_top = -390.0
+margin_right = 130.0
+margin_bottom = -361.0
+rect_pivot_offset = Vector2( 130, 14.5 )
 custom_fonts/font = SubResource( 1 )
-text = "PRESS Space TO LAND"
+text = "Prem \"Espai\" per aterrar."
+align = 1
 
 [node name="LeaveIndicator" type="Label" parent="Indicators"]
 visible = false
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = -147.5
-margin_top = 150.0
-margin_right = 147.5
-margin_bottom = 179.0
-rect_pivot_offset = Vector2( 122.5, 14.5 )
+anchor_bottom = 0.5
+margin_left = -148.5
+margin_top = -390.0
+margin_right = 148.5
+margin_bottom = -361.0
+rect_pivot_offset = Vector2( 148.5, 14.5 )
 custom_fonts/font = SubResource( 1 )
-text = "PRESS Space TO TAKE OFF"
+text = "Prem \"Espai\" per enlairar-te."
+align = 1
 
 [node name="Center" type="Control" parent="."]
 visible = false
@@ -96,17 +102,17 @@ expand = true
 [node name="LifeBar" parent="." instance=ExtResource( 6 )]
 visible = false
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -62.5
-margin_top = -105.0
-margin_right = 62.5005
-margin_bottom = -85.0
-rect_scale = Vector2( 1.5, 1.5 )
-rect_pivot_offset = Vector2( 62, 10 )
+anchor_bottom = 0.5
+margin_left = -93.75
+margin_top = 435.0
+margin_right = 93.75
+margin_bottom = 465.0
+rect_pivot_offset = Vector2( 93.75, 15 )
 tint_over = Color( 1, 1, 1, 0 )
 tint_progress = Color( 1, 1, 1, 1 )
+nine_patch_stretch = true
 
 [node name="ColorRect" type="ColorRect" parent="LifeBar"]
 modulate = Color( 0.290196, 0.290196, 0.290196, 0.588235 )
@@ -115,7 +121,7 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -66.5
-margin_top = -14.0
-margin_right = 66.5
-margin_bottom = 14.0
+margin_left = -99.75
+margin_top = -21.0
+margin_right = 99.75
+margin_bottom = 21.0

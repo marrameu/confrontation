@@ -32,8 +32,8 @@ use_filter = true
 font_data = ExtResource( 21 )
 
 [node name="Player" type="KinematicBody" groups=[
-"Players",
 "Troops",
+"Players",
 ]]
 pause_mode = 1
 collision_layer = 2
@@ -140,26 +140,25 @@ wait_time = 5.0
 one_shot = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
-editor/display_folded = true
 script = ExtResource( 19 )
 
 [node name="LifeBarTimer" type="Timer" parent="HUD"]
 one_shot = true
 
 [node name="PlayerLifeBar" parent="HUD" instance=ExtResource( 20 )]
-editor/display_folded = true
+visible = false
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -62.5
-margin_top = -105.0
-margin_right = 62.5005
-margin_bottom = -85.0
-rect_scale = Vector2( 1.5, 1.5 )
-rect_pivot_offset = Vector2( 62, 10 )
+anchor_bottom = 0.5
+margin_left = -93.75
+margin_top = 435.0
+margin_right = 93.75
+margin_bottom = 465.0
+rect_pivot_offset = Vector2( 93.75, 15 )
 tint_over = Color( 1, 1, 1, 0 )
 tint_progress = Color( 1, 1, 1, 1 )
+nine_patch_stretch = true
 
 [node name="ColorRect" type="ColorRect" parent="HUD/PlayerLifeBar"]
 modulate = Color( 0.290196, 0.290196, 0.290196, 0.588235 )
@@ -168,10 +167,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -66.5
-margin_top = -14.0
-margin_right = 66.5
-margin_bottom = 14.0
+margin_left = -99.75
+margin_top = -21.0
+margin_right = 99.75
+margin_bottom = 21.0
 
 [node name="Nickname" type="Label" parent="HUD"]
 visible = false

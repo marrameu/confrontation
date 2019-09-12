@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 # Tots els nodes de la nau agafen l'input des d'aquí, millor que l'agafin des del node PlayerInput
-var input := Vector2()
+var cursor_input := Vector2()
 var ship_sensitivity := 75.0
 
 var _cursor_visible := false
@@ -11,8 +11,7 @@ var _min_position := 20
 
 func _ready() -> void:
 	if LocalMultiplayer.number_of_players > 1:
-		scale = Vector2(0.5, 0.5)
-		
+		# Canviar l'escala d'alguns objectes
 		$Center/CursorPivot/Cursor.rect_scale = Vector2(1.5, 1.5)
 		$Center/Crosshair.rect_scale = Vector2(1.5, 1.5)
 		$LifeBar.rect_scale = Vector2(2.25, 2.25) # No coincideix amb la del jugador
@@ -28,7 +27,7 @@ func _process(delta : float) -> void:
 			if int(get_parent().player_name) != get_tree().get_network_unique_id():
 				return
 	
-	_update_hud_position()
+	Utilities.canvas_scaler(get_parent().number_of_player, self)
 	
 	# Debug
 	if get_parent().is_player:
@@ -70,20 +69,10 @@ func _physics_process(delta : float) -> void:
 			$Center/CursorPivot/Cursor.rect_position = $Center/CursorPivot/Cursor.rect_position.clamped(_cursor_limit)
 			
 			if $Center/CursorPivot/Cursor.rect_position.length() > _min_position:
-				input.x = $Center/CursorPivot/Cursor.rect_position.x / _cursor_limit
-				input.y = -$Center/CursorPivot/Cursor.rect_position.y / _cursor_limit
+				cursor_input.x = $Center/CursorPivot/Cursor.rect_position.x / _cursor_limit
+				cursor_input.y = -$Center/CursorPivot/Cursor.rect_position.y / _cursor_limit
 			else:
-				input = Vector2()
+				cursor_input = Vector2()
 		else:
 			$Center/CursorPivot/Cursor.rect_position = Vector2()
-			input = Vector2()
-
-
-func _update_hud_position() -> void:
-	if not get_parent().is_player or LocalMultiplayer.number_of_players == 1:
-		return
-	
-	if get_parent().number_of_player == 1:
-		offset = Vector2(480, 0)
-	elif get_parent().number_of_player == 2:
-		offset = Vector2(480, 540)
+			cursor_input = Vector2()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://src/Main/Main.gd" type="Script" id=1]
 [ext_resource path="res://addons/organicpencil.splitscreen/splitscreen.tscn" type="PackedScene" id=2]
@@ -51,12 +51,6 @@ extents = Vector3( 180.878, 13.5, 66.556 )
 [sub_resource type="BoxShape" id=11]
 extents = Vector3( 49.822, 13.5, 50.5 )
 
-[sub_resource type="BakedLightmapData" id=12]
-bounds = AABB( -200, -10, -200, 400, 20, 400 )
-cell_space_transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 800, 40, 800 )
-cell_subdiv = 12
-octree = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 )
-
 [node name="Main" type="Spatial"]
 pause_mode = 2
 script = ExtResource( 1 )
@@ -65,24 +59,19 @@ script = ExtResource( 1 )
 border_width = 0.0
 
 [node name="Map" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Navigation" type="Navigation" parent="Map"]
-editor/display_folded = true
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Map/Navigation"]
-editor/display_folded = true
 navmesh = SubResource( 1 )
 
 [node name="Floor" type="MeshInstance" parent="Map/Navigation/NavigationMeshInstance"]
-editor/display_folded = true
 transform = Transform( 200, 0, 0, 0, 1, 0, 0, 0, 200, 0, 0, 0 )
 use_in_baked_light = true
 mesh = SubResource( 2 )
 material/0 = ExtResource( 3 )
 
 [node name="StaticBody" type="StaticBody" parent="Map/Navigation/NavigationMeshInstance/Floor"]
-editor/display_folded = true
 collision_mask = 7
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Navigation/NavigationMeshInstance/Floor/StaticBody"]
@@ -344,13 +333,13 @@ transform = Transform( 0.793742, -0.157791, 0.587432, 0, 0.965766, 0.259416, -0.
 far = 550.0
 
 [node name="Rendering" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Rendering"]
-transform = Transform( 1, 0, 0, 0, -0.5, 0.866026, 0, -0.866026, -0.5, 0, 44.095, 0 )
+transform = Transform( 1, 0, 0, 0, -0.5, 0.866026, 0, -0.866026, -0.5, 0, 45, 0 )
 shadow_enabled = true
 
 [node name="ReflectionProbes" type="Spatial" parent="Rendering"]
+editor/display_folded = true
 visible = false
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Rendering/ReflectionProbes"]
@@ -359,11 +348,6 @@ extents = Vector3( 5, 5, 5 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Rendering"]
 environment = ExtResource( 15 )
-
-[node name="BakedLightmap" type="BakedLightmap" parent="Rendering"]
-visible = false
-bake_extents = Vector3( 200, 10, 200 )
-light_data = SubResource( 12 )
 
 [node name="SelectionMenus" type="Node" parent="."]
 

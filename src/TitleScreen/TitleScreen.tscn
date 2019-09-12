@@ -30,7 +30,6 @@ __meta__ = {
 }
 
 [node name="Menu" type="VBoxContainer" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -50,11 +49,10 @@ margin_bottom = 81.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
 custom_constants/shadow_offset_y = 5
-text = "CONFRONTATION"
+text = "PROJECT CONFRONTATION"
 align = 1
 
 [node name="Buttons" type="VBoxContainer" parent="Menu"]
-editor/display_folded = true
 margin_top = 91.0
 margin_right = 1680.0
 margin_bottom = 920.0
@@ -69,10 +67,9 @@ margin_bottom = 95.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Single Player"
+text = "Un jugador"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Menu/Buttons"]
-editor/display_folded = true
 margin_top = 115.0
 margin_right = 1680.0
 margin_bottom = 210.0
@@ -86,7 +83,7 @@ rect_min_size = Vector2( 360, 60 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Multiplayer"
+text = "Multijugador"
 
 [node name="OnlinePlay" type="Button" parent="Menu/Buttons/HBoxContainer"]
 margin_left = 850.0
@@ -96,7 +93,7 @@ rect_min_size = Vector2( 360, 60 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Online Play"
+text = "Partida en línia"
 
 [node name="Settings" type="Button" parent="Menu/Buttons"]
 margin_top = 230.0
@@ -105,7 +102,7 @@ margin_bottom = 325.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Settings"
+text = "Configuració"
 
 [node name="Profile" type="Button" parent="Menu/Buttons"]
 margin_top = 345.0
@@ -115,7 +112,7 @@ rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
 disabled = true
-text = "Profile"
+text = "Perfil"
 
 [node name="Quit" type="Button" parent="Menu/Buttons"]
 margin_top = 460.0
@@ -124,66 +121,72 @@ margin_bottom = 555.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Quit"
+text = "Sortir"
 
 [node name="VersionLabel" type="Label" parent="Menu/Buttons"]
 margin_top = 575.0
 margin_right = 1680.0
 margin_bottom = 828.0
 text = "
-Credits:
--Music & Sounds: Gustav Holst & Kevin -----
+Crèdits:
+-Música i Sons: Kevin MacLeod
 -Textures: CC0 Textures
--Engine: Godot Engine (godotengine.org/license)
+-Motor: Godot Engine (godotengine.org/license)
 
-Version 0.1.6 Alpha
-Indev build \"multiplayer\""
+Versió 0.1.6 Alfa
+Indev build \"Multijugador\""
 
 [node name="Lobby" type="Control" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Lobby"]
+margin_left = 120.149
+margin_top = 80.0
+margin_right = 1800.15
+margin_bottom = 161.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
+custom_constants/shadow_offset_y = 5
+text = "VESTÍBUL"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Lobby"]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -400.0
-margin_top = -320.0
+margin_top = -190.0
 margin_right = 400.0
-margin_bottom = 141.0
+margin_bottom = 190.0
 custom_constants/separation = 30
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Title" type="Label" parent="Lobby/VBoxContainer"]
-margin_right = 800.0
-margin_bottom = 81.0
-custom_fonts/font = ExtResource( 3 )
-text = "Lobby"
-align = 1
-
 [node name="HBoxContainer" type="HBoxContainer" parent="Lobby/VBoxContainer"]
-editor/display_folded = true
-margin_top = 111.0
 margin_right = 800.0
-margin_bottom = 177.0
+margin_bottom = 66.0
 custom_constants/separation = 35
 
 [node name="Label" type="Label" parent="Lobby/VBoxContainer/HBoxContainer"]
 margin_top = 3.0
-margin_right = 256.0
+margin_right = 250.0
 margin_bottom = 63.0
 custom_fonts/font = ExtResource( 4 )
-text = "Your name:"
+text = "El teu nom:"
 
 [node name="NameLine" type="LineEdit" parent="Lobby/VBoxContainer/HBoxContainer"]
-margin_left = 291.0
+margin_left = 285.0
 margin_right = 800.0
 margin_bottom = 66.0
 size_flags_horizontal = 3
@@ -192,42 +195,40 @@ align = 1
 max_length = 12
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Lobby/VBoxContainer"]
-editor/display_folded = true
-margin_top = 207.0
+margin_top = 96.0
 margin_right = 800.0
-margin_bottom = 273.0
+margin_bottom = 162.0
 custom_constants/separation = 35
 
 [node name="Label" type="Label" parent="Lobby/VBoxContainer/HBoxContainer2"]
 margin_top = 3.0
-margin_right = 227.0
+margin_right = 317.0
 margin_bottom = 63.0
 custom_fonts/font = ExtResource( 4 )
-text = "IP to Join:"
+text = "IP per unir-se:"
 
 [node name="IPLine" type="LineEdit" parent="Lobby/VBoxContainer/HBoxContainer2"]
-margin_left = 262.0
+margin_left = 352.0
 margin_right = 800.0
 margin_bottom = 66.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
 align = 1
-max_length = 20
+max_length = 15
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Lobby/VBoxContainer"]
-editor/display_folded = true
-margin_top = 303.0
+margin_top = 192.0
 margin_right = 800.0
-margin_bottom = 461.0
+margin_bottom = 380.0
 size_flags_vertical = 3
 custom_constants/separation = 75
 
 [node name="JoinButton" type="TextureButton" parent="Lobby/VBoxContainer/HBoxContainer3"]
 margin_right = 362.0
-margin_bottom = 158.0
+margin_bottom = 188.0
 size_flags_horizontal = 3
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 7 )
@@ -237,7 +238,7 @@ stretch_mode = 5
 [node name="CreateButton" type="TextureButton" parent="Lobby/VBoxContainer/HBoxContainer3"]
 margin_left = 437.0
 margin_right = 800.0
-margin_bottom = 158.0
+margin_bottom = 188.0
 size_flags_horizontal = 3
 texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 9 )
@@ -256,55 +257,48 @@ margin_bottom = -100.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Back"
+text = "Enrere"
 
 [node name="WaitTimer" type="Timer" parent="Lobby"]
 wait_time = 10.0
 one_shot = true
 
 [node name="MultiplayerMenu" type="Control" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1.85059
-margin_right = -1.85059
 script = ExtResource( 10 )
 
-[node name="Back" type="Button" parent="MultiplayerMenu"]
-margin_left = 1453.04
-margin_top = 875.0
-margin_right = 1766.04
-margin_bottom = 963.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
-text = "Back"
+[node name="Label" type="Label" parent="MultiplayerMenu"]
+margin_left = 122.0
+margin_top = 80.0
+margin_right = 1802.0
+margin_bottom = 161.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
+custom_constants/shadow_offset_y = 5
+text = "MULTIJUGADOR"
+align = 1
 
-[node name="Play" type="Button" parent="MultiplayerMenu"]
-margin_left = 1453.04
-margin_top = 625.0
-margin_right = 1766.04
-margin_bottom = 713.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="Label2" type="Label" parent="MultiplayerMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -889.0
+margin_top = -285.0
+margin_right = 889.0
+margin_bottom = -158.0
 custom_fonts/font = ExtResource( 4 )
-disabled = true
-text = "Play"
-
-[node name="OnlinePlay" type="Button" parent="MultiplayerMenu"]
-margin_left = 1453.04
-margin_top = 750.0
-margin_right = 1766.04
-margin_bottom = 838.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
-disabled = true
-text = "Online Play"
+custom_constants/shadow_offset_y = 5
+text = "PREM 'Z' EN EL TECLAT
+O 'START' EN LA MANETA"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MultiplayerMenu"]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -315,7 +309,6 @@ margin_right = 315.0
 margin_bottom = 470.13
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerMenu/HBoxContainer"]
-editor/display_folded = true
 margin_right = 313.0
 margin_bottom = 630.0
 size_flags_horizontal = 3
@@ -340,7 +333,6 @@ align = 1
 valign = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MultiplayerMenu/HBoxContainer"]
-editor/display_folded = true
 margin_left = 317.0
 margin_right = 630.0
 margin_bottom = 630.0
@@ -365,38 +357,266 @@ text = "4P"
 align = 1
 valign = 1
 
-[node name="Label2" type="Label" parent="MultiplayerMenu"]
-margin_left = 122.0
+[node name="Play" type="Button" parent="MultiplayerMenu"]
+margin_left = 1453.04
+margin_top = 625.0
+margin_right = 1766.04
+margin_bottom = 713.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+disabled = true
+text = "Local"
+
+[node name="OnlinePlay" type="Button" parent="MultiplayerMenu"]
+margin_left = 1453.04
+margin_top = 750.0
+margin_right = 1766.04
+margin_bottom = 838.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+disabled = true
+text = "En línia"
+
+[node name="Back" type="Button" parent="MultiplayerMenu"]
+margin_left = 1453.04
+margin_top = 875.0
+margin_right = 1766.04
+margin_bottom = 963.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+text = "Enrere"
+
+[node name="SettingsMenu" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label3" type="Label" parent="SettingsMenu"]
+margin_left = 120.149
 margin_top = 80.0
-margin_right = 1802.0
+margin_right = 1800.15
 margin_bottom = 161.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
 custom_constants/shadow_offset_y = 5
-text = "MULTIPLAYER"
+text = "CONFIGURACIÓ"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label3" type="Label" parent="MultiplayerMenu"]
+[node name="ScrollContainer" type="ScrollContainer" parent="SettingsMenu"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -889.0
-margin_top = -285.0
-margin_right = 889.0
-margin_bottom = -158.0
-custom_fonts/font = ExtResource( 4 )
-custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
-custom_constants/shadow_offset_y = 5
-text = "PRESS Z ON THE KEYBOARD 
-OR START ON THE CONTROLLER"
+margin_left = -378.5
+margin_top = -312.5
+margin_right = 378.5
+margin_bottom = 312.5
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsMenu/ScrollContainer"]
+margin_right = 757.0
+margin_bottom = 622.0
+size_flags_horizontal = 3
+custom_constants/separation = 75
+script = ExtResource( 11 )
+
+[node name="Graphics" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+margin_right = 757.0
+margin_bottom = 115.0
+custom_constants/separation = 20
+
+[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics"]
+margin_right = 757.0
+margin_bottom = 29.0
+text = "Qualitat gràfica"
 align = 1
 
-[node name="SettingsMenu" type="Control" parent="."]
-editor/display_folded = true
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Buttons" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics"]
+margin_top = 49.0
+margin_right = 757.0
+margin_bottom = 115.0
+custom_constants/separation = 35
+
+[node name="ButtonLow" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons"]
+margin_right = 229.0
+margin_bottom = 66.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+text = "BAIXA"
+
+[node name="ButtonMiddle" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons"]
+margin_left = 264.0
+margin_right = 493.0
+margin_bottom = 66.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+text = "MITJANA"
+
+[node name="ButtonHigh" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons"]
+margin_left = 528.0
+margin_right = 757.0
+margin_bottom = 66.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+text = "ALTA"
+
+[node name="Controls" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+margin_top = 190.0
+margin_right = 757.0
+margin_bottom = 359.0
+custom_constants/separation = 20
+
+[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
+margin_right = 757.0
+margin_bottom = 29.0
+text = "Controls"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
+margin_top = 49.0
+margin_right = 757.0
+margin_bottom = 78.0
+
+[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/HBoxContainer"]
+margin_right = 376.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Sensibilitat del ratolí"
+align = 1
+
+[node name="Label2" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/HBoxContainer"]
+margin_left = 380.0
+margin_right = 757.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Sensibilitat del joystick"
+align = 1
+
+[node name="Sliders" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
+margin_top = 98.0
+margin_right = 757.0
+margin_bottom = 114.0
+
+[node name="HSliderMouse" type="HSlider" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders"]
+margin_right = 376.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 20.0
+max_value = 150.0
+value = 65.0
+ticks_on_borders = true
+
+[node name="HSliderJoystick" type="HSlider" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders"]
+margin_left = 380.0
+margin_right = 757.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 20.0
+max_value = 150.0
+value = 60.0
+ticks_on_borders = true
+
+[node name="SensitivityDefaultsButton" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
+margin_top = 134.0
+margin_right = 757.0
+margin_bottom = 169.0
+text = "RESTAURAR LA CONFIGURACIÓ PREDETERMINADA"
+
+[node name="Gameplay" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
+margin_top = 434.0
+margin_right = 757.0
+margin_bottom = 622.0
+custom_constants/separation = 20
+
+[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay"]
+margin_right = 757.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Joc"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay"]
+margin_top = 49.0
+margin_right = 757.0
+margin_bottom = 78.0
+
+[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer"]
+margin_right = 376.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Camp de visió"
+align = 1
+
+[node name="Label2" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer"]
+margin_left = 380.0
+margin_right = 757.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Tropes per equip"
+align = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay"]
+margin_top = 98.0
+margin_right = 757.0
+margin_bottom = 133.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBoxFov" type="SpinBox" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer2"]
+margin_left = 141.0
+margin_right = 235.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+min_value = 45.0
+max_value = 110.0
+value = 70.0
+align = 1
+
+[node name="SpinBoxTroops" type="SpinBox" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer2"]
+margin_left = 521.0
+margin_right = 615.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+min_value = 8.0
+max_value = 64.0
+value = 16.0
+align = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay"]
+margin_top = 153.0
+margin_right = 757.0
+margin_bottom = 188.0
+
+[node name="FovDefaultsButton" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer3"]
+margin_right = 376.0
+margin_bottom = 35.0
+size_flags_horizontal = 3
+text = "RESTAURAR"
+
+[node name="TroopsDefaultsButton" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer3"]
+margin_left = 380.0
+margin_right = 757.0
+margin_bottom = 35.0
+size_flags_horizontal = 3
+text = "RESTAURAR"
 
 [node name="Back" type="Button" parent="SettingsMenu"]
 anchor_left = 1.0
@@ -410,174 +630,9 @@ margin_bottom = -100.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Back"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="SettingsMenu"]
-editor/display_folded = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -353.5
-margin_top = -346.5
-margin_right = 353.5
-margin_bottom = 246.5
-scroll_horizontal_enabled = false
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SettingsMenu/ScrollContainer"]
-editor/display_folded = true
-margin_right = 707.0
-margin_bottom = 573.0
-size_flags_horizontal = 3
-custom_constants/separation = 75
-script = ExtResource( 11 )
-
-[node name="Graphics" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
-editor/display_folded = true
-margin_right = 707.0
-margin_bottom = 115.0
-custom_constants/separation = 20
-
-[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics"]
-margin_right = 707.0
-margin_bottom = 29.0
-text = "Graphics"
-align = 1
-
-[node name="Buttons" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics"]
-editor/display_folded = true
-margin_top = 49.0
-margin_right = 707.0
-margin_bottom = 115.0
-custom_constants/separation = 35
-
-[node name="ButtonLow" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons"]
-margin_right = 212.0
-margin_bottom = 66.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
-text = "LOW"
-
-[node name="ButtonMiddle" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons"]
-margin_left = 247.0
-margin_right = 459.0
-margin_bottom = 66.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
-text = "MEDIUM"
-
-[node name="ButtonHigh" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons"]
-margin_left = 494.0
-margin_right = 707.0
-margin_bottom = 66.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
-text = "HIGH"
-
-[node name="Controls" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
-editor/display_folded = true
-margin_top = 190.0
-margin_right = 707.0
-margin_bottom = 359.0
-custom_constants/separation = 20
-
-[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
-margin_right = 707.0
-margin_bottom = 29.0
-text = "Controls"
-align = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
-editor/display_folded = true
-margin_top = 49.0
-margin_right = 707.0
-margin_bottom = 78.0
-
-[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/HBoxContainer"]
-margin_right = 351.0
-margin_bottom = 29.0
-size_flags_horizontal = 3
-custom_fonts/font = SubResource( 1 )
-text = "Mouse Speed"
-align = 1
-
-[node name="Label2" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/HBoxContainer"]
-margin_left = 355.0
-margin_right = 707.0
-margin_bottom = 29.0
-size_flags_horizontal = 3
-custom_fonts/font = SubResource( 1 )
-text = "Joystick Speed"
-align = 1
-
-[node name="Sliders" type="HBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
-editor/display_folded = true
-margin_top = 98.0
-margin_right = 707.0
-margin_bottom = 114.0
-
-[node name="HSliderMouse" type="HSlider" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders"]
-margin_right = 351.0
-margin_bottom = 16.0
-size_flags_horizontal = 3
-min_value = 20.0
-max_value = 175.0
-value = 65.0
-ticks_on_borders = true
-
-[node name="HSliderJoystick" type="HSlider" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders"]
-margin_left = 355.0
-margin_right = 707.0
-margin_bottom = 16.0
-size_flags_horizontal = 3
-min_value = 20.0
-max_value = 175.0
-value = 60.0
-ticks_on_borders = true
-
-[node name="SensitivityDefaultsButton" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Controls"]
-margin_top = 134.0
-margin_right = 707.0
-margin_bottom = 169.0
-text = "RESTORE DEFAULT SETTINGS"
-
-[node name="Others" type="VBoxContainer" parent="SettingsMenu/ScrollContainer/VBoxContainer"]
-editor/display_folded = true
-margin_top = 434.0
-margin_right = 707.0
-margin_bottom = 573.0
-custom_constants/separation = 20
-
-[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VBoxContainer/Others"]
-margin_right = 707.0
-margin_bottom = 29.0
-size_flags_horizontal = 3
-custom_fonts/font = SubResource( 1 )
-text = "Field of View"
-align = 1
-
-[node name="SpinBox" type="SpinBox" parent="SettingsMenu/ScrollContainer/VBoxContainer/Others"]
-margin_left = 306.0
-margin_top = 49.0
-margin_right = 400.0
-margin_bottom = 84.0
-size_flags_horizontal = 4
-min_value = 45.0
-max_value = 110.0
-value = 70.0
-align = 1
-
-[node name="FovDefaultsButton" type="Button" parent="SettingsMenu/ScrollContainer/VBoxContainer/Others"]
-margin_top = 104.0
-margin_right = 707.0
-margin_bottom = 139.0
-text = "RESTORE DEFAULT SETTINGS"
+text = "Enrere"
 
 [node name="LoadingScreen" type="Control" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -588,12 +643,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -459.0
+margin_left = -586.0
 margin_top = -42.0
-margin_right = 459.0
+margin_right = 586.0
 margin_bottom = 42.0
 custom_fonts/font = ExtResource( 3 )
-text = "LOADING INSTANT ACTION..."
+text = "CARREGANT EL MODE CONQUESTA..."
 
 [node name="Multiplayer" type="Label" parent="LoadingScreen"]
 visible = false
@@ -601,12 +656,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -537.5
+margin_left = -455.0
 margin_top = -42.0
-margin_right = 537.5
+margin_right = 455.0
 margin_bottom = 42.0
 custom_fonts/font = ExtResource( 3 )
-text = "CONNECTING TO THE NETWORK..."
+text = "CONNECTANT A LA XARXA..."
 
 [node name="ProgressBar" type="ProgressBar" parent="LoadingScreen"]
 visible = false
@@ -628,19 +683,21 @@ margin_bottom = -400.0
 [connection signal="text_changed" from="Lobby/VBoxContainer/HBoxContainer2/IPLine" to="Lobby" method="_on_IPLine_text_changed"]
 [connection signal="pressed" from="Lobby/VBoxContainer/HBoxContainer3/JoinButton" to="Lobby" method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="Lobby/VBoxContainer/HBoxContainer3/CreateButton" to="Lobby" method="_on_CreateButton_pressed"]
-[connection signal="pressed" from="Lobby/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="Lobby/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Lobby/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="timeout" from="Lobby/WaitTimer" to="Lobby" method="_on_WaitTimer_timeout"]
-[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_MultiplayerBack_pressed"]
-[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/OnlinePlay" to="." method="_on_OnlinePlay_pressed"]
-[connection signal="pressed" from="SettingsMenu/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/Back" to="." method="_on_MultiplayerBack_pressed"]
 [connection signal="pressed" from="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons/ButtonLow" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_GraphicsButton_pressed" binds= [ 0 ]]
 [connection signal="pressed" from="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons/ButtonMiddle" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_GraphicsButton_pressed" binds= [ 1 ]]
 [connection signal="pressed" from="SettingsMenu/ScrollContainer/VBoxContainer/Graphics/Buttons/ButtonHigh" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_GraphicsButton_pressed" binds= [ 2 ]]
 [connection signal="value_changed" from="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders/HSliderMouse" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_HSliderMouse_value_changed"]
 [connection signal="value_changed" from="SettingsMenu/ScrollContainer/VBoxContainer/Controls/Sliders/HSliderJoystick" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_HSliderJoystick_value_changed"]
 [connection signal="pressed" from="SettingsMenu/ScrollContainer/VBoxContainer/Controls/SensitivityDefaultsButton" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_SensitivityDefaultsButton_pressed"]
-[connection signal="value_changed" from="SettingsMenu/ScrollContainer/VBoxContainer/Others/SpinBox" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_SpinBox_value_changed"]
-[connection signal="pressed" from="SettingsMenu/ScrollContainer/VBoxContainer/Others/FovDefaultsButton" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_FovDefaultsButton_pressed"]
+[connection signal="value_changed" from="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer2/SpinBoxFov" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_SpinBoxFov_value_changed"]
+[connection signal="value_changed" from="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer2/SpinBoxTroops" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_SpinBoxTroops_value_changed"]
+[connection signal="pressed" from="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer3/FovDefaultsButton" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_FovDefaultsButton_pressed"]
+[connection signal="pressed" from="SettingsMenu/ScrollContainer/VBoxContainer/Gameplay/HBoxContainer3/TroopsDefaultsButton" to="SettingsMenu/ScrollContainer/VBoxContainer" method="_on_TroopsDefaultsButton_pressed"]
+[connection signal="pressed" from="SettingsMenu/Back" to="." method="_on_Back_pressed"]

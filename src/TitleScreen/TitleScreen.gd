@@ -87,21 +87,21 @@ func _process(delta : float) -> void:
 
 
 func _process_load_scene() -> void:
-	 var err = loader.poll()
-		if err == ERR_FILE_EOF: # Finished loading
-			var resource = loader.get_resource()
-			loader = null
-			
-			if emit_signal:
-				emit_signal("finished_loading", resource)
-			else:
-				get_tree().change_scene_to(resource)
-			
-		elif err == OK:
-			update_progress()
-			
-		else: # Error during loading
-			loader = null
+	var err = loader.poll()
+	if err == ERR_FILE_EOF: # Finished loading
+		var resource = loader.get_resource()
+		loader = null
+		
+		if emit_signal:
+			emit_signal("finished_loading", resource)
+		else:
+			get_tree().change_scene_to(resource)
+		
+	elif err == OK:
+		update_progress()
+		
+	else: # Error during loading
+		loader = null
 
 
 func load_scene(path : String, instant_load : bool) -> void:

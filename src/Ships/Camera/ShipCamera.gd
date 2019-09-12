@@ -4,8 +4,8 @@ var target : Position3D = null
 var starter_target_position := Vector3()
 var rotate_speed := 90.0
 
-# var move_speed_test := 90.0
-# var rotate_speed_test := 80.0
+# var move_speed_slerp := 90.0
+# var rotate_speedslerp := 80.0
 
 var horizontal_turn_move := 6.0
 var vertical_turn_up_move := 6.0
@@ -83,25 +83,23 @@ func update_target(delta : float):
 		horizontal_lean(target.get_node("../ShipMesh"), 0.0)
 		return
 	
-	var mouse_position : Vector2 = Utilities.mouse_position
-	var mouse_screen_x : float
-	var mouse_screen_y : float
+	var input := Vector2()
 	
-	mouse_screen_x = target.get_node("../PlayerHUD").input.x if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_right_action) - Input.get_action_strength(camera_left_action)
-	mouse_screen_y = target.get_node("../PlayerHUD").input.y if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_up_action) - Input.get_action_strength(camera_down_action)
+	input.x = target.get_node("../PlayerHUD").cursor_input.x if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_right_action) - Input.get_action_strength(camera_left_action)
+	input.y = target.get_node("../PlayerHUD").cursor_input.y if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_up_action) - Input.get_action_strength(camera_down_action)
 	var viewport_size = get_tree().root.get_visible_rect().size
 	
-	mouse_screen_x = clamp(mouse_screen_x, -1, 1)
-	mouse_screen_y = clamp(mouse_screen_y, -1, 1)
+	input.x = clamp(input.x, -1, 1)
+	input.y = clamp(input.y, -1, 1)
 	
-	horizontal_lean(target.get_node("../ShipMesh"), mouse_screen_x)
+	horizontal_lean(target.get_node("../ShipMesh"), input.x)
 	
-	var horizontal := horizontal_turn_move * mouse_screen_x
+	var horizontal := horizontal_turn_move * input.x
 	var vertical := 0.0
-	if mouse_screen_y < 0.0:
-		vertical = vertical_turn_up_move * mouse_screen_y
+	if input.y < 0.0:
+		vertical = vertical_turn_up_move * input.y
 	else:
-		vertical = vertical_turn_down_move * mouse_screen_y
+		vertical = vertical_turn_down_move * input.y
 	
 	var desired_position = starter_target_position + Vector3(-horizontal, vertical, 0.0)
 	target.translation = target.translation.linear_interpolate(desired_position, delta)

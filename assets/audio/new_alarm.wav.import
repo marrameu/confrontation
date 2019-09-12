@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/new_alarm.wav-3d185e8d72d11c23369c9b51dd07877e.sample"
+
+[deps]
+
+source_file="res://assets/audio/new_alarm.wav"
+dest_files=[ "res://.import/new_alarm.wav-3d185e8d72d11c23369c9b51dd07877e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=true
+compress/mode=0

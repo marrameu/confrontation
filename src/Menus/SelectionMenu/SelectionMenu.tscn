@@ -17,12 +17,10 @@ size_flags_vertical = 3
 theme = ExtResource( 2 )
 
 [node name="TeamMenu" type="Control" parent="Container"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Container/TeamMenu"]
-editor/display_folded = true
 anchor_top = 0.5
 anchor_bottom = 1.0
 margin_left = 75.0
@@ -36,7 +34,7 @@ margin_right = 570.0
 margin_bottom = 159.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "TEAM 1"
+text = "EQUIP 1"
 
 [node name="Team2Button" type="Button" parent="Container/TeamMenu/VBoxContainer"]
 margin_top = 309.0
@@ -44,10 +42,9 @@ margin_right = 570.0
 margin_bottom = 468.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "TEAM 2"
+text = "EQUIP 2"
 
 [node name="ClassMenu" type="Control" parent="Container"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -68,7 +65,7 @@ margin_right = 519.0
 margin_bottom = 134.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "ASSAULT"
+text = "ASSALT"
 
 [node name="Class2Button" type="Button" parent="Container/ClassMenu/VBoxContainer2"]
 margin_top = 209.0
@@ -76,7 +73,7 @@ margin_right = 519.0
 margin_bottom = 343.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "VANGUARD"
+text = "PESAT"
 
 [node name="Class3Button" type="Button" parent="Container/ClassMenu/VBoxContainer2"]
 margin_top = 418.0
@@ -84,7 +81,7 @@ margin_right = 519.0
 margin_bottom = 552.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "SPECIALIST"
+text = "PILOT"
 
 [node name="Class4Button" type="Button" parent="Container/ClassMenu/VBoxContainer2"]
 margin_top = 627.0
@@ -92,10 +89,9 @@ margin_right = 519.0
 margin_bottom = 762.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "PILOT"
+text = "ESPECIALISTA"
 
 [node name="SpawnMenu" type="Control" parent="Container"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -105,7 +101,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="SpawnButton" type="Button" parent="Container/SpawnMenu"]
-visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -115,7 +110,7 @@ margin_top = -302.0
 margin_right = -100.0
 margin_bottom = -220.0
 custom_fonts/font = ExtResource( 4 )
-text = "Deploy"
+text = "Desplegar"
 
 [node name="ViewButton" type="Button" parent="Container/SpawnMenu"]
 anchor_left = 1.0
@@ -127,7 +122,7 @@ margin_top = -182.0
 margin_right = -100.0
 margin_bottom = -100.0
 custom_fonts/font = ExtResource( 4 )
-text = "Change View"
+text = "Canviar la vista"
 [connection signal="pressed" from="Container/TeamMenu/VBoxContainer/Team1Button" to="." method="_set_team" binds= [ 1 ]]
 [connection signal="pressed" from="Container/TeamMenu/VBoxContainer/Team2Button" to="." method="_set_team" binds= [ 2 ]]
 [connection signal="pressed" from="Container/ClassMenu/VBoxContainer2/Class1Button" to="." method="_set_class" binds= [ 0 ]]

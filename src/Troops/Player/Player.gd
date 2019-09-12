@@ -3,7 +3,7 @@ class_name Player
 
 # Camera
 var mouse_sensitivity := 0.0015
-var joystick_sensitivity := 0.06
+var joystick_sensitivity := 0.06 # * 0.8 a 0.7 quan arregli els joysticks
 
 const CAMERA_X_ROT_MIN := -50
 const CAMERA_X_ROT_MAX := 60
@@ -75,7 +75,7 @@ func _process(delta : float) -> void:
 	var camera_right_action := "camera_right" if LocalMultiplayer.number_of_players == 1 else $InputManager.input_map.camera_right
 	
 	joystick_movement = Vector2(Input.get_action_strength(camera_right_action) - Input.get_action_strength(camera_left_action), 
-			Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action))
+								Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action))
 	joystick_movement *= joystick_sensitivity
 	
 	# $PlayerMesh.moving = true if $StateMachine/Movement/Move.direction else false

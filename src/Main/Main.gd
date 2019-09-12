@@ -8,10 +8,6 @@ var selection_menus := [null, null, null, null]
 
 var players_cameras := [ { }, { }, { }, { } ]
 
-# Players //
-# Players Cameras (Ship and Troop) //
-# Scene Cameras //
-
 # Clients
 var _vehicles_instantiated := false
 var _troops_instantiated := false
@@ -97,13 +93,12 @@ func _process(delta : float) -> void:
 					_capital_ships_instantiated = true
 
 
-sync func spawn_troops(i : int):
-# warning-ignore:integer_division
-	var a = i / 2
+sync func spawn_troops(troops_per_team : int):
+	
+	var a = troops_per_team
 	var b = a
 	
-	while i > 0:
-		i -= 1
+	for i in range(troops_per_team * 2):
 		var new_troop : Troop = load("res://src/Troops/AI/Troop.tscn").instance()
 		new_troop.name = "Troop" + String(i)
 		
@@ -206,10 +201,12 @@ func _enable_scene_camera4() -> void:
 	var render4 = $Splitscreen.add_player(3)
 	render4.name = "Ignore"
 	render4.viewport.msaa = get_tree().get_root().msaa
+	
 	var scene_camera4 = $Cameras/SceneCamera4
 	remove_child(scene_camera4)
 	render4.viewport.add_child(scene_camera4)
 	scene_camera4.make_current()
+	
 	scene_camera4.translation = Vector3(0, 300, 0)
 	scene_camera4.rotation = Vector3(deg2rad(-90), 0, 0)
 

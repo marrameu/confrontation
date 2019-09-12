@@ -49,7 +49,8 @@ func _process(delta : float) -> void:
 	elif not Input.is_action_pressed(action):
 		get_parent().attacking = false
 		shooting = false
-		
+	
+	if not shooting:
 		get_node(cam).get_parent().stop_shake_camera()
 
 

@@ -37,16 +37,21 @@ func _process(delta : float) -> void:
 		var scene_camera : Camera = get_node("/root/Main").players_cameras[old_menus[i].get_parent().number_of_player - 1].scene_camera
 		
 		if old_menus[i].get_node("SpawnMenu").visible and not scene_camera.is_position_behind(translation):
-			buttons[i].show()
 			buttons[i].rect_position = scene_camera.unproject_position(translation)
-			buttons[i].rect_position -= Vector2(buttons[i].rect_size.x / 2, buttons[i].rect_size.y / 2) # Mirar si es pot treure
-			if LocalMultiplayer.number_of_players == 2:
-				# Millorar
+			# Mirar si es pot treure
+			buttons[i].rect_position -= Vector2(buttons[i].rect_size.x / 2, buttons[i].rect_size.y / 2)
+			
+			# Millorar
+			if LocalMultiplayer.number_of_players > 1:
 				buttons[i].rect_position.y *= 2
 				buttons[i].rect_position.x *= 2
-				buttons[i].rect_position.y += 34
-				buttons[i].rect_position.x -= 480 * 2 - 116.5
+				if LocalMultiplayer.number_of_players == 2:
+					buttons[i].rect_position.x -= 480 * 2
+				else:
+					buttons[i].rect_position.x += 240
+			
 			update_button_color(buttons[i])
+			buttons[i].show()
 		else:
 			buttons[i].hide()
 	

@@ -26,3 +26,25 @@ func _input(event : InputEvent) -> void:
 func _process(delta : float) -> void:
 	mouse_movement = Vector2()
 	time = OS.get_ticks_msec() / 1000.0 # Pausa?
+
+
+func canvas_scaler(number_of_player : int, canvas : CanvasLayer) -> void:
+	if LocalMultiplayer.number_of_players == 2:
+		canvas.scale = Vector2(0.5, 0.5)
+		match number_of_player:
+			1:
+				canvas.offset = Vector2(480, 0) 
+			2:
+				canvas.offset = Vector2(480, 540)
+		
+	elif LocalMultiplayer.number_of_players > 1:
+		canvas.scale = Vector2(0.5, 0.5)
+		match number_of_player:
+			1:
+				canvas.offset = Vector2(0, 0) 
+			2:
+				canvas.offset = Vector2(960, 0)
+			3:
+				canvas.offset = Vector2(0, 540)
+			4:
+				canvas.offset = Vector2(960, 540)

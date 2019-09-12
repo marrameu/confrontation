@@ -5,9 +5,9 @@ class_name Gun
 Serveix tant a jugadors com a bots ja que l'unic necesari per disparar es
 canviar la variable _shooting a true.
 
-Té un raycast per a determinar on ha de dsisparar, en el cas de les tropes,
+Té un raycast per a determinar on ha de dsisparar, en el cas de la IA,
 el raycast es reposiciona al seu centre, mentrés que en els jugadors aquest 
-es posiciona en la càmara. En un futur no serà necesari reposicionar-lo.
+es posiciona en la càmara. En el futur no serà necesari reposicionar-ho.
 
 També du un Audio3D com a fill per al só de dispar
 
@@ -63,6 +63,7 @@ func _shoot() -> void:
 	
 	$Audio.play()
 	
+	# zoom /2
 	var x = rand_range(-offset.x, offset.x)
 	var y = rand_range(-offset.y, offset.y)
 	$RayCast.cast_to = Vector3(x, y, shoot_range)
@@ -80,6 +81,7 @@ sync func _hit(collider_path : NodePath, point : Vector3) -> void:
 	var root = get_tree().get_root()
 	var current_scene = root.get_child(root.get_child_count() - 1)
 	
+	# Consumeix molt rendiment instanciar les particules
 	var hit : Particles = hit_scene.instance()
 	current_scene.add_child(hit)
 	hit.global_transform.origin = point

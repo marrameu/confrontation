@@ -20,7 +20,6 @@ var match_data : Dictionary = { recived = false, vehicles_data = [], troops_data
 signal player_disconnected
 signal server_disconnected
 
-
 func _ready():
 	for i in range(0, self_datas.size()):
 		self_datas[i] = { name = "Noname", position = Vector3(0, 2, 0), rotation = 0.0, crouching = false,

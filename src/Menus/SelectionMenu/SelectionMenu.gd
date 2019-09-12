@@ -7,10 +7,7 @@ var current_cp : CommandPost = null
 var number_of_player := 0
 
 func _ready() -> void:
-	if LocalMultiplayer.number_of_players > 1:
-		scale = Vector2(0.5, 0.5)
-		offset = Vector2(480, 0) if number_of_player == 1 else Vector2(480, 540)
-	
+	Utilities.canvas_scaler(number_of_player, self)
 	# $Container/TeamMenu/VBoxContainer/Team1Button.grab_focus()
 
 
@@ -47,7 +44,7 @@ func _set_class(selected_class : int) -> void:
 
 
 func _on_SpawnButton_pressed() -> void:
-	 # Per als transports
+	# Per als transports
 	var wr = weakref(current_cp)
 	if not wr.get_ref():
 		$Container/SpawnMenu/SpawnButton.hide()
@@ -71,12 +68,12 @@ func _on_SpawnButton_pressed() -> void:
 			"""
 			if get_tree().is_network_server():
 				if get_node("/root/Main/Troops").get_child_count() == 0:
-					get_node("/root/Main").rpc("spawn_troops", 32)
+					get_node("/root/Main").rpc("spawn_troops", Settings.troops_per_team)
 			else:
 				if Network.match_data.recived and get_node("/root/Main/Troops").get_child_count() == 0:
-					get_node("/root/Main").rpc("spawn_troops", 32)
+					get_node("/root/Main").rpc("spawn_troops", Settings.troops_per_team)
 		else:
-			get_node("/root/Main").spawn_troops(32)
+			get_node("/root/Main").spawn_troops(Settings.troops_per_team)
 		get_node("/root/Main").game_started = true
 	
 	if get_tree().has_network_peer():

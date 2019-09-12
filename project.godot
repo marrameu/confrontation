@@ -92,7 +92,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Confrontation"
+config/name="Project Confrontation"
 run/main_scene="res://src/TitleScreen/TitleScreen.tscn"
 config/icon="res://icon.png"
 
@@ -111,8 +111,8 @@ gdscript/completion/autocomplete_setters_and_getters=true
 
 window/size/width=1920
 window/size/height=1080
-window/size/borderless=true
-window/stretch/mode="viewport"
+window/size/fullscreen=true
+window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
 [importer_defaults]
@@ -278,6 +278,10 @@ zoom_ship={
 3d_physics/layer_4="Bullets"
 3d_physics/layer_5="Hangar Doors"
 
+[locale]
+
+locale_filter=[ 0, [  ] ]
+
 [physics]
 
 3d/physics_engine="Bullet"
@@ -287,7 +291,6 @@ zoom_ship={
 threads/thread_model=2
 quality/directional_shadow/size=8192
 quality/shadows/filter_mode=2
-quality/voxel_cone_tracing/high_quality=false
-environment/default_clear_color=Color( 0.14902, 0.192157, 0.219608, 1 )
+environment/default_clear_color=Color( 0.196078, 0.223529, 0.27451, 1 )
 quality/filters/msaa=3
 environment/default_environment="res://default_env.tres"

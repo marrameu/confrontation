@@ -5,16 +5,12 @@
 [ext_resource path="res://src/Ships/Explosion/Material.tres" type="Material" id=3]
 [ext_resource path="res://src/CapitalShips/Hangar/Hangar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/HealthSystem/HealthSystem.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/audio/alarm.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/new_alarm.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/interface/themes/default_theme.tres" type="Theme" id=7]
 
-
-
-
-
 [node name="CapitalShip" type="Spatial" groups=[
-"Cruises",
 "CapitalShips",
+"Cruises",
 ]]
 script = ExtResource( 1 )
 
@@ -27,6 +23,7 @@ transform = Transform( 0.015, 0, 0, 0, 0.03, 0, 0, 0, 0.015, -0.506675, -1.18929
 mesh = null
 
 [node name="up" parent="Scene Root" index="1"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0 )
 material/0 = ExtResource( 3 )
 
@@ -36,6 +33,7 @@ material/0 = ExtResource( 3 )
 editor/display_folded = true
 
 [node name="engines" parent="Scene Root" index="2"]
+editor/display_folded = true
 material/0 = ExtResource( 3 )
 
 [node name="col" parent="Scene Root/engines" index="0" groups=[
@@ -44,6 +42,7 @@ material/0 = ExtResource( 3 )
 editor/display_folded = true
 
 [node name="bottom" parent="Scene Root" index="3"]
+editor/display_folded = true
 material/0 = ExtResource( 3 )
 
 [node name="col" parent="Scene Root/bottom" index="0" groups=[
@@ -97,12 +96,12 @@ spot_angle = 51.4
 MAX_HEALTH = 4000
 
 [node name="DestructionTimer" type="Timer" parent="."]
-wait_time = 36.07
+wait_time = 34.73
 one_shot = true
 
 [node name="Alarm" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-volume_db = -4.0
+volume_db = -5.0
 
 [node name="Label" type="Label" parent="."]
 anchor_left = 1.0
