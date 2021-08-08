@@ -34,7 +34,7 @@ margin_right = 570.0
 margin_bottom = 159.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "EQUIP 1"
+text = "ELS BONS (EQUIP 1)"
 
 [node name="Team2Button" type="Button" parent="Container/TeamMenu/VBoxContainer"]
 margin_top = 309.0
@@ -42,7 +42,7 @@ margin_right = 570.0
 margin_bottom = 468.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 3 )
-text = "EQUIP 2"
+text = "ELS DOLENTS (2)"
 
 [node name="ClassMenu" type="Control" parent="Container"]
 visible = false
@@ -110,7 +110,7 @@ margin_top = -302.0
 margin_right = -100.0
 margin_bottom = -220.0
 custom_fonts/font = ExtResource( 4 )
-text = "Desplegar"
+text = "Desplega"
 
 [node name="ViewButton" type="Button" parent="Container/SpawnMenu"]
 anchor_left = 1.0
@@ -122,7 +122,8 @@ margin_top = -182.0
 margin_right = -100.0
 margin_bottom = -100.0
 custom_fonts/font = ExtResource( 4 )
-text = "Canviar la vista"
+text = "Canvia la vista"
+
 [connection signal="pressed" from="Container/TeamMenu/VBoxContainer/Team1Button" to="." method="_set_team" binds= [ 1 ]]
 [connection signal="pressed" from="Container/TeamMenu/VBoxContainer/Team2Button" to="." method="_set_team" binds= [ 2 ]]
 [connection signal="pressed" from="Container/ClassMenu/VBoxContainer2/Class1Button" to="." method="_set_class" binds= [ 0 ]]

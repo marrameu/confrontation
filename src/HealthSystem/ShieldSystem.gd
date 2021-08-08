@@ -1,7 +1,6 @@
 extends "res://src/HealthSystem/HealthSystem.gd"
 
-export var MAX_SHIELD := 300
-var shield : float = 0.0
+# bé, sí... açò hauria de ser ,més ben dit, un shield repair.gd
 
 var _healing_shield := false
 var _healing_speed := 50

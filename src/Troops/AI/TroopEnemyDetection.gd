@@ -5,7 +5,7 @@ var enemies := []
 func _ready() -> void:
 	pass
 
-func _process(delta):
+func _process(_delta):
 	if get_parent().get_node("TroopManager").m_team == 0:
 		return
 	

@@ -45,6 +45,7 @@ func _process(delta : float) -> void:
 	
 	$Center.visible = get_parent().is_player
 	
+	# que no ho comprovi tota l'estona, amb un senyal anirià millor
 	if get_parent().is_player:
 		$Indicators/LeaveIndicator.visible = get_parent().state == get_parent().State.LANDED
 		

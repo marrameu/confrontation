@@ -15,7 +15,9 @@ height = 0.3
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 10, 5, 10 )
 
-[node name="CommandPost" type="Spatial"]
+[node name="CommandPost" type="Spatial" groups=[
+"CommandPosts",
+]]
 pause_mode = 1
 script = ExtResource( 1 )
 

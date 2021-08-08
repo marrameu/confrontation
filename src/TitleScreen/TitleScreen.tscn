@@ -102,7 +102,7 @@ margin_bottom = 325.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Configuració"
+text = "Arranjament"
 
 [node name="Profile" type="Button" parent="Menu/Buttons"]
 margin_top = 345.0
@@ -121,7 +121,7 @@ margin_bottom = 555.0
 rect_min_size = Vector2( 360, 60 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 4 )
-text = "Sortir"
+text = "Eixir"
 
 [node name="VersionLabel" type="Label" parent="Menu/Buttons"]
 margin_top = 575.0
@@ -133,8 +133,8 @@ Crèdits:
 -Textures: CC0 Textures
 -Motor: Godot Engine (godotengine.org/license)
 
-Versió 0.1.6 Alfa
-Indev build \"Multijugador\""
+Versió 0.1.7 Alfa
+Indev build \"Espai\""
 
 [node name="Lobby" type="Control" parent="."]
 visible = false
@@ -673,6 +673,7 @@ margin_left = -175.0
 margin_top = -429.0
 margin_right = 175.0
 margin_bottom = -400.0
+
 [connection signal="finished_loading" from="." to="Lobby" method="_on_TitleScreen_finished_loading"]
 [connection signal="pressed" from="Menu/Buttons/SinglePlayer" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Menu/Buttons/HBoxContainer/Multiplayer" to="." method="_on_Multiplayer_pressed"]

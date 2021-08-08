@@ -86,7 +86,7 @@ func _physics_process(delta : float) -> void:
 		if is_network_master():
 			$StateMachine/Movement/Move.can_run = false if $CameraBase.zooming or $Crouch.crouching or $Weapons.attacking else true
 			
-			$StateMachine/Movement/Aim.aim()
+			$StateMachine/Movement/Aim.aim(delta)
 			$StateMachine/Movement/Move.walk(delta)
 			
 			rset_unreliable("slave_position", translation)
@@ -99,7 +99,7 @@ func _physics_process(delta : float) -> void:
 	else:
 		$StateMachine/Movement/Move.can_run = false if $CameraBase.zooming or $Crouch.crouching or $Weapons.attacking else true
 		
-		$StateMachine/Movement/Aim.aim()
+		$StateMachine/Movement/Aim.aim(delta)
 		$StateMachine/Movement/Move.walk(delta)
 
 

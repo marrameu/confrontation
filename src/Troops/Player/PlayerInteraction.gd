@@ -32,7 +32,7 @@ func _process(delta : float) -> void:
 	
 	if not is_in_a_vehicle:
 		if current_camera and Input.is_action_just_pressed(action):
-			var viewport = get_node("/root/Main/Splitscreen")._renders[get_node("..").number_of_player - 1].viewport
+			var viewport = get_node("/root/Main/Splitscreen").get_player(get_node("..").number_of_player - 1).viewport
 			camera_width_center = viewport.get_visible_rect().size.x / 2
 			camera_height_center = viewport.get_visible_rect().size.y / 2
 			
@@ -44,8 +44,9 @@ func _process(delta : float) -> void:
 			if result:
 				if result.collider.is_in_group("Vehicles"):
 					# Timer
-					result.collider.get_node("InterpolatedCamera").make_current()
-					get_parent().get_node("CameraBase/Camera").clear_current()
+					# result.collider.get_node("InterpolatedCamera").make_current()
+					# get_parent().get_node("CameraBase/Camera").clear_current()
+					pass # això ja no anirià
 				elif result.collider.is_in_group("Ships"):
 					if not result.collider.is_player:
 						enter_ship(result)

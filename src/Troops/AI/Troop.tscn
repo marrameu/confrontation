@@ -27,7 +27,6 @@ script = ExtResource( 1 )
 body = NodePath("PlayerMesh/rig/body")
 
 [node name="PlayerMesh" parent="." instance=ExtResource( 2 )]
-editor/display_folded = true
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1.8, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -40,7 +39,6 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.8, 0.3 )
 
 [node name="EnemyDetection" type="Spatial" parent="."]
-editor/display_folded = true
 script = ExtResource( 4 )
 
 [node name="Area" type="Area" parent="EnemyDetection"]
@@ -53,6 +51,7 @@ shape = SubResource( 2 )
 script = ExtResource( 5 )
 
 [node name="HealthSystem" parent="." instance=ExtResource( 6 )]
+MAX_HEALTH = 300000
 
 [node name="TroopManager" parent="." instance=ExtResource( 7 )]
 
@@ -66,6 +65,7 @@ one_shot = true
 [node name="ConquestTimer" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
+
 [connection signal="die" from="HealthSystem" to="." method="_on_HealthSystem_die"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
 [connection signal="timeout" from="ConquestTimer" to="." method="_on_ConquestTimer_timeout"]

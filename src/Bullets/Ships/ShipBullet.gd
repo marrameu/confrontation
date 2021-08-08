@@ -31,7 +31,7 @@ func _process(delta : float) -> void:
 		exclude.push_back(ship)
 	
 	var space_state = get_world().direct_space_state
-	var result = space_state.intersect_ray(translation, _old_translation, exclude)
+	var result = space_state.intersect_ray(_old_translation, translation, exclude)
 	
 	if result:
 		# Explosió, overlap_shpere()

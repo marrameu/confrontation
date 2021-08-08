@@ -14,8 +14,9 @@ func _ready() -> void:
 		print("ERROR: Number of player unasigned to the pause menu")
 		breakpoint
 
-func _process(delta : float) -> void:
+func _process(_delta : float) -> void:
 	return
+# warning-ignore:unreachable_code
 	if Input.is_action_just_pressed("pause"):
 		if !paused:
 			pause_game()
@@ -57,7 +58,7 @@ func resume_game():
 	# elif $SelectionMenu/ClassMenu.visible:
 	#	$SelectionMenu/ClassMenu/VBoxContainer2/Class1Button.grab_focus()
 	# elif $SelectionMenu/SpawnMenu.visible:
-	#	get_node(get_node("/root/Main/CommandPosts").get_child(0).button_path).grab_focus()
+	#	get_node(get_node("/root/Main/CommandPosts").get_child(0).button_path).grab_focus() # ço ja no funcionaria
 	if LocalMultiplayer.number_of_players == 1:
 		get_tree().paused = false
 	else:
@@ -68,6 +69,7 @@ func resume_game():
 func respawn_player():
 	return
 	
+# warning-ignore:unreachable_code
 	Utilities.play_button_audio()
 	resume_game()
 	if $SelectionMenu.player:

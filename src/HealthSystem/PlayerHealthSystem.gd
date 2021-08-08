@@ -22,7 +22,12 @@ func _on_RespawnTimer_timeout() -> void:
 	spawn_menu.get_node("SpawnButton").hide()
 	spawn_menu.show()
 	
-	# get_node("/root/Main/CommandPosts").get_child(0).buttons[number_of_player - 1].grab_focus()
+	#2/8/21 -> ARREGLAT?
+	var i = false
+	for cp in get_tree().get_nodes_in_group("CommandPosts"):
+		if not i:
+			cp.buttons[get_parent().number_of_player - 1].grab_focus()
+			i = true
 
 
 sync func die() -> void:
@@ -47,15 +52,16 @@ sync func die() -> void:
 sync func respawn() -> void:
 	get_node("../TroopManager").is_alive = true
 	
+	# comprova si hi ha posts dissponibles 
 	var command_posts := []
 	for command_post in get_node("/root/Main/CommandPosts").get_children():
 		if command_post.m_team == get_node("../TroopManager").m_team:
 			command_posts.push_back(command_post)
 		if command_posts.size() < 1:
-			# No hi han cps del teu equip
-			get_parent().translation = Vector3(rand_range(-200, 200), 2, rand_range(-200, 200))
+			# No hi ha cps del teu equip
+			get_parent().global_transform.origin = Vector3(rand_range(-200, 200), 2, rand_range(-200, 200))
 		else:
-			get_parent().translation = get_parent().spawn_position
+			get_parent().global_transform.origin = get_parent().spawn_position
 	
 	get_parent().rotation = Vector3()
 	
@@ -72,14 +78,18 @@ sync func respawn() -> void:
 	heal(MAX_HEALTH)
 
 
-func update_components(var enable : bool, var update_interaction := true) -> void:
+sync func update_components(var enable : bool, var update_interaction := true) -> void:
+	# perquè no es mogui, oi?
 	get_parent().set_process(enable)
 	get_parent().set_physics_process(enable)
 	
+	# pq si no surt disparat?
 	get_node("../StateMachine/Movement/Move").velocity = Vector3()
 	
+	# pq s'aixequi
 	if get_node("../Crouch").crouching:
 		get_node("../Crouch").get_up()
+	# pq es pugui o no ajupir i moure la càm.
 	get_node("../Crouch").set_process(enable)
 	get_node("../CameraBase").set_process(enable)
 	
@@ -106,5 +116,7 @@ func update_components(var enable : bool, var update_interaction := true) -> voi
 		if not is_network_master():
 			return
 	
+	if enable:
+		get_node("/root/Main/Splitscreen").get_player(get_parent().number_of_player - 1).viewport.get_node("PuppetCam").target = get_node("../CameraBase/Camera")
 	get_node("../CameraBase/Camera").current = enable
 	get_node("../Listener").current = enable

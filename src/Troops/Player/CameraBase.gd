@@ -33,6 +33,8 @@ func _process(delta : float) -> void:
 	if change_view_action == "":
 		change_view_action = "change_view" if LocalMultiplayer.number_of_players == 1 else get_node("../InputManager").input_map.change_view
 	
+	zooming = Input.is_action_pressed(zoom_action)
+	
 	# Change View Side
 	if Input.is_action_just_pressed(change_view_action):
 		move_camera()
@@ -40,8 +42,6 @@ func _process(delta : float) -> void:
 	$Camera.translation.x = cam_pos_x
 
 func _physics_process(delta : float) -> void:
-	zooming = Input.is_action_pressed(zoom_action)
-	
 	$Camera.fov = lerp($Camera.fov, Settings.fov / 2.0, .15) if zooming else lerp($Camera.fov, Settings.fov, .15)
 	get_parent().mouse_sensitivity = init_mouse_sensitivity / 2 if zooming else init_mouse_sensitivity
 	get_parent().joystick_sensitivity = init_joystick_sensitivity / 3 if zooming else init_joystick_sensitivity

@@ -26,14 +26,14 @@
 radius = 0.6
 height = 2.4
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 24
 use_filter = true
 font_data = ExtResource( 21 )
 
 [node name="Player" type="KinematicBody" groups=[
-"Troops",
 "Players",
+"Troops",
 ]]
 pause_mode = 1
 collision_layer = 2
@@ -53,7 +53,6 @@ enabled = true
 cast_to = Vector3( 0, -0.4, 0 )
 
 [node name="CameraBase" type="Spatial" parent="."]
-editor/display_folded = true
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.1, 0 )
 script = ExtResource( 3 )
 
@@ -63,7 +62,6 @@ far = 5000.0
 
 [node name="ShipCamera" type="Camera" parent="CameraBase"]
 pause_mode = 1
-visible = false
 far = 5000.0
 script = ExtResource( 4 )
 
@@ -81,12 +79,10 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.5,
 current = true
 
 [node name="StateMachine" type="Node" parent="."]
-editor/display_folded = true
 script = ExtResource( 7 )
 START_STATE = NodePath("Movement/Idle")
 
 [node name="Movement" type="Node" parent="StateMachine"]
-editor/display_folded = true
 
 [node name="Idle" type="Node" parent="StateMachine/Movement"]
 script = ExtResource( 8 )
@@ -110,7 +106,6 @@ script = ExtResource( 11 )
 script = ExtResource( 12 )
 
 [node name="Attack" type="Node" parent="StateMachine"]
-editor/display_folded = true
 
 [node name="Shoot" type="Node" parent="StateMachine/Attack"]
 script = ExtResource( 11 )
@@ -183,7 +178,7 @@ margin_top = -315.5
 margin_right = 115.0
 margin_bottom = -284.5
 rect_pivot_offset = Vector2( 115, 15.5 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 0.447059, 0.447059, 1 )
 text = "Noname"
 align = 1
@@ -191,6 +186,7 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="die" from="HealthSystem" to="HealthSystem" method="_on_HealthSystem_die"]
 [connection signal="timeout" from="RespawnTimer" to="HealthSystem" method="_on_RespawnTimer_timeout"]
 [connection signal="timeout" from="HUD/LifeBarTimer" to="HUD" method="_on_LifeBarTimer_timeout"]

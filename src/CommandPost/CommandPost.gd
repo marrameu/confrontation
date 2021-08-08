@@ -20,6 +20,8 @@ var buttons := []
 
 puppet var slave_team_count := [0.0, 0.0, 0.0]
 
+var is_ground : bool = false
+
 
 func _ready() -> void:
 	if start_team == 1:
@@ -36,8 +38,8 @@ func _process(delta : float) -> void:
 	for i in range(0, old_menus.size()):
 		var scene_camera : Camera = get_node("/root/Main").players_cameras[old_menus[i].get_parent().number_of_player - 1].scene_camera
 		
-		if old_menus[i].get_node("SpawnMenu").visible and not scene_camera.is_position_behind(translation):
-			buttons[i].rect_position = scene_camera.unproject_position(translation)
+		if old_menus[i].get_node("SpawnMenu").visible and not scene_camera.is_position_behind(global_transform.origin):
+			buttons[i].rect_position = scene_camera.unproject_position(global_transform.origin)
 			# Mirar si es pot treure
 			buttons[i].rect_position -= Vector2(buttons[i].rect_size.x / 2, buttons[i].rect_size.y / 2)
 			

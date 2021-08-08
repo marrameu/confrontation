@@ -13,7 +13,7 @@ margin_right = 116.5
 margin_bottom = 34.0
 rect_pivot_offset = Vector2( 116.5, 34 )
 theme = ExtResource( 1 )
-text = "COMANDAMENT"
+text = "POST"
 __meta__ = {
 "_edit_use_anchors_": false
 }

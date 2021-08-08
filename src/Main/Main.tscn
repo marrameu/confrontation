@@ -59,6 +59,9 @@ script = ExtResource( 1 )
 border_width = 0.0
 
 [node name="Map" type="Node" parent="."]
+__meta__ = {
+"_editor_description_": "Terreny"
+}
 
 [node name="Navigation" type="Navigation" parent="Map"]
 
@@ -78,10 +81,8 @@ collision_mask = 7
 shape = SubResource( 3 )
 
 [node name="Buildings" type="Node" parent="Map"]
-editor/display_folded = true
 
 [node name="Ramp" type="MeshInstance" parent="Map/Buildings"]
-editor/display_folded = true
 transform = Transform( 2.5, 0, 0, 0, 0.906308, 2.11309, 0, -0.422618, 4.53154, 3.21559, 2.13664, 18.4494 )
 use_in_baked_light = true
 mesh = SubResource( 4 )
@@ -94,7 +95,6 @@ collision_mask = 7
 shape = SubResource( 6 )
 
 [node name="Ramp2" type="MeshInstance" parent="Map/Buildings"]
-editor/display_folded = true
 transform = Transform( 2.5, 0, 0, 0, 0.829037, 2.79596, 0, -0.559193, 4.14519, -3.57365, 2.75186, 17.9526 )
 use_in_baked_light = true
 mesh = SubResource( 4 )
@@ -107,7 +107,6 @@ collision_mask = 7
 shape = SubResource( 7 )
 
 [node name="Ramp3" type="MeshInstance" parent="Map/Buildings"]
-editor/display_folded = true
 transform = Transform( 2.5, 0, 0, 0, 0.965926, 1.29409, 0, -0.258819, 4.82963, 10.1901, 1.24689, 18.2048 )
 use_in_baked_light = true
 mesh = SubResource( 4 )
@@ -120,7 +119,6 @@ collision_mask = 7
 shape = SubResource( 8 )
 
 [node name="Ramp4" type="MeshInstance" parent="Map/Buildings"]
-editor/display_folded = true
 transform = Transform( 2.5, 0, 0, 0, 0.707107, 3.53553, 0, -0.707107, 3.53553, -10.167, 3.40887, 17.4233 )
 use_in_baked_light = true
 mesh = SubResource( 4 )
@@ -133,7 +131,6 @@ collision_mask = 7
 shape = SubResource( 9 )
 
 [node name="Materials" type="Node" parent="Map"]
-editor/display_folded = true
 
 [node name="Ground" type="MeshInstance" parent="Map/Materials"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2, -25 )
@@ -157,38 +154,32 @@ material/0 = ExtResource( 7 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2, -25 )
 
 [node name="LandingAreas" type="Node" parent="Map"]
-editor/display_folded = true
 
 [node name="LandingArea" parent="Map/LandingAreas" instance=ExtResource( 9 )]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.5, 120 )
 
 [node name="CollisionShape" parent="Map/LandingAreas/LandingArea" index="0"]
 shape = SubResource( 10 )
 
 [node name="LandingArea3" parent="Map/LandingAreas" instance=ExtResource( 9 )]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.5, -120 )
 
 [node name="CollisionShape" parent="Map/LandingAreas/LandingArea3" index="0"]
 shape = SubResource( 10 )
 
 [node name="LandingArea2" parent="Map/LandingAreas" instance=ExtResource( 9 )]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 131, 18.5, 0 )
 
 [node name="CollisionShape" parent="Map/LandingAreas/LandingArea2" index="0"]
 shape = SubResource( 11 )
 
 [node name="LandingArea4" parent="Map/LandingAreas" instance=ExtResource( 9 )]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -131, 18.5, 0 )
 
 [node name="CollisionShape" parent="Map/LandingAreas/LandingArea4" index="0"]
 shape = SubResource( 11 )
 
 [node name="Boxes" type="Node" parent="Map"]
-editor/display_folded = true
 
 [node name="Box" parent="Map/Boxes" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -180, 3.5, -125 )
@@ -206,7 +197,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -183, 3.5, -128 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -181.5, 6.5, -126.5 )
 
 [node name="CommandPosts" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="CommandPost1" parent="CommandPosts" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0 )
@@ -228,7 +218,6 @@ start_team = 2
 [node name="Troops" type="Node" parent="."]
 
 [node name="Vehicles" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Ship" parent="Vehicles" instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -105.964, 4, -171.178 )
@@ -243,21 +232,18 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 85.026,
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 105.964, 4, 171.178 )
 
 [node name="ShipTransport" parent="Vehicles" instance=ExtResource( 13 )]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -150, 4, 0 )
 
 [node name="Transport" parent="Vehicles/ShipTransport" index="7"]
 m_team = 1
 
 [node name="ShipTransport2" parent="Vehicles" instance=ExtResource( 13 )]
-editor/display_folded = true
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 150, 4, 0 )
 
 [node name="Transport" parent="Vehicles/ShipTransport2" index="7"]
 m_team = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Vehicles/ShipTransport2"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -280,7 +266,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Vehicles/ShipTransport2/HBoxContainer"]
-editor/display_folded = true
 margin_left = 962.0
 margin_right = 1920.0
 margin_bottom = 1080.0
@@ -300,21 +285,22 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="CapitalShips" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="CapitalShip" parent="CapitalShips" instance=ExtResource( 14 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 2000, 2000 )
+team = 1
+cap_ship_id = 1
 
 [node name="CapitalShip2" parent="CapitalShips" instance=ExtResource( 14 )]
-editor/display_folded = true
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 2000, -2000 )
+team = 2
+cap_ship_id = 2
 
-[node name="Label" parent="CapitalShips/CapitalShip2" index="6"]
+[node name="Label" parent="CapitalShips/CapitalShip2" index="8"]
 margin_top = -129.0
 margin_bottom = -100.0
 
 [node name="Cameras" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="SceneCamera1" type="Camera" parent="Cameras"]
 transform = Transform( 0.793742, -0.157791, 0.587432, 0, 0.965766, 0.259416, -0.608255, -0.205909, 0.766569, 26.4655, 14.8489, 33.6973 )
@@ -339,7 +325,6 @@ transform = Transform( 1, 0, 0, 0, -0.5, 0.866026, 0, -0.866026, -0.5, 0, 45, 0 
 shadow_enabled = true
 
 [node name="ReflectionProbes" type="Spatial" parent="Rendering"]
-editor/display_folded = true
 visible = false
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Rendering/ReflectionProbes"]
@@ -352,7 +337,6 @@ environment = ExtResource( 15 )
 [node name="SelectionMenus" type="Node" parent="."]
 
 [node name="DebugHUD" type="CanvasLayer" parent="."]
-editor/display_folded = true
 layer = 3
 
 [node name="FPS" type="Label" parent="DebugHUD"]
@@ -370,15 +354,14 @@ stream = ExtResource( 17 )
 volume_db = -4.0
 
 [editable path="Map/LandingAreas/LandingArea"]
-
 [editable path="Map/LandingAreas/LandingArea3"]
-
 [editable path="Map/LandingAreas/LandingArea2"]
-
 [editable path="Map/LandingAreas/LandingArea4"]
-
 [editable path="Vehicles/ShipTransport"]
-
+[editable path="Vehicles/ShipTransport/ShipMesh"]
 [editable path="Vehicles/ShipTransport2"]
-
+[editable path="Vehicles/ShipTransport2/ShipMesh"]
 [editable path="CapitalShips/CapitalShip2"]
+[editable path="CapitalShips/CapitalShip2/Scene Root"]
+[editable path="CapitalShips/CapitalShip2/Hangar"]
+[editable path="CapitalShips/CapitalShip2/Hangar/LandingArea"]

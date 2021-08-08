@@ -20,7 +20,7 @@ func _set_team(selected_team : int) -> void:
 		Network.players[number_of_player - 1][int(player.name)].team = selected_team
 		Network.rpc("_send_player_config", int(player.name), selected_team, number_of_player)
 	
-	for troop in get_node("/root/Main/Troops").get_children():
+	for troop in get_tree().get_nodes_in_group("AI"):
 		troop.set_material()
 	
 	$Container/TeamMenu.hide()
@@ -33,7 +33,7 @@ func _set_class(selected_class : int) -> void:
 	Utilities.play_button_audio()
 	$Container/ClassMenu.hide()
 	$Container/SpawnMenu.show() 
-	# get_node(get_node("/root/Main/CommandPosts").get_child(0).button_path).grab_focus()
+	# get_node(get_node("/root/Main/CommandPosts").get_child(0).button_path).grab_focus() # ço ja no funcionaria
 	
 	player.get_node("TroopManager").m_class = selected_class
 	
@@ -67,10 +67,10 @@ func _on_SpawnButton_pressed() -> void:
 			Es necesitarà la camara d'espectador
 			"""
 			if get_tree().is_network_server():
-				if get_node("/root/Main/Troops").get_child_count() == 0:
+				if not get_tree().get_nodes_in_group("AI"): # si no n'hi ha
 					get_node("/root/Main").rpc("spawn_troops", Settings.troops_per_team)
 			else:
-				if Network.match_data.recived and get_node("/root/Main/Troops").get_child_count() == 0:
+				if Network.match_data.recived and not get_tree().get_nodes_in_group("AI"):
 					get_node("/root/Main").rpc("spawn_troops", Settings.troops_per_team)
 		else:
 			get_node("/root/Main").spawn_troops(Settings.troops_per_team)
@@ -83,7 +83,7 @@ func _on_SpawnButton_pressed() -> void:
 
 
 func _on_CommandPostButton_pressed(command_post : CommandPost) -> void:
-	var cp_pos := command_post.translation
+	var cp_pos := command_post.global_transform.origin
 	var cp_team := command_post.m_team
 	
 	if cp_team == player.get_node("TroopManager").m_team:

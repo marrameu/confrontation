@@ -26,15 +26,14 @@ func init(new_target : Position3D, player : int) -> void:
 	var root = get_tree().get_root()
 	var current_scene = root.get_child(root.get_child_count() - 1)
 	
-	get_parent().remove_child(self)
-	current_scene.get_node("Splitscreen").get_player(player - 1).viewport.add_child(self)
-	
 	target = new_target
-	translation = target.global_transform.origin
-	rotation = target.global_transform.basis.get_euler()
+	global_transform.origin = target.global_transform.origin
+	global_transform.basis = target.global_transform.basis.get_euler()
 	starter_target_position = target.translation
 	
-	make_current()
+	current_scene.get_node("Splitscreen").get_player(player - 1).viewport.get_node("PuppetCam").target = self
+	# HI HA DOS TARGETS: EL DE LA SHIP CAM I EL DE LA PUPPET CAM, CAL OPTIMITZAR
+	#make_current()
 
 func _physics_process(delta : float) -> void:
 	if not target:
@@ -57,18 +56,19 @@ func move_camera(delta : float) -> void:
 		return
 	
 	if not Input.is_action_pressed(look_behind_action):
-		translation = target.global_transform.origin
+		global_transform.origin = target.global_transform.origin
 	else:
-		translation = target.get_parent().global_transform.origin + target.get_parent().global_transform.basis.xform(Vector3(target.translation.x, target.translation.y, -target.translation.z))
+		global_transform.origin = target.get_parent().global_transform.origin + target.get_parent().global_transform.basis.xform(Vector3(target.translation.x, target.translation.y, -target.translation.z))
 	
 	if Input.is_action_pressed(look_behind_action):
-		target.rotation_degrees = Vector3()
-		rotation = target.global_transform.basis.get_euler()
+		target.rotation_degrees = Vector3.ZERO
+		global_transform.basis = target.global_transform.basis.get_euler()
 	else:
 		target.rotation_degrees = Vector3(0, 180, 0)
-		rotation = target.global_transform.basis.get_euler()
+		global_transform.basis = target.global_transform.basis.get_euler()
 	
-	global_transform.basis = Quat(global_transform.basis).slerp(Quat(target.get_global_transform().basis), rotate_speed * delta)
+	# té cap effecte açò?, potser s'hauria de fer diferent l'acció de mirar enrere
+	global_transform.basis = Quat(global_transform.basis).slerp(Quat(target.global_transform.basis), rotate_speed * delta)
 	update_target(delta)
 	
 	# global_transform.origin = global_transform.origin.slerp(target.global_transform.origin, move_speed_test * delta)
@@ -77,8 +77,9 @@ func move_camera(delta : float) -> void:
 	# rotation_degrees = rotation_degrees.slerp(Vector3(rad2deg(a.x), rad2deg(a.y), rad2deg(a.z)), rotate_speed_test * delta)
 
 func update_target(delta : float):
-	# Mirar si la nau esta en moviment, si ho està, resetejar la posició del target i no fer res més
+	# Mirar si la nau esta en moviment, si no ho està, restablir la posició del target i no fer-hi res més
 	if target.get_parent().state != target.get_parent().State.FLYING:
+		# target.global_transform.origin = target.global_transform.origin.linear_interpolate(target.get_parent().to_local(starter_target_position), delta)
 		target.translation = target.translation.linear_interpolate(Vector3(0, 6, -30), delta)
 		horizontal_lean(target.get_node("../ShipMesh"), 0.0)
 		return

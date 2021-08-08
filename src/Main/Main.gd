@@ -1,6 +1,8 @@
 extends Spatial
 class_name Main
 
+const cp_scene : PackedScene = preload("res://src/CommandPost/CommandPost.tscn")
+
 var game_started := false
 
 var local_players := [null, null, null, null]
@@ -77,6 +79,11 @@ func _process(delta : float) -> void:
 				var troops_data = Network.match_data.troops_data
 				var capital_ships_data = Network.match_data.capital_ships_data
 				
+				if not _capital_ships_instantiated:
+					for capital_ship_data in capital_ships_data:
+						_add_new_capital_ship(capital_ship_data)
+					_capital_ships_instantiated = true
+				
 				if not _vehicles_instantiated:
 					for vehicle_data in vehicles_data:
 						_add_new_vehicle(vehicle_data)
@@ -86,11 +93,6 @@ func _process(delta : float) -> void:
 					for troop_data in troops_data:
 						_add_new_troop(troop_data)
 					_troops_instantiated = true
-				
-				if not _capital_ships_instantiated:
-					for capital_ship_data in capital_ships_data:
-						_add_new_capital_ship(capital_ship_data)
-					_capital_ships_instantiated = true
 
 
 sync func spawn_troops(troops_per_team : int):
@@ -112,15 +114,15 @@ sync func spawn_troops(troops_per_team : int):
 		
 		# Position
 		var command_posts := []
-		for command_post in get_node("/root/Main/CommandPosts").get_children():
+		for command_post in get_tree().get_nodes_in_group("CommandPosts"):
 			if command_post.m_team == new_troop.get_node("TroopManager").m_team:
 				command_posts.push_back(command_post)
 		if command_posts.size() < 1:
 			print("ERROR: No command posts")
 			return
-		var pos : Vector3 = command_posts[randi()%command_posts.size()].translation
-		new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  1.815, pos.z + rand_range(-15, 15))
-		$Troops.add_child(new_troop)
+		var pos : Vector3 = command_posts[randi()%command_posts.size()].global_transform.origin
+		new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
+		$Troops.add_child(new_troop) # al princpip no passa res si es col·Loquen ací
 		
 		# Material
 		new_troop.set_material()
@@ -173,7 +175,14 @@ func _add_new_render(number : int) -> void:
 	render.viewport.msaa = get_tree().get_root().msaa
 	# Shadows
 	
-	render.viewport.add_child(local_players[number - 1])
+	# render.viewport.add_child(local_players[number - 1])
+	add_child(local_players[number - 1])
+	
+	# S'afegeix una càmera al viewport que copiï la pos global
+	var puppet_cam : Camera = load("res://src/Troops/Player/PuppetCam.tscn").instance()
+	puppet_cam.target = local_players[number - 1].get_node("CameraBase/Camera")
+	puppet_cam.make_current()
+	render.viewport.add_child(puppet_cam)
 	
 	# Pause Menu (Canvas Scaler)
 	var pause_menu = load("res://src/Menus/PauseMenu/PauseMenu.tscn").instance() # : PauseMenu
@@ -224,23 +233,33 @@ func _add_new_vehicle(vehicle_data : Dictionary) -> void:
 		new_vehicle.get_node("Transport").m_team = vehicle_data.team
 	if vehicle_data.is_player:
 		new_vehicle.player_name = String(vehicle_data.player_id)
-	$Vehicles.add_child(new_vehicle)
+	
+	if vehicle_data.parent_cap_ship_id != 0:
+		for cap_ship in get_tree().get_nodes_in_group("CapitalShips"):
+			if cap_ship.cap_ship_id == vehicle_data.parent_cap_ship_id:
+				cap_ship.add_child(new_vehicle)
+	else:
+		$Vehicles.add_child(new_vehicle)
 
 
 func _add_new_capital_ship(capital_ship_data : Dictionary) -> void:
 	var ship_scene = load("res://src/CapitalShips/CapitalShip.tscn")
 	var new_ship : Spatial = ship_scene.instance()
-	if capital_ship_data.name == "CapitalShip":
+	
+	new_ship.id = capital_ship_data.id
+	
+	if capital_ship_data.id == 1: # Solució temporal
 		new_ship.translation = Vector3(0, 2000, 2000)
 		new_ship.rotation_degrees = Vector3(0, 90, 0)
-	elif capital_ship_data.name == "CapitalShip2":
+	elif capital_ship_data.id == 2:
 		new_ship.name = "CapitalShip2"
 		new_ship.translation = Vector3(0, 2000, -2000)
 		new_ship.rotation_degrees = Vector3(0, -90, 0)
 		new_ship.get_node("Label").rect_position.y -= 50
+	
 	new_ship.get_node("HealthSystem").health = capital_ship_data.health
 	if capital_ship_data.health == 0:
-		new_ship._on_HealthSystem_die()
+		new_ship._on_HealthSystem_die() # què passa si ja porta x segons explotant, he de sincronitzar tmb el timer?, o he de fer que l'explosió sigui una funció cinronitzada
 	$CapitalShips.add_child(new_ship)
 
 
@@ -258,4 +277,21 @@ func _add_new_troop(troop_data : Dictionary) -> void:
 		new_troop.get_node("TroopManager").is_alive = false
 		new_troop.get_node("HealthSystem").health = 0
 	new_troop.init()
-	$Troops.add_child(new_troop)
+	
+	if troop_data.parent_cap_ship_id != 0:
+		for cap_ship in get_tree().get_nodes_in_group("CapitalShips"):
+			if cap_ship.cap_ship_id == troop_data.parent_cap_ship_id:
+				cap_ship.add_child(troop_data)
+	else:
+		$Troops.add_child(new_troop)
+
+
+# en línia?
+func instance_cp(pos : Vector3, capturable : bool = true, team : int = 0) -> CommandPost:
+	var cp = cp_scene.instance() # : CommandPost
+	cp.capturable = capturable
+	cp.m_team = team
+	cp.translation = pos
+	# cp.get_node("MeshInstance").hide() # demanar una variable que digui si visible o no
+	$CommandPosts.add_child(cp)
+	return cp

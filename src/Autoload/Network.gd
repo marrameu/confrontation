@@ -67,6 +67,7 @@ func _connected_to_server():
 func _on_player_disconnected(id):
 	for i in range(0, players.size()):
 		if players[i].has(id):
+			# for player in get nodes in group AI
 			var player : Player = get_node("/root/Main/Splitscreen/Viewport" + str(i + 1)).get_node(str(id))
 			if player.get_node("Interaction").is_in_a_vehicle:
 				player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF)
@@ -112,33 +113,38 @@ remote func _send_player_info(id, info, number_of_player):
 	new_player.set_network_master(id) # S'estableix com a "network master", així que el sistema local serà el "master" d'aquest node
 	new_player.number_of_player = number_of_player
 	
+	# potser això sobra ara 6/8/21
 	var viewport : Viewport = get_node("/root/Main/Splitscreen/Viewport" + str(number_of_player))
 	if not viewport:
 		var node = Node.new()
 		node.name = "Viewport" + str(number_of_player)
 		$"/root/Main/Splitscreen".add_child(node)
 		viewport = node
-	viewport.add_child(new_player)
+	#viewport.add_child(new_player)
+	$"/root/Main".add_child(new_player)
 	
 	new_player.init(info.name, info.position, info.crouching, info.health, info.is_alive, info.is_in_a_vehicle) # S'inicalitza el jugador
 
 
 remote func _request_match_info(request_from_id) -> void:
 	var current_vehicles_data := []
+	# Atenció!, això s'hauria de fer amb tags per les naus que es troben en les naus capitals
+	# per tant, s'hauria de demanar la info. de les Naus capitals abans que la dels vehicles i demanar el parent
+	
+	var current_capital_ships_data := []
+	for ship in get_node("/root/Main/CapitalShips").get_children():
+		current_capital_ships_data.resize(current_capital_ships_data.size() + 1)
+		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health, id = ship.id } # el nom no caldria
+		current_capital_ships_data[current_capital_ships_data.size() - 1] = ship_data
+	
 	for vehicle in get_node("/root/Main/Vehicles").get_children():
 		current_vehicles_data.resize(current_vehicles_data.size() + 1)
 		current_vehicles_data[current_vehicles_data.size() - 1] = vehicle.get_node("VehicleNetwork").vehicle_data
 	
 	var current_troops_data := []
-	for troop in get_node("/root/Main/Troops").get_children():
+	for troop in get_tree().get_nodes_in_group("AI"):
 		current_troops_data.resize(current_troops_data.size() + 1)
 		current_troops_data[current_troops_data.size() - 1] = troop.get_node("TroopNetwork").troop_data
-	
-	var current_capital_ships_data := []
-	for ship in get_node("/root/Main/CapitalShips").get_children():
-		current_capital_ships_data.resize(current_capital_ships_data.size() + 1)
-		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health }
-		current_capital_ships_data[current_capital_ships_data.size() - 1] = ship_data
 	
 	if get_tree().is_network_server():
 		# Si es el servidor, li envia la informació de la partida a qui la demani
