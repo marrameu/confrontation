@@ -74,8 +74,14 @@ func _process(delta : float) -> void:
 	var camera_left_action := "camera_left" if LocalMultiplayer.number_of_players == 1 else $InputManager.input_map.camera_left
 	var camera_right_action := "camera_right" if LocalMultiplayer.number_of_players == 1 else $InputManager.input_map.camera_right
 	
-	joystick_movement = Vector2(Input.get_action_strength(camera_right_action) - Input.get_action_strength(camera_left_action), 
-								Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action))
+	"""
+	comprovació per evitar errors, puix que en el multijugador local el
+	jugador que té el ratolí no té les accions nomenades i genera molts avisos
+	vermells en el depurador
+	"""
+	if camera_right_action:
+		joystick_movement = Vector2(Input.get_action_strength(camera_right_action) - Input.get_action_strength(camera_left_action), 
+									Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action))
 	joystick_movement *= joystick_sensitivity
 	
 	# $PlayerMesh.moving = true if $StateMachine/Movement/Move.direction else false
@@ -104,5 +110,6 @@ func _physics_process(delta : float) -> void:
 
 
 func update_network_info() -> void:
-	Network.update_info(int(name), translation, rotation.y, $Crouch.crouching,
+	# Cal agafar només les dos primeres lletres del nom
+	Network.update_info(int(name.left(2)), translation, rotation.y, $Crouch.crouching,
 	$HealthSystem.health, $TroopManager.is_alive, $Interaction.is_in_a_vehicle, number_of_player)

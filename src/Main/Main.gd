@@ -287,6 +287,8 @@ func _add_new_troop(troop_data : Dictionary) -> void:
 
 
 # en línia?
+# xe, mireu, Aleix, si les naus capitals ja no empren aquesta funció i els transport 
+# fer servir aquesta funció se'ls fa un mareig, la podem esborrar
 func instance_cp(pos : Vector3, capturable : bool = true, team : int = 0) -> CommandPost:
 	var cp = cp_scene.instance() # : CommandPost
 	cp.capturable = capturable

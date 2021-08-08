@@ -26,7 +26,7 @@
 radius = 0.6
 height = 2.4
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 24
 use_filter = true
 font_data = ExtResource( 21 )
@@ -178,7 +178,7 @@ margin_top = -315.5
 margin_right = 115.0
 margin_bottom = -284.5
 rect_pivot_offset = Vector2( 115, 15.5 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 0.447059, 0.447059, 1 )
 text = "Noname"
 align = 1

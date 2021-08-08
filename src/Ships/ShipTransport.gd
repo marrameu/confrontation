@@ -5,25 +5,34 @@ export var mesh : NodePath
 
 var current_cp := ""
 
+
 func _ready() -> void:
 	pass
+
 
 func _process(delta : float) -> void:
 	# Cambiar quan les naus tinguin models propis
 	set_material()
 	
-	if get_parent().state == get_parent().State.LANDED and current_cp == "":
+	if get_parent().state == get_parent().State.LANDED and not current_cp:
 		instance_cp()
-	elif get_parent().state != get_parent().State.LANDED and current_cp != "":
+	elif get_parent().state != get_parent().State.LANDED and current_cp:
 		delete_cp()
 	
-	if get_parent().state == get_parent().State.LANDED and current_cp != "":
-		if get_node(current_cp).translation != get_parent().translation:
+	"""
+	Em pens q açò ja no cal
+	if get_parent().state == get_parent().State.LANDED and current_cp:
+		if get_node(current_cp).global_transform.origin != get_parent().translation:
 			get_node(current_cp).translation = get_parent().translation
+	"""
+
 
 func instance_cp() -> void:
 	var main : Main = get_node("/root/Main/") # hi ha cap manera millor?
-	var cp = main.instance_cp( get_parent().global_transform.origin, false, m_team)
+	var cp = main.instance_cp(Vector3.ZERO, false, m_team) # Pos. = 0 perquè ara serà fill nostre
+	
+	cp.get_parent().remove_child(cp)
+	get_parent().add_child(cp)
 	
 	cp.get_node("MeshInstance").hide()
 	connect("tree_exited", cp, "queue_free")
@@ -34,6 +43,7 @@ func delete_cp() -> void:
 		return
 	get_node(current_cp).queue_free()
 	current_cp = ""
+
 
 func set_material() -> void:
 	return

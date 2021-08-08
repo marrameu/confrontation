@@ -77,6 +77,7 @@ func _process(delta):
 					
 					if ($ConquestTimer as Timer).is_stopped(): # aquesta comprovació es podria obviar
 						$ConquestTimer.wait_time = rand_range(7.0, 13.0)
+						# millor, en lloc de temps, senyal quan s'ha conquerit
 						$ConquestTimer.start() # SI MOR CONQUERINT, REPAEREIX CONQUERINT? AL DISABLE CCOMPONENTS S'HAURIA DE RESTABLIR TMB
 	
 	# Shoot

@@ -54,6 +54,7 @@ func _process(delta : float) -> void:
 		if Input.is_action_just_pressed(action) and current_vehicle.state == current_vehicle.State.LANDED:
 			exit_ship()
 
+
 func enter_ship(result):
 	if get_tree().has_network_peer():
 		rpc("change_ship_player", result.collider.get_path(), true, get_parent().name)
@@ -100,4 +101,4 @@ sync func change_ship_player(ship_path : NodePath, status : bool, name : String)
 	
 	if get_node(ship_path):
 		get_node(ship_path).is_player = status
-		get_node(ship_path).player_name = name
+		get_node(ship_path).player_name = name.left(2)

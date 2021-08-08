@@ -51,7 +51,6 @@ shape = SubResource( 2 )
 script = ExtResource( 5 )
 
 [node name="HealthSystem" parent="." instance=ExtResource( 6 )]
-MAX_HEALTH = 300000
 
 [node name="TroopManager" parent="." instance=ExtResource( 7 )]
 

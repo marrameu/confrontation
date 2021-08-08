@@ -37,7 +37,7 @@ func _ready():
 	
 	number_of_device = LocalMultiplayer.controller_of_each_player[number_of_player - 1]
 	
-	# Es pot fer una funció per a no tenir que repetir-ho tants cops
+	# Es pot fer una funció per a no tenir de repetir-ho tants cops
 	var a : String = "_player_" + String(number_of_player)
 	input_map.shoot = "shoot" + a
 	input_map.move_forward = "move_forward" + a

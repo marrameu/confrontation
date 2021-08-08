@@ -133,6 +133,7 @@ func update_button_color(button : Button) -> void:
 	else:
 		button.add_color_override("font_color", Color("dcb4b4"))
 
+
 func update_menus() -> void:
 	var new_menus := []
 	
