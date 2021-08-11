@@ -5,6 +5,12 @@ export var team : int = 0
 
 export var cap_ship_id : int = 0
 
+
+func _ready():
+	$Hangar/Area.connect("body_entered", self, "_on_Area_body_entered", [])
+	$Hangar/Area.connect("body_exited", self, "_on_Area_body_exited", [])
+
+
 func _process(delta : float) -> void:
 	$Label.text = str($HealthSystem.shield) + "; " + str($HealthSystem.health) + " HP"
 
@@ -41,23 +47,57 @@ sync func _explode() -> void:
 
 
 func _on_Area_body_entered(body):
-	if body.is_in_group("Ships") or body.is_in_group("Troops"):
-		if body.get_parent() == self:
-			return
-		body.get_parent().remove_child(body)
-		add_child(body)
-		# posició nuaas
-		body.translation = to_local(body.translation)
-		body.rotation -= rotation
+	if get_tree().has_network_peer():
+		if get_tree().is_network_server():
+			rpc("add_passatger", body)
+	else:
+		add_passatger(body)
 
 
 func _on_Area_body_exited(body):
-	pass
-	"""
+	if get_tree().has_network_peer():
+		if get_tree().is_network_server():
+			rpc("remove_passatger", body)
+	else:
+		remove_passatger(body)
+
+
+sync func add_passatger(body):
+	if body.get_parent() == self: # per a les naus que hi són des del principi
+		return
 	if body.is_in_group("Ships") or body.is_in_group("Troops"):
-		if body.get_parent() == self:
-			remove_child(body)
-			get_node()add_child(body)
-			
-	"""
+		
+		if body.wait_a_fcking_moment:
+			return
+		
+		print("entra a " + name + " " + body.name)
+		
+		# issuea 14578
+		body.wait_a_fcking_moment = true
+		body.get_parent().remove_child(body)
+		body.translation = to_local(body.translation) # body.translation = to_local(body.global_transform.origin)
+		#yield(get_tree(), "idle_frame")
+		add_child(body)
+		
+		body.rotation -= rotation
+		body.wait_a_fcking_moment = false
+
+
+sync func remove_passatger(body):
+	if body.get_parent() == self: # així també se soluciona el bug 14578 pq si bé surten de la nau comq encara tenen de node pare el /Troops, no s'executa
+		print("surt de " + name + " " + body.name)
+		body.global_transform.origin = to_global(body.global_transform.origin)
+		remove_child(body)
+		if body.is_in_group("AI"):
+			get_node("/root/Main/Troops").add_child(body)
+		elif body.is_in_group("Ships"):
+			get_node("/root/Main/Vehicles").add_child(body)
+			# treure'n també el fill si no es fa sol
+			body.rotation += rotation
+		elif body.is_in_group("Players"):
+			get_node("/root/Main").add_child(body)
+		else:
+			return
+		return
+
 

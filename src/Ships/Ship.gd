@@ -22,7 +22,12 @@ var jump_action := "jump"
 
 var input : Node # class per al input
 
+# temproal
+var wait_a_fcking_moment := false
+
+
 func _ready():
+	# nom aletaori si es server
 	slave_position = translation
 	slave_rotation = rotation
 

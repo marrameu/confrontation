@@ -26,6 +26,9 @@ var nickname := "Troop"
 puppet var slave_position : = Vector3()
 puppet var slave_rotation : = 0.0
 
+# temproal
+var wait_a_fcking_moment := false
+
 
 # Client
 func init() -> void:
@@ -39,24 +42,27 @@ func init() -> void:
 
 # Dubt que fer coses al ready doni problemes en l'en línia però ni idea
 func _ready():
+	if name == "Troop9":
+		pass
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
 			return
-	if global_transform.origin.y > 1000:
-		pass
 	space = global_transform.origin.y > 1000
 
 
 # TOT AÇÒ NECESSITA UNA STATE MACHINE O, ALEMNYS, MÉS FUNCIONS SEPARADES o MATCH
 func _process(delta):
+	if name =="Troop9":
+		pass
 	$PlayerMesh.moving = !$PathMaker.finished
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
 			return
 	
-	# Rotate
-	look_at($PathMaker.end, Vector3(0, 1, 0))
-	rotation = Vector3(0, rotation.y + deg2rad(180), 0)
+	# Rotate, hauria de mirar al següent punt del camí i no pas al final de tot
+	if $PathMaker.navigation_node:
+		look_at($PathMaker.navigation_node.to_global($PathMaker.end), Vector3(0, 1, 0))
+		rotation = Vector3(0, rotation.y + deg2rad(180), 0)
 	
 	# Walk
 	# Si ha acabat de caminar o de fer qualsevol cosa (fer-ho amb senyals)
@@ -193,6 +199,7 @@ func _on_ConquestTimer_timeout():
 
 
 func set_material() -> void:
+	print(get_node("TroopManager").m_team, "   ", get_node("/root/Main").local_players[0].get_node("TroopManager").m_team)
 	if get_node("TroopManager").m_team == get_node("/root/Main").local_players[0].get_node("TroopManager").m_team:
 		get_node(body).set_surface_material(2, load("res://assets/models/mannequiny/Azul_R.material"))
 	else:

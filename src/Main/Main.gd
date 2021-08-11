@@ -112,20 +112,34 @@ sync func spawn_troops(troops_per_team : int):
 			new_troop.get_node("TroopManager").m_team = 2
 			b -=1
 		
-		# Position
-		var command_posts := []
-		for command_post in get_tree().get_nodes_in_group("CommandPosts"):
-			if command_post.m_team == new_troop.get_node("TroopManager").m_team:
-				command_posts.push_back(command_post)
-		if command_posts.size() < 1:
-			print("ERROR: No command posts")
-			return
-		var pos : Vector3 = command_posts[randi()%command_posts.size()].global_transform.origin
-		new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
+		# Position; no cal que ho faça el client pq hi ha coses aleatòries i a la fi s'acaba posant el q el server diu
+		if get_tree().has_network_peer():
+			if get_tree().is_network_server():
+				var command_posts := []
+				for command_post in get_tree().get_nodes_in_group("CommandPosts"):
+					if command_post.m_team == new_troop.get_node("TroopManager").m_team:
+						command_posts.push_back(command_post)
+				if command_posts.size() < 1:
+					print("ERROR: No command posts")
+					return
+				var pos : Vector3 = command_posts[randi()%command_posts.size()].global_transform.origin
+				new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
+		else:
+			var command_posts := []
+			for command_post in get_tree().get_nodes_in_group("CommandPosts"):
+				if command_post.m_team == new_troop.get_node("TroopManager").m_team:
+					command_posts.push_back(command_post)
+			if command_posts.size() < 1:
+				print("ERROR: No command posts")
+				return
+			var pos : Vector3 = command_posts[randi()%command_posts.size()].global_transform.origin
+			new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
+		
 		$Troops.add_child(new_troop) # al princpip no passa res si es col·Loquen ací
 		
-		# Material
+		# Material; s'ha de fer després de donar-li un pare a la tropa, car la funció get_node("/root/Main") ho requereix
 		new_troop.set_material()
+	pass
 
 
 func exit_game() -> void:
@@ -136,13 +150,16 @@ func exit_game() -> void:
 
 func _on_server_disconnected() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	exit_game()
 	get_tree().set_network_peer(null)
 	for data in Network.self_datas:
 		data = { }
+	print("desconected")
+	exit_game()
 
 
 func _add_new_player(number : int) -> void:
+	# Fer fill de la nua capital
+	
 	# Instance Player
 	var new_player : Player = load("res://src/Troops/Player/Player.tscn").instance()
 	new_player.number_of_player = number
@@ -159,10 +176,9 @@ func _add_new_player(number : int) -> void:
 	
 	# Name for online
 	if get_tree().has_network_peer():
-		new_player.name = str(get_tree().get_network_unique_id())
+		new_player.name = str(get_tree().get_network_unique_id()) + str(number)
+		new_player.online_id = get_tree().get_network_unique_id()
 		new_player.set_network_master(get_tree().get_network_unique_id())
-	else:
-		new_player.name = "Player"
 	
 	var info : Dictionary = Network.self_datas[number - 1]
 	new_player.init(info.name, info.position, false, info.health, false, false)
@@ -246,7 +262,7 @@ func _add_new_capital_ship(capital_ship_data : Dictionary) -> void:
 	var ship_scene = load("res://src/CapitalShips/CapitalShip.tscn")
 	var new_ship : Spatial = ship_scene.instance()
 	
-	new_ship.id = capital_ship_data.id
+	new_ship.cap_ship_id = capital_ship_data.id # han de tenir el mateix nom, per això!
 	
 	if capital_ship_data.id == 1: # Solució temporal
 		new_ship.translation = Vector3(0, 2000, 2000)
@@ -281,7 +297,7 @@ func _add_new_troop(troop_data : Dictionary) -> void:
 	if troop_data.parent_cap_ship_id != 0:
 		for cap_ship in get_tree().get_nodes_in_group("CapitalShips"):
 			if cap_ship.cap_ship_id == troop_data.parent_cap_ship_id:
-				cap_ship.add_child(troop_data)
+				cap_ship.add_child(new_troop)
 	else:
 		$Troops.add_child(new_troop)
 

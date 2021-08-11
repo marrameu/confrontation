@@ -29,3 +29,4 @@ material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 3 )
+disabled = true

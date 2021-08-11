@@ -32,6 +32,7 @@ script = ExtResource( 9 )
 [node name="CommandPost" parent="CPPositions" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -61.096, -257.782 )
 capturable = false
+start_team = 1
 
 [node name="Scene Root" parent="." instance=ExtResource( 2 )]
 transform = Transform( 50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0 )
@@ -165,8 +166,6 @@ transform = Transform( 0.0307653, 0, -0.999527, 0, 1, 0, 0.999527, 0, 0.0307653,
 [node name="Ship" parent="." instance=ExtResource( 10 )]
 transform = Transform( -0.0317073, 0, 0.999497, 0, 1, 0, -0.999497, 0, -0.0317073, 116.759, -57.5001, -184.603 )
 
-[connection signal="body_entered" from="Hangar/Area" to="." method="_on_Area_body_entered"]
-[connection signal="body_exited" from="Hangar/Area" to="." method="_on_Area_body_exited"]
 [connection signal="die" from="HealthSystem" to="." method="_on_HealthSystem_die"]
 [connection signal="timeout" from="DestructionTimer" to="." method="_on_DestructionTimer_timeout"]
 

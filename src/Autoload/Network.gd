@@ -49,7 +49,7 @@ func connect_to_server(player_nickname, connect_ip):
 	get_tree().set_network_peer(peer)
 
 
-# Si tot va bé, aquesta funció s'inicialitza desde la funció "connect_to_server"
+# Si tot va bé, aquesta funció s'inicialitza des de la funció "connect_to_server"
 func _connected_to_server():
 	var id : int = get_tree().get_network_unique_id()
 	var i = LocalMultiplayer.number_of_players
@@ -65,10 +65,13 @@ func _connected_to_server():
 
 # S'executa quan es desconnecta un jugador
 func _on_player_disconnected(id):
+	# Es podria fer sense consultar quin local player és
 	for i in range(0, players.size()):
 		if players[i].has(id):
-			# for player in get nodes in group AI
-			var player : Player = get_node("/root/Main/Splitscreen/Viewport" + str(i + 1)).get_node(str(id))
+			var player # : Player 
+			for node in get_tree().get_nodes_in_group("Players"):
+				if node.online_id == id:
+					player = node
 			if player.get_node("Interaction").is_in_a_vehicle:
 				player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF)
 			
@@ -108,8 +111,9 @@ remote func _send_player_info(id, info, number_of_player):
 	# S'afegeix la informació en l'array "players"
 	players[number_of_player - 1][id] = info
 	
-	var new_player : Player = load("res://src/Troops/Player/Player.tscn").instance()
-	new_player.name = str(id)
+	var new_player = load("res://src/Troops/Player/Player.tscn").instance() # : Player 
+	new_player.online_id = id
+	new_player.name = String(id) + String(number_of_player)
 	new_player.set_network_master(id) # S'estableix com a "network master", així que el sistema local serà el "master" d'aquest node
 	new_player.number_of_player = number_of_player
 	
@@ -134,7 +138,7 @@ remote func _request_match_info(request_from_id) -> void:
 	var current_capital_ships_data := []
 	for ship in get_node("/root/Main/CapitalShips").get_children():
 		current_capital_ships_data.resize(current_capital_ships_data.size() + 1)
-		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health, id = ship.id } # el nom no caldria
+		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health, id = ship.cap_ship_id } # el nom no caldria
 		current_capital_ships_data[current_capital_ships_data.size() - 1] = ship_data
 	
 	for vehicle in get_node("/root/Main/Vehicles").get_children():

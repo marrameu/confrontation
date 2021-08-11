@@ -27,6 +27,11 @@ puppet var slave_position : = Vector3()
 puppet var slave_rotation : = 0.0
 var nickname := "Noname"
 
+var online_id : int = 1
+
+# temporal
+var wait_a_fcking_moment := false
+
 
 func init(new_nickname, start_position, start_crouching, start_health, start_alive, start_in_a_vehicle) -> void:
 	translation = start_position
@@ -64,7 +69,7 @@ func _process(delta : float) -> void:
 			if Input.is_key_pressed(KEY_K):
 				$HealthSystem.take_damage(INF)
 		else:
-			$TroopManager.m_team = Network.players[number_of_player - 1][int(name)].team
+			$TroopManager.m_team = Network.players[number_of_player - 1][online_id].team # què ve a compondre açò? per si vol canviar d'equi enmig de la partida?
 	else:
 		if Input.is_key_pressed(KEY_K):
 			$HealthSystem.take_damage(INF)
@@ -110,6 +115,5 @@ func _physics_process(delta : float) -> void:
 
 
 func update_network_info() -> void:
-	# Cal agafar només les dos primeres lletres del nom
-	Network.update_info(int(name.left(2)), translation, rotation.y, $Crouch.crouching,
+	Network.update_info(online_id, translation, rotation.y, $Crouch.crouching,
 	$HealthSystem.health, $TroopManager.is_alive, $Interaction.is_in_a_vehicle, number_of_player)

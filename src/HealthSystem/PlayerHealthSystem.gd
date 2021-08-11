@@ -79,6 +79,7 @@ sync func respawn() -> void:
 
 
 sync func update_components(var enable : bool, var update_interaction := true) -> void:
+	# si no és el network master es podria obviar de fer moltes coses
 	# perquè no es mogui, oi?
 	get_parent().set_process(enable)
 	get_parent().set_physics_process(enable)
@@ -109,6 +110,7 @@ sync func update_components(var enable : bool, var update_interaction := true) -
 					child.visible = enable
 	
 	for child in get_parent().get_children():
+		# print("uwu")
 		if child is Spatial:
 			child.visible = enable
 	
