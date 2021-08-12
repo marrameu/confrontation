@@ -47,28 +47,35 @@ sync func _explode() -> void:
 
 
 func _on_Area_body_entered(body):
+	print(body.name)
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc("add_passatger", body)
+			rpc("add_passatger", body.get_path())
 	else:
-		add_passatger(body)
+		add_passatger(body.get_path())
 
 
 func _on_Area_body_exited(body):
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc("remove_passatger", body)
+			rpc("remove_passatger", body.get_path())
 	else:
-		remove_passatger(body)
+		remove_passatger(body.get_path())
 
 
-sync func add_passatger(body):
+sync func add_passatger(path):
+	var body = get_node(path)
+	if not body:
+		return
 	if body.get_parent() == self: # per a les naus que hi són des del principi
 		return
 	if body.is_in_group("Ships") or body.is_in_group("Troops"):
 		
 		if body.wait_a_fcking_moment:
 			return
+		
+		if body.is_in_group("AI"):
+			Network.troops_can_move = true
 		
 		print("entra a " + name + " " + body.name)
 		
@@ -83,7 +90,10 @@ sync func add_passatger(body):
 		body.wait_a_fcking_moment = false
 
 
-sync func remove_passatger(body):
+sync func remove_passatger(path):
+	var body = get_node(path)
+	if not body:
+		return
 	if body.get_parent() == self: # així també se soluciona el bug 14578 pq si bé surten de la nau comq encara tenen de node pare el /Troops, no s'executa
 		print("surt de " + name + " " + body.name)
 		body.global_transform.origin = to_global(body.global_transform.origin)

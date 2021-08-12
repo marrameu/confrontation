@@ -24,7 +24,7 @@ func _ready() -> void:
 func _process(delta : float) -> void:
 	if get_tree().has_network_peer():
 		if get_parent().is_player:
-			if int(get_parent().player_name) != get_tree().get_network_unique_id():
+			if get_parent().player_id != get_tree().get_network_unique_id():
 				return
 	
 	Utilities.canvas_scaler(get_parent().number_of_player, self)

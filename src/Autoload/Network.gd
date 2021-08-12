@@ -1,5 +1,8 @@
 extends Node
 
+signal player_disconnected
+signal server_disconnected
+
 # Aquestes constants defineixen la configuaració necesaria per a crear un client o un servidor
 const DEFAULT_IP : String = "127.0.0.1" # Per defecte, está definit com a "localhost", es a dir conexió local
 const DEFAULT_PORT : int = 31406
@@ -17,8 +20,8 @@ var self_datas : Array = [ { }, { }, { }, { } ]
 # Conté totes les variables de necesaries per inicialitzar la partida
 var match_data : Dictionary = { recived = false, vehicles_data = [], troops_data = [], capital_ships_data = [] }
 
-signal player_disconnected
-signal server_disconnected
+# Temporal. Per al correcte funcionament de les naus capitals i les tropes quan el servidor executa "spawn_troops"
+var troops_can_move := false
 
 func _ready():
 	for i in range(0, self_datas.size()):
@@ -118,6 +121,7 @@ remote func _send_player_info(id, info, number_of_player):
 	new_player.number_of_player = number_of_player
 	
 	# potser això sobra ara 6/8/21
+	"""
 	var viewport : Viewport = get_node("/root/Main/Splitscreen/Viewport" + str(number_of_player))
 	if not viewport:
 		var node = Node.new()
@@ -125,6 +129,7 @@ remote func _send_player_info(id, info, number_of_player):
 		$"/root/Main/Splitscreen".add_child(node)
 		viewport = node
 	#viewport.add_child(new_player)
+	"""
 	$"/root/Main".add_child(new_player)
 	
 	new_player.init(info.name, info.position, info.crouching, info.health, info.is_alive, info.is_in_a_vehicle) # S'inicalitza el jugador

@@ -93,10 +93,22 @@ func _process(delta : float) -> void:
 					for troop_data in troops_data:
 						_add_new_troop(troop_data)
 					_troops_instantiated = true
+	
+	var troops_node = "T: "
+	for child in $Troops.get_children():
+		troops_node += child.name
+	var cs1  = "CS1: "
+	for child in $CapitalShips/CapitalShip.get_children():
+		if child is Troop:
+			cs1 += child.name
+	var cs2 = "CS2: "
+	for child in $CapitalShips/CapitalShip2.get_children():
+		if child is Troop:
+			cs2 += child.name
+	$Label.text = (troops_node + "\n" + cs1 + "\n" + cs2)
 
 
 sync func spawn_troops(troops_per_team : int):
-	
 	var a = troops_per_team
 	var b = a
 	
@@ -124,6 +136,7 @@ sync func spawn_troops(troops_per_team : int):
 					return
 				var pos : Vector3 = command_posts[randi()%command_posts.size()].global_transform.origin
 				new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
+				print(new_troop.translation)
 		else:
 			var command_posts := []
 			for command_post in get_tree().get_nodes_in_group("CommandPosts"):
@@ -139,7 +152,6 @@ sync func spawn_troops(troops_per_team : int):
 		
 		# Material; s'ha de fer després de donar-li un pare a la tropa, car la funció get_node("/root/Main") ho requereix
 		new_troop.set_material()
-	pass
 
 
 func exit_game() -> void:
@@ -153,12 +165,12 @@ func _on_server_disconnected() -> void:
 	get_tree().set_network_peer(null)
 	for data in Network.self_datas:
 		data = { }
-	print("desconected")
+	print("server desconected")
 	exit_game()
 
 
 func _add_new_player(number : int) -> void:
-	# Fer fill de la nua capital
+	# Fer fill de la nau capital
 	
 	# Instance Player
 	var new_player : Player = load("res://src/Troops/Player/Player.tscn").instance()
@@ -305,10 +317,10 @@ func _add_new_troop(troop_data : Dictionary) -> void:
 # en línia?
 # xe, mireu, Aleix, si les naus capitals ja no empren aquesta funció i els transport 
 # fer servir aquesta funció se'ls fa un mareig, la podem esborrar
-func instance_cp(pos : Vector3, capturable : bool = true, team : int = 0) -> CommandPost:
+sync func instance_cp(pos : Vector3, capturable : bool = true, team : int = 0) -> CommandPost:
 	var cp = cp_scene.instance() # : CommandPost
 	cp.capturable = capturable
-	cp.m_team = team
+	cp.start_team = team
 	cp.translation = pos
 	# cp.get_node("MeshInstance").hide() # demanar una variable que digui si visible o no
 	$CommandPosts.add_child(cp)

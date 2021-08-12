@@ -6,7 +6,7 @@ enum State { LANDED, FLYING, LEAVING, LANDING }
 var landing_areas := 0
 
 var is_player := false
-var player_name := "" # Player ID
+var player_id := 0 # Player ID
 var number_of_player := 0
 var state := 0
 
@@ -78,7 +78,7 @@ func _physics_process(delta : float) -> void:
 		return
 	
 	if is_player:
-		set_network_master(int(player_name))
+		set_network_master(player_id) #si és 0, doncs no en té
 		if is_network_master():
 			rset_unreliable("slave_position", translation)
 			rset_unreliable("slave_rotation", rotation)

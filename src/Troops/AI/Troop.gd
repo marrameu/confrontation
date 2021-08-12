@@ -28,7 +28,7 @@ puppet var slave_rotation : = 0.0
 
 # temproal
 var wait_a_fcking_moment := false
-
+var wait_a_frame := true
 
 # Client
 func init() -> void:
@@ -42,22 +42,23 @@ func init() -> void:
 
 # Dubt que fer coses al ready doni problemes en l'en línia però ni idea
 func _ready():
-	if name == "Troop9":
-		pass
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
 			return
 	space = global_transform.origin.y > 1000
+	if space:
+		pass
 
 
 # TOT AÇÒ NECESSITA UNA STATE MACHINE O, ALEMNYS, MÉS FUNCIONS SEPARADES o MATCH
 func _process(delta):
-	if name =="Troop9":
-		pass
 	$PlayerMesh.moving = !$PathMaker.finished
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
 			return
+	
+	if not Network.troops_can_move:
+		return
 	
 	# Rotate, hauria de mirar al següent punt del camí i no pas al final de tot
 	if $PathMaker.navigation_node:
@@ -109,6 +110,8 @@ func _process(delta):
 func _physics_process(delta : float) -> void:
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
+			if translation.y > 1000:
+				pass
 			rset_unreliable("slave_position", translation)
 			rset_unreliable("slave_rotation", rotation.y)
 		else:
@@ -180,6 +183,8 @@ sync func respawn() -> void:
 			translation = Vector3(pos.x, pos.y, pos.z) #1,815
 	
 	space = global_transform.origin.y > 1000 # millor fer-ho depenent del CP
+	if space:
+		pass
 	
 	set_process(true)
 	$PathMaker.set_process(true)
