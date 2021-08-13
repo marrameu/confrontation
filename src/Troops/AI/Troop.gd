@@ -30,6 +30,7 @@ puppet var slave_rotation : = 0.0
 var wait_a_fcking_moment := false
 var wait_a_frame := true
 
+
 # Client
 func init() -> void:
 	if get_node("TroopManager").is_alive:
@@ -40,16 +41,6 @@ func init() -> void:
 		die()
 
 
-# Dubt que fer coses al ready doni problemes en l'en línia però ni idea
-func _ready():
-	if get_tree().has_network_peer():
-		if not get_tree().is_network_server():
-			return
-	space = global_transform.origin.y > 1000
-	if space:
-		pass
-
-
 # TOT AÇÒ NECESSITA UNA STATE MACHINE O, ALEMNYS, MÉS FUNCIONS SEPARADES o MATCH
 func _process(delta):
 	$PlayerMesh.moving = !$PathMaker.finished
@@ -57,8 +48,10 @@ func _process(delta):
 		if not get_tree().is_network_server():
 			return
 	
+	"""
 	if not Network.troops_can_move:
 		return
+	"""
 	
 	# Rotate, hauria de mirar al següent punt del camí i no pas al final de tot
 	if $PathMaker.navigation_node:
@@ -170,6 +163,11 @@ sync func die() -> void:
 sync func respawn() -> void:
 	# canviar el parent
 	$TroopManager.is_alive = true
+	$PathMaker.clean_path()
+	
+	$CollisionShape.disabled = false
+	
+	var cp: CommandPost
 	
 	var command_posts := []
 	for command_post in get_tree().get_nodes_in_group("CommandPosts"):
@@ -177,14 +175,17 @@ sync func respawn() -> void:
 			command_posts.push_back(command_post)
 		if command_posts.size() < 1:
 			# _on_HealthSystem_die()
-			translation = Vector3(rand_range(-100, 100), 1.6515, rand_range(-100, 100))
+			global_transform.origin = Vector3(rand_range(-100, 100), 1.6515, rand_range(-100, 100))
 		else:
-			var pos = command_posts[randi()%command_posts.size()].translation
-			translation = Vector3(pos.x, pos.y, pos.z) #1,815
+			cp = command_posts[randi()%command_posts.size()]
+			global_transform.origin = cp.global_transform.origin #1,815
 	
 	space = global_transform.origin.y > 1000 # millor fer-ho depenent del CP
 	if space:
-		pass
+		# funció a CapitalSHip.gs
+		get_parent().remove_child(self)
+		cp.get_node("../../").add_child(self)
+		translation = cp.get_node("../../").to_local(translation)
 	
 	set_process(true)
 	$PathMaker.set_process(true)
@@ -192,8 +193,6 @@ sync func respawn() -> void:
 	for child in get_children():
 		if child.has_method("show"):
 			child.show()
-	
-	$CollisionShape.disabled = false
 	
 	$HealthSystem.heal($HealthSystem.MAX_HEALTH)
 
@@ -204,7 +203,6 @@ func _on_ConquestTimer_timeout():
 
 
 func set_material() -> void:
-	print(get_node("TroopManager").m_team, "   ", get_node("/root/Main").local_players[0].get_node("TroopManager").m_team)
 	if get_node("TroopManager").m_team == get_node("/root/Main").local_players[0].get_node("TroopManager").m_team:
 		get_node(body).set_surface_material(2, load("res://assets/models/mannequiny/Azul_R.material"))
 	else:

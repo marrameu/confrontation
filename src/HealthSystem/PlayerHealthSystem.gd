@@ -54,7 +54,7 @@ sync func respawn() -> void:
 	
 	# comprova si hi ha posts dissponibles 
 	var command_posts := []
-	for command_post in get_node("/root/Main/CommandPosts").get_children():
+	for command_post in get_tree().get_nodes_in_group("CommandPosts"):
 		if command_post.m_team == get_node("../TroopManager").m_team:
 			command_posts.push_back(command_post)
 		if command_posts.size() < 1:

@@ -74,8 +74,10 @@ sync func add_passatger(path):
 		if body.wait_a_fcking_moment:
 			return
 		
+		"""
 		if body.is_in_group("AI"):
 			Network.troops_can_move = true
+		"""
 		
 		print("entra a " + name + " " + body.name)
 		

@@ -124,6 +124,8 @@ sync func spawn_troops(troops_per_team : int):
 			new_troop.get_node("TroopManager").m_team = 2
 			b -=1
 		
+		var cp: CommandPost
+		
 		# Position; no cal que ho faça el client pq hi ha coses aleatòries i a la fi s'acaba posant el q el server diu
 		if get_tree().has_network_peer():
 			if get_tree().is_network_server():
@@ -134,9 +136,9 @@ sync func spawn_troops(troops_per_team : int):
 				if command_posts.size() < 1:
 					print("ERROR: No command posts")
 					return
-				var pos : Vector3 = command_posts[randi()%command_posts.size()].global_transform.origin
+				cp = command_posts[randi()%command_posts.size()]
+				var pos : Vector3 = cp.global_transform.origin
 				new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
-				print(new_troop.translation)
 		else:
 			var command_posts := []
 			for command_post in get_tree().get_nodes_in_group("CommandPosts"):
@@ -145,10 +147,17 @@ sync func spawn_troops(troops_per_team : int):
 			if command_posts.size() < 1:
 				print("ERROR: No command posts")
 				return
-			var pos : Vector3 = command_posts[randi()%command_posts.size()].global_transform.origin
+			cp = command_posts[randi()%command_posts.size()]
+			var pos : Vector3 = cp.global_transform.origin
 			new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
 		
-		$Troops.add_child(new_troop) # al princpip no passa res si es col·Loquen ací
+		if new_troop.translation.y > 1000:
+			# funció a CapitalSHip.gs
+			new_troop.space = true
+			cp.get_node("../../").add_child(new_troop)
+			new_troop.translation = cp.get_node("../../").to_local(new_troop.translation)
+		else:
+			$Troops.add_child(new_troop)
 		
 		# Material; s'ha de fer després de donar-li un pare a la tropa, car la funció get_node("/root/Main") ho requereix
 		new_troop.set_material()
