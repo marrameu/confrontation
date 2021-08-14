@@ -52,7 +52,7 @@ sync func die() -> void:
 sync func respawn() -> void:
 	get_node("../TroopManager").is_alive = true
 	
-	# comprova si hi ha posts dissponibles 
+	# comprova si hi ha posts dissponibles, sols cal que ho faça el servidor
 	var command_posts := []
 	for command_post in get_tree().get_nodes_in_group("CommandPosts"):
 		if command_post.m_team == get_node("../TroopManager").m_team:

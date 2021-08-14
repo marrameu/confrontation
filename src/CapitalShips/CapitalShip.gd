@@ -47,10 +47,10 @@ sync func _explode() -> void:
 
 
 func _on_Area_body_entered(body):
-	print(body.name)
+	print("BODY_ENTERED: " + body.name)
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc("add_passatger", body.get_path())
+			rpc_unreliable("add_passatger", body.get_path())
 	else:
 		add_passatger(body.get_path())
 
@@ -58,7 +58,7 @@ func _on_Area_body_entered(body):
 func _on_Area_body_exited(body):
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc("remove_passatger", body.get_path())
+			rpc_unreliable("remove_passatger", body.get_path())
 	else:
 		remove_passatger(body.get_path())
 
@@ -113,3 +113,15 @@ sync func remove_passatger(path):
 		return
 
 
+# que amb add-pasatger() ja es pugui fer això
+sync func add_fill(path):
+	print("s'intenta afegir " + path + " a " + name)
+	var body = get_node(path)
+	if not body:
+		return
+	
+	print("entra a " + name + " " + body.name + " mitjançant add_fill")
+	
+	body.get_parent().remove_child(body)
+	add_child(body)
+	body.translation = to_local(body.translation)

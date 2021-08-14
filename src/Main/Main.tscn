@@ -227,7 +227,7 @@ transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 2000, 
 team = 2
 cap_ship_id = 2
 
-[node name="CommandPost" parent="CapitalShips/CapitalShip2/CPPositions" index="0"]
+[node name="CommandPost" parent="CapitalShips/CapitalShip2/CPs" index="0"]
 start_team = 2
 
 [node name="Troops" type="Node" parent="."]

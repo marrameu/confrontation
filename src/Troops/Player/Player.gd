@@ -32,11 +32,10 @@ var online_id : int = 1
 # temporal
 var wait_a_fcking_moment := false
 
+var current_csh_id := 0
 
-func init(new_nickname, start_position, start_crouching, start_health, start_alive, start_in_a_vehicle) -> void:
-	translation = start_position
-	nickname = new_nickname
-	
+
+func init(new_nickname, start_position, start_crouching, start_health, start_alive, start_in_a_vehicle, start_csh_id) -> void:
 	if start_alive:
 		$HealthSystem.health = start_health
 		if start_in_a_vehicle:
@@ -44,10 +43,20 @@ func init(new_nickname, start_position, start_crouching, start_health, start_ali
 		elif start_crouching:
 			$Crouch.crouch()
 	else:
-		if get_tree().has_network_peer():
+		if get_tree().has_network_peer(): # cal comprovar-ho?
 			$HealthSystem.rpc("die") 
 		else:
 			$HealthSystem.die()
+	
+	if start_csh_id != 0:
+		for csh in get_tree().get_nodes_in_group("CapitalShips"):
+			if csh.cap_ship_id == start_csh_id:
+				get_parent().remove_child(self)
+				csh.add_child(self)
+				break
+	
+	translation = start_position
+	nickname = new_nickname
 	
 	#Audio
 	if get_tree().has_network_peer():
@@ -100,12 +109,12 @@ func _physics_process(delta : float) -> void:
 			$StateMachine/Movement/Aim.aim(delta)
 			$StateMachine/Movement/Move.walk(delta)
 			
-			rset_unreliable("slave_position", translation)
+			rset_unreliable("slave_position", global_transform.origin)
 			rset_unreliable("slave_rotation", rotation.y)
 			
 			update_network_info()
 		else:
-			translation = slave_position
+			global_transform.origin = slave_position
 			rotation = Vector3(0, slave_rotation, 0)
 	else:
 		$StateMachine/Movement/Move.can_run = false if $CameraBase.zooming or $Crouch.crouching or $Weapons.attacking else true
@@ -115,5 +124,8 @@ func _physics_process(delta : float) -> void:
 
 
 func update_network_info() -> void:
+	if get_parent().is_in_group("CapitalShips"):
+		current_csh_id = get_parent().cap_ship_id
 	Network.update_info(online_id, translation, rotation.y, $Crouch.crouching,
-	$HealthSystem.health, $TroopManager.is_alive, $Interaction.is_in_a_vehicle, number_of_player)
+	$HealthSystem.health, $TroopManager.is_alive, $Interaction.is_in_a_vehicle,
+	current_csh_id, number_of_player)

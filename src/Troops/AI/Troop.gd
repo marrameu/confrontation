@@ -105,10 +105,10 @@ func _physics_process(delta : float) -> void:
 		if get_tree().is_network_server():
 			if translation.y > 1000:
 				pass
-			rset_unreliable("slave_position", translation)
+			rset_unreliable("slave_position", global_transform.origin)
 			rset_unreliable("slave_rotation", rotation.y)
 		else:
-			translation = slave_position
+			global_transform.origin = slave_position
 			rotation = Vector3(0, slave_rotation, 0)
 
 
@@ -169,23 +169,37 @@ sync func respawn() -> void:
 	
 	var cp: CommandPost
 	
-	var command_posts := []
-	for command_post in get_tree().get_nodes_in_group("CommandPosts"):
-		if command_post.m_team == $TroopManager.m_team:
-			command_posts.push_back(command_post)
-		if command_posts.size() < 1:
-			# _on_HealthSystem_die()
-			global_transform.origin = Vector3(rand_range(-100, 100), 1.6515, rand_range(-100, 100))
-		else:
-			cp = command_posts[randi()%command_posts.size()]
-			global_transform.origin = cp.global_transform.origin #1,815
-	
-	space = global_transform.origin.y > 1000 # millor fer-ho depenent del CP
-	if space:
-		# funció a CapitalSHip.gs
-		get_parent().remove_child(self)
-		cp.get_node("../../").add_child(self)
-		translation = cp.get_node("../../").to_local(translation)
+	if get_tree().has_network_peer():
+		if get_tree().is_network_server():
+			var command_posts := []
+			for command_post in get_tree().get_nodes_in_group("CommandPosts"):
+				if command_post.m_team == $TroopManager.m_team:
+					command_posts.push_back(command_post)
+				if command_posts.size() < 1:
+					# _on_HealthSystem_die()
+					global_transform.origin = Vector3(rand_range(-100, 100), 1.6515, rand_range(-100, 100))
+				else:
+					cp = command_posts[randi()%command_posts.size()]
+					global_transform.origin = cp.global_transform.origin #1,815
+			
+			space = global_transform.origin.y > 1000 # millor fer-ho depenent del CP
+			if space:
+				cp.get_node("../../").rpc_unreliable("add_fill", get_path())
+	else:
+		var command_posts := []
+		for command_post in get_tree().get_nodes_in_group("CommandPosts"):
+			if command_post.m_team == $TroopManager.m_team:
+				command_posts.push_back(command_post)
+			if command_posts.size() < 1:
+				# _on_HealthSystem_die()
+				global_transform.origin = Vector3(rand_range(-100, 100), 1.6515, rand_range(-100, 100))
+			else:
+				cp = command_posts[randi()%command_posts.size()]
+				global_transform.origin = cp.global_transform.origin #1,815
+		
+		space = global_transform.origin.y > 1000 # millor fer-ho depenent del CP
+		if space:
+			cp.get_node("../../").add_fill(get_path())
 	
 	set_process(true)
 	$PathMaker.set_process(true)

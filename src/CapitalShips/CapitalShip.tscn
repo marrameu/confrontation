@@ -26,10 +26,10 @@ agent/max_slope = 1.0
 ]]
 script = ExtResource( 1 )
 
-[node name="CPPositions" type="Spatial" parent="."]
+[node name="CPs" type="Spatial" parent="."]
 script = ExtResource( 9 )
 
-[node name="CommandPost" parent="CPPositions" instance=ExtResource( 11 )]
+[node name="CommandPost" parent="CPs" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -61.096, -257.782 )
 capturable = false
 start_team = 1

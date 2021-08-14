@@ -1,6 +1,8 @@
 extends Spatial
 class_name Main
 
+signal everything_instantiated
+
 const cp_scene : PackedScene = preload("res://src/CommandPost/CommandPost.tscn")
 
 var game_started := false
@@ -14,7 +16,7 @@ var players_cameras := [ { }, { }, { }, { } ]
 var _vehicles_instantiated := false
 var _troops_instantiated := false
 var _capital_ships_instantiated := false
-
+var _everything_instantiated := false
 
 func _ready() -> void:
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
@@ -37,7 +39,7 @@ func _ready() -> void:
 			for vehicle in $Vehicles.get_children():
 				vehicle.queue_free()
 			
-			for ship in $CapitalShips.get_children():
+			for ship in $CapitalShips.get_children(): # Es podria fer d'una molt millor manera
 				ship.queue_free()
 	
 	Settings.apply_settings()
@@ -72,9 +74,11 @@ func _process(delta : float) -> void:
 		Settings.controller_input = true
 		Settings.save_settings()
 	
+	# ANIRIA ESTUPENDAMENT BÉ QUE TOT AÇÒ ES FES DIRECTAMENT QUAN EL SERVIDOR ES CONNECTÉS, AIXÍ COM ES FA AMB EL PLAYER
+	# D'AQUESTA MANERA ENS ESTALVIARÍEM MOLTS ERRORS AL REGISTRE DEL DEPURADOR
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
-			if Network.match_data.recived:
+			if Network.match_data.recived and not _everything_instantiated:
 				var vehicles_data = Network.match_data.vehicles_data
 				var troops_data = Network.match_data.troops_data
 				var capital_ships_data = Network.match_data.capital_ships_data
@@ -93,17 +97,24 @@ func _process(delta : float) -> void:
 					for troop_data in troops_data:
 						_add_new_troop(troop_data)
 					_troops_instantiated = true
+				
+				if _capital_ships_instantiated and _vehicles_instantiated and _troops_instantiated:
+					_everything_instantiated = true
+					emit_signal("everything_instantiated")
 	
 	var troops_node = "T: "
 	for child in $Troops.get_children():
 		troops_node += child.name
+	for child in get_children():
+		if child is Player:
+			troops_node += ("PL:" + child.name)
 	var cs1  = "CS1: "
 	for child in $CapitalShips/CapitalShip.get_children():
-		if child is Troop:
+		if child is Troop or child is Player:
 			cs1 += child.name
 	var cs2 = "CS2: "
 	for child in $CapitalShips/CapitalShip2.get_children():
-		if child is Troop:
+		if child is Troop or child is Player:
 			cs2 += child.name
 	$Label.text = (troops_node + "\n" + cs1 + "\n" + cs2)
 
@@ -139,6 +150,10 @@ sync func spawn_troops(troops_per_team : int):
 				cp = command_posts[randi()%command_posts.size()]
 				var pos : Vector3 = cp.global_transform.origin
 				new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
+				
+				if new_troop.translation.y > 1000:
+					new_troop.space = true
+			
 		else:
 			var command_posts := []
 			for command_post in get_tree().get_nodes_in_group("CommandPosts"):
@@ -150,14 +165,11 @@ sync func spawn_troops(troops_per_team : int):
 			cp = command_posts[randi()%command_posts.size()]
 			var pos : Vector3 = cp.global_transform.origin
 			new_troop.translation = Vector3(pos.x + rand_range(-15, 15),  pos.y + 1.815, pos.z + rand_range(-15, 15))
+			
+			if new_troop.translation.y > 1000:
+				new_troop.space = true
 		
-		if new_troop.translation.y > 1000:
-			# funció a CapitalSHip.gs
-			new_troop.space = true
-			cp.get_node("../../").add_child(new_troop)
-			new_troop.translation = cp.get_node("../../").to_local(new_troop.translation)
-		else:
-			$Troops.add_child(new_troop)
+		$Troops.add_child(new_troop) # al principi s'han de coŀlocar ací les tropes, no hi ha cap problema, per això, amb això
 		
 		# Material; s'ha de fer després de donar-li un pare a la tropa, car la funció get_node("/root/Main") ho requereix
 		new_troop.set_material()
@@ -178,9 +190,7 @@ func _on_server_disconnected() -> void:
 	exit_game()
 
 
-func _add_new_player(number : int) -> void:
-	# Fer fill de la nau capital
-	
+func _add_new_player(number : int) -> void: # LOCAL
 	# Instance Player
 	var new_player : Player = load("res://src/Troops/Player/Player.tscn").instance()
 	new_player.number_of_player = number
@@ -202,7 +212,7 @@ func _add_new_player(number : int) -> void:
 		new_player.set_network_master(get_tree().get_network_unique_id())
 	
 	var info : Dictionary = Network.self_datas[number - 1]
-	new_player.init(info.name, info.position, false, info.health, false, false)
+	new_player.init(info.name, info.position, false, info.health, false, false, 0)
 
 
 func _add_new_render(number : int) -> void:
@@ -293,6 +303,9 @@ func _add_new_capital_ship(capital_ship_data : Dictionary) -> void:
 		new_ship.translation = Vector3(0, 2000, -2000)
 		new_ship.rotation_degrees = Vector3(0, -90, 0)
 		new_ship.get_node("Label").rect_position.y -= 50
+		for cp in new_ship.get_node("CPs").get_children():
+			if cp is CommandPost:
+				cp.start_team = 2
 	
 	new_ship.get_node("HealthSystem").health = capital_ship_data.health
 	if capital_ship_data.health == 0:
