@@ -215,6 +215,21 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0.15, -150 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0.15, 150 )
 start_team = 2
 
+[node name="CapitalShips" type="Node" parent="."]
+
+[node name="CapitalShip" parent="CapitalShips" instance=ExtResource( 14 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 2000, 2000 )
+team = 1
+cap_ship_id = 1
+
+[node name="CapitalShip2" parent="CapitalShips" instance=ExtResource( 14 )]
+transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 2000, -2000 )
+team = 2
+cap_ship_id = 2
+
+[node name="CommandPost" parent="CapitalShips/CapitalShip2/CPs" index="0"]
+start_team = 2
+
 [node name="Troops" type="Node" parent="."]
 
 [node name="Vehicles" type="Node" parent="."]
@@ -284,22 +299,6 @@ margin_bottom = 1080.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="CapitalShips" type="Node" parent="."]
-
-[node name="CapitalShip" parent="CapitalShips" instance=ExtResource( 14 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 2000, 2000 )
-team = 1
-cap_ship_id = 1
-
-[node name="CapitalShip2" parent="CapitalShips" instance=ExtResource( 14 )]
-transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 2000, -2000 )
-team = 2
-cap_ship_id = 2
-
-[node name="Label" parent="CapitalShips/CapitalShip2" index="8"]
-margin_top = -129.0
-margin_bottom = -100.0
-
 [node name="Cameras" type="Node" parent="."]
 
 [node name="SceneCamera1" type="Camera" parent="Cameras"]
@@ -353,15 +352,26 @@ pause_mode = 1
 stream = ExtResource( 17 )
 volume_db = -4.0
 
+[node name="Label" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -1569.0
+margin_bottom = 115.0
+custom_fonts/font = ExtResource( 16 )
+text = "ASDDASDASASD"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [editable path="Map/LandingAreas/LandingArea"]
 [editable path="Map/LandingAreas/LandingArea3"]
 [editable path="Map/LandingAreas/LandingArea2"]
 [editable path="Map/LandingAreas/LandingArea4"]
-[editable path="Vehicles/ShipTransport"]
-[editable path="Vehicles/ShipTransport/ShipMesh"]
-[editable path="Vehicles/ShipTransport2"]
-[editable path="Vehicles/ShipTransport2/ShipMesh"]
 [editable path="CapitalShips/CapitalShip2"]
 [editable path="CapitalShips/CapitalShip2/Scene Root"]
 [editable path="CapitalShips/CapitalShip2/Hangar"]
 [editable path="CapitalShips/CapitalShip2/Hangar/LandingArea"]
+[editable path="Vehicles/ShipTransport"]
+[editable path="Vehicles/ShipTransport/ShipMesh"]
+[editable path="Vehicles/ShipTransport2"]
+[editable path="Vehicles/ShipTransport2/ShipMesh"]

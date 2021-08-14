@@ -1,5 +1,8 @@
 extends Node
 
+signal player_disconnected
+signal server_disconnected
+
 # Aquestes constants defineixen la configuaració necesaria per a crear un client o un servidor
 const DEFAULT_IP : String = "127.0.0.1" # Per defecte, está definit com a "localhost", es a dir conexió local
 const DEFAULT_PORT : int = 31406
@@ -17,13 +20,13 @@ var self_datas : Array = [ { }, { }, { }, { } ]
 # Conté totes les variables de necesaries per inicialitzar la partida
 var match_data : Dictionary = { recived = false, vehicles_data = [], troops_data = [], capital_ships_data = [] }
 
-signal player_disconnected
-signal server_disconnected
+# Temporal. Per al correcte funcionament de les naus capitals i les tropes quan el servidor executa "spawn_troops"
+var troops_can_move := false
 
 func _ready():
 	for i in range(0, self_datas.size()):
 		self_datas[i] = { name = "Noname", position = Vector3(0, 2, 0), rotation = 0.0, crouching = false,
-				health = 0, is_alive = false, team = 0, is_in_a_vehicle = false }
+				health = 0, is_alive = false, team = 0, is_in_a_vehicle = false, current_csh_id = 0 }
 	
 	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
 	get_tree().connect('network_peer_connected', self, '_on_player_connected')
@@ -49,7 +52,7 @@ func connect_to_server(player_nickname, connect_ip):
 	get_tree().set_network_peer(peer)
 
 
-# Si tot va bé, aquesta funció s'inicialitza desde la funció "connect_to_server"
+# Si tot va bé, aquesta funció s'inicialitza des de la funció "connect_to_server"
 func _connected_to_server():
 	var id : int = get_tree().get_network_unique_id()
 	var i = LocalMultiplayer.number_of_players
@@ -65,10 +68,13 @@ func _connected_to_server():
 
 # S'executa quan es desconnecta un jugador
 func _on_player_disconnected(id):
+	# Es podria fer sense consultar quin local player és
 	for i in range(0, players.size()):
 		if players[i].has(id):
-			# for player in get nodes in group AI
-			var player : Player = get_node("/root/Main/Splitscreen/Viewport" + str(i + 1)).get_node(str(id))
+			var player # : Player 
+			for node in get_tree().get_nodes_in_group("Players"):
+				if node.online_id == id:
+					player = node
 			if player.get_node("Interaction").is_in_a_vehicle:
 				player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF)
 			
@@ -108,12 +114,14 @@ remote func _send_player_info(id, info, number_of_player):
 	# S'afegeix la informació en l'array "players"
 	players[number_of_player - 1][id] = info
 	
-	var new_player : Player = load("res://src/Troops/Player/Player.tscn").instance()
-	new_player.name = str(id)
+	var new_player = load("res://src/Troops/Player/Player.tscn").instance() # : Player 
+	new_player.online_id = id
+	new_player.name = String(id) + String(number_of_player)
 	new_player.set_network_master(id) # S'estableix com a "network master", així que el sistema local serà el "master" d'aquest node
 	new_player.number_of_player = number_of_player
 	
 	# potser això sobra ara 6/8/21
+	"""
 	var viewport : Viewport = get_node("/root/Main/Splitscreen/Viewport" + str(number_of_player))
 	if not viewport:
 		var node = Node.new()
@@ -121,9 +129,14 @@ remote func _send_player_info(id, info, number_of_player):
 		$"/root/Main/Splitscreen".add_child(node)
 		viewport = node
 	#viewport.add_child(new_player)
+	"""
 	$"/root/Main".add_child(new_player)
 	
-	new_player.init(info.name, info.position, info.crouching, info.health, info.is_alive, info.is_in_a_vehicle) # S'inicalitza el jugador
+	 # S'inicalitza el jugador, es fa amb senyals perquè esperi que les naus capitals
+	# estiguin instanciades per tal de col·locar-se en alguna
+	var binds := [info.name, info.position, info.crouching, info.health, info.is_alive, 
+	info.is_in_a_vehicle, info.current_csh_id]
+	$"/root/Main".connect("everything_instantiated", new_player, "init", binds)
 
 
 remote func _request_match_info(request_from_id) -> void:
@@ -134,7 +147,7 @@ remote func _request_match_info(request_from_id) -> void:
 	var current_capital_ships_data := []
 	for ship in get_node("/root/Main/CapitalShips").get_children():
 		current_capital_ships_data.resize(current_capital_ships_data.size() + 1)
-		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health, id = ship.id } # el nom no caldria
+		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health, id = ship.cap_ship_id } # el nom no caldria
 		current_capital_ships_data[current_capital_ships_data.size() - 1] = ship_data
 	
 	for vehicle in get_node("/root/Main/Vehicles").get_children():
@@ -162,10 +175,13 @@ remote func _send_player_config(id, team, number_of_player):
 	players[number_of_player - 1][id].team = team
 
 
-func update_info(id : int, position : Vector3, rotation : float, crouching : bool, health : int, is_alive : bool, is_in_a_vehicle : bool, number_of_player : int) -> void:
+# s'actualitza la informació dels jugadors locals, s'executa tota la estona i es tramet quan un nou client s'uneix al servidor
+func update_info(id : int, position : Vector3, rotation : float, crouching : bool,
+health : int, is_alive : bool, is_in_a_vehicle : bool, current_csh_id : int, number_of_player : int) -> void:
 	players[number_of_player - 1][id].position = position
 	players[number_of_player - 1][id].rotation = rotation
 	players[number_of_player - 1][id].crouching = crouching
 	players[number_of_player - 1][id].health = health
 	players[number_of_player - 1][id].is_alive = is_alive
 	players[number_of_player - 1][id].is_in_a_vehicle = is_in_a_vehicle
+	players[number_of_player - 1][id].current_csh_id = current_csh_id

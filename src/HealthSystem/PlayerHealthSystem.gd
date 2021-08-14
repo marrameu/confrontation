@@ -52,9 +52,9 @@ sync func die() -> void:
 sync func respawn() -> void:
 	get_node("../TroopManager").is_alive = true
 	
-	# comprova si hi ha posts dissponibles 
+	# comprova si hi ha posts dissponibles, sols cal que ho faça el servidor
 	var command_posts := []
-	for command_post in get_node("/root/Main/CommandPosts").get_children():
+	for command_post in get_tree().get_nodes_in_group("CommandPosts"):
 		if command_post.m_team == get_node("../TroopManager").m_team:
 			command_posts.push_back(command_post)
 		if command_posts.size() < 1:
@@ -79,6 +79,7 @@ sync func respawn() -> void:
 
 
 sync func update_components(var enable : bool, var update_interaction := true) -> void:
+	# si no és el network master es podria obviar de fer moltes coses
 	# perquè no es mogui, oi?
 	get_parent().set_process(enable)
 	get_parent().set_physics_process(enable)
@@ -109,6 +110,7 @@ sync func update_components(var enable : bool, var update_interaction := true) -
 					child.visible = enable
 	
 	for child in get_parent().get_children():
+		# print("uwu")
 		if child is Spatial:
 			child.visible = enable
 	

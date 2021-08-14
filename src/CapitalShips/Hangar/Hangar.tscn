@@ -18,7 +18,7 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 extents = Vector3( 205, 15, 110 )
 
 [sub_resource type="BoxShape" id=6]
-extents = Vector3( 228.525, 38.0876, 140.866 )
+extents = Vector3( 237.113, 56.4619, 164.603 )
 
 [node name="Hangar" type="Spatial"]
 
@@ -52,6 +52,7 @@ shape = SubResource( 4 )
 shape = SubResource( 5 )
 
 [node name="Area" type="Area" parent="."]
+collision_mask = 6
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 6 )

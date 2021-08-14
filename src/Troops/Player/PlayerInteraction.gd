@@ -57,10 +57,10 @@ func _process(delta : float) -> void:
 
 func enter_ship(result):
 	if get_tree().has_network_peer():
-		rpc("change_ship_player", result.collider.get_path(), true, get_parent().name)
+		rpc("change_ship_player", result.collider.get_path(), true, get_parent().online_id)
 		get_node("../HealthSystem").rpc("update_components", false, false)
 	else:
-		change_ship_player(result.collider.get_path(), true, get_parent().name)
+		change_ship_player(result.collider.get_path(), true, get_parent().online_id)
 		get_node("../HealthSystem").update_components(false, false)
 	
 	result.collider.get_node("PlayerHUD/Center/CursorPivot/Cursor").rect_position = Vector2()
@@ -68,6 +68,7 @@ func enter_ship(result):
 	ship_camera.init(result.collider.get_node("CameraPosition"), get_parent().number_of_player)
 	if get_tree().has_network_peer():
 		get_parent().update_network_info()
+
 
 func exit_ship() -> void:
 	ship_camera.get_parent().remove_child(ship_camera)
@@ -79,20 +80,21 @@ func exit_ship() -> void:
 	current_vehicle.number_of_player = 0
 	current_vehicle.set_linear_velocity(Vector3())
 	current_vehicle.get_node("CameraPosition").translation = Vector3(0, 6, -30) # Change when adding slerp or other ships
-	get_parent().translation = current_vehicle.translation
+	get_parent().global_transform.origin = current_vehicle.global_transform.origin
 	
 	if get_tree().has_network_peer():
-		rpc("change_ship_player", current_vehicle.get_path(), false, "")
+		rpc("change_ship_player", current_vehicle.get_path(), false, 0)
 		get_node("../HealthSystem").rpc("update_components", true, false)
 	else:
-		change_ship_player(current_vehicle.get_path(), false, "")
+		change_ship_player(current_vehicle.get_path(), false, 0)
 		get_node("../HealthSystem").update_components(true, false)
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if get_tree().has_network_peer():
 		get_parent().update_network_info()
 
-sync func change_ship_player(ship_path : NodePath, status : bool, name : String) -> void:
+
+sync func change_ship_player(ship_path : NodePath, status : bool, id : int) -> void:
 	is_in_a_vehicle = status
 	if status == true:
 		current_vehicle = get_node(ship_path)
@@ -101,4 +103,4 @@ sync func change_ship_player(ship_path : NodePath, status : bool, name : String)
 	
 	if get_node(ship_path):
 		get_node(ship_path).is_player = status
-		get_node(ship_path).player_name = name.left(2)
+		get_node(ship_path).player_id = id

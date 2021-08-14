@@ -17,8 +17,8 @@ func _set_team(selected_team : int) -> void:
 	player.get_node("TroopManager").m_team = selected_team
 	
 	if get_tree().has_network_peer():
-		Network.players[number_of_player - 1][int(player.name.left(2))].team = selected_team
-		Network.rpc("_send_player_config", int(player.name.left(2)), selected_team, number_of_player)
+		Network.players[number_of_player - 1][player.online_id].team = selected_team
+		Network.rpc("_send_player_config", player.online_id, selected_team, number_of_player)
 	
 	for troop in get_tree().get_nodes_in_group("AI"):
 		troop.set_material()

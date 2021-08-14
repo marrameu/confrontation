@@ -30,4 +30,4 @@ func _physics_process(delta : float) -> void:
 			vehicle_data.rotation = get_parent().rotation
 			vehicle_data.health = get_node("../HealthSystem").health
 			if get_parent().is_player:
-				vehicle_data.player_id = int(get_parent().player_name)
+				vehicle_data.player_id = get_parent().player_id

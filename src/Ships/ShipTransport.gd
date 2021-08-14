@@ -38,6 +38,7 @@ func instance_cp() -> void:
 	connect("tree_exited", cp, "queue_free")
 	current_cp = cp.get_path()
 
+
 func delete_cp() -> void:
 	if not current_cp: #== "":
 		return

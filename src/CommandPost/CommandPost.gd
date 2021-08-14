@@ -24,6 +24,7 @@ var is_ground : bool = false
 
 
 func _ready() -> void:
+	#PQ 3 EQUIPS?
 	if start_team == 1:
 		team_count[0] = 10
 	elif start_team == 2:
@@ -78,19 +79,19 @@ func _process(delta : float) -> void:
 
 
 func _physics_process(delta : float) -> void:
-	if not capturable:
-		return
-	
-	if team_count[0] > 7 and m_team != 1:
+	if team_count[0] > 7:
 		m_team = 1
-	elif team_count[1] > 7 and m_team != 2:
+	elif team_count[1] > 7:
 		m_team = 2
-	elif team_count[2] > 7 and m_team != 3:
+	elif team_count[2] > 7:
 		m_team = 3
 	elif team_count[0] + team_count[1] + team_count[2] < 7:
 		m_team = 0
 	
 	update_material()
+	
+	if not capturable: # TOT AIXÒ S'HA DE REFER URGENTMENT
+		return
 	
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
