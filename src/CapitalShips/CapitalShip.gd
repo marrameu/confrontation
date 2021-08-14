@@ -56,6 +56,7 @@ func _on_Area_body_entered(body):
 
 
 func _on_Area_body_exited(body):
+	print("BODY_EXITED: " + body.name)
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
 			rpc_unreliable("remove_passatger", body.get_path())
@@ -96,7 +97,12 @@ sync func remove_passatger(path):
 	var body = get_node(path)
 	if not body:
 		return
-	if body.get_parent() == self: # així també se soluciona el bug 14578 pq si bé surten de la nau comq encara tenen de node pare el /Troops, no s'executa
+	"""
+	comprovant si el pare és la nau també se soluciona el bug 14578, car si bé 
+	surten de la nau, puix encara tenen de node pare el /Troops, no s'executa,
+	ÉS A DIR, no cal comprovar si wait_a_fcking_moment
+	"""
+	if body.get_parent() == self:
 		print("surt de " + name + " " + body.name)
 		body.global_transform.origin = to_global(body.global_transform.origin)
 		remove_child(body)
