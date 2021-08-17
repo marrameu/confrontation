@@ -71,7 +71,7 @@ func _on_SpawnButton_pressed() -> void:
 					get_node("/root/Main").rpc("spawn_troops", Settings.troops_per_team)
 			else:
 				if Network.match_data.recived and not get_tree().get_nodes_in_group("AI"):
-					get_node("/root/Main").rpc("spawn_troops", Settings.troops_per_team)
+					get_node("/root/Main").rpc("call_spawn_troops")
 		else:
 			get_node("/root/Main").spawn_troops(Settings.troops_per_team)
 		get_node("/root/Main").game_started = true

@@ -8,8 +8,17 @@ export var body : NodePath
 # Atack
 var current_enemie : Spatial
 
+
 # States (State Machine)
-var space := false # canviar-ho depenent del CP
+var state := 0
+enum States { 
+	UNABLED,
+	GROUND_IDLE,
+	GOING_TO_CP_TO_CONQUER, 
+	CONQUERING_A_CP, 
+	SEARCHING_SHIP }
+
+var space := false # canvia quan apareix, depenent del CP
 var my_cap_ship : Spatial # cal?
 
  # terra i aire
@@ -22,13 +31,13 @@ var conquering_a_cp := false
 
 var nickname := "Troop"
 
-# Networking
-puppet var slave_position : = Vector3()
-puppet var slave_rotation : = 0.0
 
-# temproal
+# Online
+onready var my_network = $TroopNetwork
+
+# temproal -> moure al TroopNetwork
 var wait_a_fcking_moment := false
-var wait_a_frame := true
+var wait_to_init := true
 
 
 # Client
@@ -48,10 +57,8 @@ func _process(delta):
 		if not get_tree().is_network_server():
 			return
 	
-	"""
-	if not Network.troops_can_move:
+	if wait_to_init:
 		return
-	"""
 	
 	# Rotate, hauria de mirar al següent punt del camí i no pas al final de tot
 	if $PathMaker.navigation_node:
@@ -101,15 +108,13 @@ func _process(delta):
 
 
 func _physics_process(delta : float) -> void:
+	my_network.update_my_data()
+	
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			if translation.y > 1000:
-				pass
-			rset_unreliable("slave_position", global_transform.origin)
-			rset_unreliable("slave_rotation", rotation.y)
-		else:
-			global_transform.origin = slave_position
-			rotation = Vector3(0, slave_rotation, 0)
+			_update_state()
+	else:
+		_update_state()
 
 
 func _on_HealthSystem_die() -> void:
@@ -184,7 +189,7 @@ sync func respawn() -> void:
 			
 			space = global_transform.origin.y > 1000 # millor fer-ho depenent del CP
 			if space:
-				cp.get_node("../../").rpc_unreliable("add_fill", get_path())
+				cp.get_node("../../").rpc("add_fill", get_path())
 	else:
 		var command_posts := []
 		for command_post in get_tree().get_nodes_in_group("CommandPosts"):
@@ -307,3 +312,14 @@ func search_ship(): # comprovar que la nau no hi hagi ningú
 	$PathMaker.update_path(begin, end)
 
 # CREAR UNA FUNCIO PER A ANAR A UN PUNT ALEATORI (EN UNA DISTÀNCIA ESPECÍFICA)
+
+
+func _update_state() -> int:
+	if space:
+		return States.SEARCHING_SHIP
+	else:
+		return States.GROUND_IDLE
+
+
+func _on_InitTimer_timeout():
+	wait_to_init = false

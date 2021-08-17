@@ -47,15 +47,17 @@ script = ExtResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 6 )
 shape = SubResource( 2 )
 
+[node name="TroopNetwork" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="StateMachine" type="Node" parent="."]
+
 [node name="PathMaker" type="Node" parent="."]
 script = ExtResource( 5 )
 
 [node name="HealthSystem" parent="." instance=ExtResource( 6 )]
 
 [node name="TroopManager" parent="." instance=ExtResource( 7 )]
-
-[node name="TroopNetwork" type="Node" parent="."]
-script = ExtResource( 8 )
 
 [node name="RespawnTimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -65,6 +67,11 @@ one_shot = true
 wait_time = 10.0
 one_shot = true
 
+[node name="InitTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
 [connection signal="die" from="HealthSystem" to="." method="_on_HealthSystem_die"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
 [connection signal="timeout" from="ConquestTimer" to="." method="_on_ConquestTimer_timeout"]
+[connection signal="timeout" from="InitTimer" to="." method="_on_InitTimer_timeout"]

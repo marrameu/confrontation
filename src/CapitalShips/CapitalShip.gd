@@ -48,9 +48,15 @@ sync func _explode() -> void:
 
 func _on_Area_body_entered(body):
 	print("BODY_ENTERED: " + body.name)
+	if not body.is_in_group("Ships") and not body.is_in_group("Troops"):
+		return
+	if body.wait_a_fcking_moment:
+		return
+	if body.get_parent() == self: # per a les naus que hi són des del principi
+		return
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc_unreliable("add_passatger", body.get_path())
+			rpc("add_passatger", body.get_path())
 	else:
 		add_passatger(body.get_path())
 
@@ -59,7 +65,7 @@ func _on_Area_body_exited(body):
 	print("BODY_EXITED: " + body.name)
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc_unreliable("remove_passatger", body.get_path())
+			rpc("remove_passatger", body.get_path())
 	else:
 		remove_passatger(body.get_path())
 
@@ -68,29 +74,18 @@ sync func add_passatger(path):
 	var body = get_node(path)
 	if not body:
 		return
-	if body.get_parent() == self: # per a les naus que hi són des del principi
-		return
-	if body.is_in_group("Ships") or body.is_in_group("Troops"):
-		
-		if body.wait_a_fcking_moment:
-			return
-		
-		"""
-		if body.is_in_group("AI"):
-			Network.troops_can_move = true
-		"""
-		
-		print("entra a " + name + " " + body.name)
-		
-		# issuea 14578
-		body.wait_a_fcking_moment = true
-		body.get_parent().remove_child(body)
-		body.translation = to_local(body.translation) # body.translation = to_local(body.global_transform.origin)
-		#yield(get_tree(), "idle_frame")
-		add_child(body)
-		
-		body.rotation -= rotation
-		body.wait_a_fcking_moment = false
+	
+	print("entra a " + name + " " + body.name)
+	
+	# issuea 14578
+	body.wait_a_fcking_moment = true
+	body.get_parent().remove_child(body)
+	body.translation = to_local(body.translation) # body.translation = to_local(body.global_transform.origin)
+	#yield(get_tree(), "idle_frame")
+	add_child(body)
+	
+	body.rotation -= rotation
+	body.wait_a_fcking_moment = false
 
 
 sync func remove_passatger(path):

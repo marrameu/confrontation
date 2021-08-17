@@ -119,6 +119,14 @@ func _process(delta : float) -> void:
 	$Label.text = (troops_node + "\n" + cs1 + "\n" + cs2)
 
 
+# Necessari per tal que el nombre de tropes sigui sempre el del servidor
+# Mirar de fer-ho millor: en lloc d'un rpc() i comprovar si és el sevidor,
+# fer un rpc_id(1) o un puppet (llegir documentació)
+sync func call_spawn_troops():
+	if get_tree().is_network_server():
+		rpc("spawn_troops", Settings.troops_per_team)
+
+
 sync func spawn_troops(troops_per_team : int):
 	var a = troops_per_team
 	var b = a
