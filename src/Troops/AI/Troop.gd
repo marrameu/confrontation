@@ -28,7 +28,7 @@ puppet var slave_rotation : = 0.0
 
 # temproal
 var wait_a_fcking_moment := false
-var wait_a_frame := true
+var wait_to_init := true
 
 
 # Client
@@ -48,10 +48,8 @@ func _process(delta):
 		if not get_tree().is_network_server():
 			return
 	
-	"""
-	if not Network.troops_can_move:
+	if wait_to_init:
 		return
-	"""
 	
 	# Rotate, hauria de mirar al següent punt del camí i no pas al final de tot
 	if $PathMaker.navigation_node:
@@ -184,7 +182,7 @@ sync func respawn() -> void:
 			
 			space = global_transform.origin.y > 1000 # millor fer-ho depenent del CP
 			if space:
-				cp.get_node("../../").rpc_unreliable("add_fill", get_path())
+				cp.get_node("../../").rpc("add_fill", get_path())
 	else:
 		var command_posts := []
 		for command_post in get_tree().get_nodes_in_group("CommandPosts"):
@@ -307,3 +305,7 @@ func search_ship(): # comprovar que la nau no hi hagi ningú
 	$PathMaker.update_path(begin, end)
 
 # CREAR UNA FUNCIO PER A ANAR A UN PUNT ALEATORI (EN UNA DISTÀNCIA ESPECÍFICA)
+
+
+func _on_InitTimer_timeout():
+	wait_to_init = false

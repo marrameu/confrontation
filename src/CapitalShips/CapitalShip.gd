@@ -50,7 +50,7 @@ func _on_Area_body_entered(body):
 	print("BODY_ENTERED: " + body.name)
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc_unreliable("add_passatger", body.get_path())
+			rpc("add_passatger", body.get_path())
 	else:
 		add_passatger(body.get_path())
 
@@ -59,7 +59,7 @@ func _on_Area_body_exited(body):
 	print("BODY_EXITED: " + body.name)
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
-			rpc_unreliable("remove_passatger", body.get_path())
+			rpc("remove_passatger", body.get_path())
 	else:
 		remove_passatger(body.get_path())
 
