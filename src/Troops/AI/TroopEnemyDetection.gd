@@ -2,11 +2,15 @@ extends Node
 
 var enemies := []
 
+
 func _ready() -> void:
-	pass
+	if get_tree().has_network_peer():
+		if not get_tree().is_network_server():
+			set_process(false)
+
 
 func _process(_delta):
-	if get_parent().get_node("TroopManager").m_team == 0:
+	if owner.get_node("TroopManager").m_team == 0:
 		return
 	
 	enemies = []

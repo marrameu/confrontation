@@ -61,7 +61,7 @@ func _process(delta):
 		return
 	
 	# Rotate, hauria de mirar al següent punt del camí i no pas al final de tot
-	if $PathMaker.navigation_node:
+	if $PathMaker.navigation_node and not current_enemie:
 		look_at($PathMaker.navigation_node.to_global($PathMaker.end), Vector3(0, 1, 0))
 		rotation = Vector3(0, rotation.y + deg2rad(180), 0)
 	
@@ -86,25 +86,6 @@ func _process(delta):
 						$ConquestTimer.wait_time = rand_range(7.0, 13.0)
 						# millor, en lloc de temps, senyal quan s'ha conquerit
 						$ConquestTimer.start() # SI MOR CONQUERINT, REPAEREIX CONQUERINT? AL DISABLE CCOMPONENTS S'HAURIA DE RESTABLIR TMB
-	
-	# Shoot
-	if current_enemie:
-		if current_enemie.get_node("TroopManager"):
-			if current_enemie.get_node("TroopManager").is_alive:
-				look_at(current_enemie.translation, Vector3(0, 1, 0))
-				rotation = Vector3(0, rotation.y + deg2rad(180), 0)
-				if not $Weapons/AIGun.shooting:
-					$Weapons/AIGun.shooting = true
-				return
-			else:
-				for i in range(0, $EnemyDetection.enemies.size()):
-					if not $EnemyDetection.enemies.size() > i:
-						return
-					if $EnemyDetection.enemies[i] == current_enemie:
-						$EnemyDetection.enemies.remove(i)
-				current_enemie = null
-	if $Weapons/AIGun.shooting:
-		$Weapons/AIGun.shooting = false
 
 
 func _physics_process(delta : float) -> void:

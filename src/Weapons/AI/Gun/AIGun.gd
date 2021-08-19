@@ -2,4 +2,4 @@ extends Gun
 
 
 func _ready() -> void:
-	$RayCast.global_transform.origin = get_parent().global_transform.origin
+	$RayCast.global_transform.origin = owner.global_transform.origin

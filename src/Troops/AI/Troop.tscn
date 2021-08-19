@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://src/Troops/AI/Troop.gd" type="Script" id=1]
 [ext_resource path="res://src/Troops/Player/PlayerMesh/PlayerMesh.tscn" type="PackedScene" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://src/HealthSystem/HealthSystem.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/Troops/TroopManager/TroopManager.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/Troops/AI/TroopNetwork.gd" type="Script" id=8]
+[ext_resource path="res://src/Troops/AI/TroopStateMachine.gd" type="Script" id=9]
+[ext_resource path="res://src/Troops/AI/GroundIdle.gd" type="Script" id=10]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.6
@@ -51,6 +53,11 @@ shape = SubResource( 2 )
 script = ExtResource( 8 )
 
 [node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 9 )
+START_STATE = NodePath("GroundIdle")
+
+[node name="GroundIdle" type="Node" parent="StateMachine"]
+script = ExtResource( 10 )
 
 [node name="PathMaker" type="Node" parent="."]
 script = ExtResource( 5 )
