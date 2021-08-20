@@ -39,7 +39,7 @@ func init(new_nickname, start_position, start_crouching, start_health, start_ali
 	if start_alive:
 		$HealthSystem.health = start_health
 		if start_in_a_vehicle:
-			$HealthSystem.disable_components(false)
+			$HealthSystem.update_components(false)
 		elif start_crouching:
 			$Crouch.crouch()
 	else:

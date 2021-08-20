@@ -5,7 +5,7 @@ signal server_disconnected
 
 # Aquestes constants defineixen la configuaració necesaria per a crear un client o un servidor
 const DEFAULT_IP : String = "127.0.0.1" # Per defecte, está definit com a "localhost", es a dir conexió local
-const DEFAULT_PORT : int = 31406
+const DEFAULT_PORT : int = 2626
 const MAX_PLAYERS : int = 5 
 
 # La variable players conté tot el llistat de "self_datas" de tots els jugadors, també el propi
@@ -20,8 +20,6 @@ var self_datas : Array = [ { }, { }, { }, { } ]
 # Conté totes les variables de necesaries per inicialitzar la partida
 var match_data : Dictionary = { recived = false, vehicles_data = [], troops_data = [], capital_ships_data = [] }
 
-# Temporal. Per al correcte funcionament de les naus capitals i les tropes quan el servidor executa "spawn_troops"
-var troops_can_move := false
 
 func _ready():
 	for i in range(0, self_datas.size()):
