@@ -4,6 +4,7 @@ var moving := false
 
 
 func _process(delta : float) -> void:
+	return
 	if not moving:
 		$rig/AnimationPlayer.play("man_idle(31)")
 	else:

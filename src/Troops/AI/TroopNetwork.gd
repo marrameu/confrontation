@@ -26,8 +26,8 @@ func update_my_data() -> void:
 			troop_data.rotation = troop.rotation
 			troop_data.health = troop.get_node("HealthSystem").health
 			troop_data.is_alive = troop.get_node("TroopManager").is_alive
-			if troop.get_parent() is CapitalShip:
-				troop_data.parent_cap_ship_id = troop.get_parent().cap_ship_id
+			if troop.my_cap_ship: # weakref?
+				troop_data.parent_cap_ship_id = troop.my_cap_ship.cap_ship_id
 			else:
 				troop_data.parent_cap_ship_id = 0
 	

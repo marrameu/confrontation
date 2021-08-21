@@ -21,16 +21,19 @@ var states_stack = []
 var current_state = null
 var _active = false setget set_active
 
+
 func _ready():
 	for child in get_children():
 		child.connect("finished", self, "_change_state")
 	initialize(START_STATE)
+
 
 func initialize(start_state):
 	set_active(true)
 	states_stack.push_front(get_node(start_state))
 	current_state = states_stack[0]
 	current_state.enter()
+
 
 func set_active(value):
 	_active = value
@@ -40,16 +43,35 @@ func set_active(value):
 		states_stack = []
 		current_state = null
 
+
 func _input(event):
+	"""
+	If you make a shooter game, you may want the player to be able to
+	fire bullets anytime.
+	If that"s the case you don"t want to use the states. They"ll add micro
+	freezes in the gameplay and/or make your code more complex
+	Firing is the weapon"s responsibility (BulletSpawn here) so the code for shooting
+	is all on BulletSpawner (including input)
+	"""
 	current_state.handle_input(event)
+
 
 func _physics_process(delta):
 	current_state.update(delta)
 
+
 func _on_animation_finished(anim_name):
+	"""
+	We want to delegate every method or callback that could trigger 
+	a state change to the state objects. The base script state.gd,
+	that all states extend, makes sure that all states have the same
+	interface, that is to say access to the same base methods, including
+	_on_animation_finished. See state.gd
+	"""
 	if not _active:
 		return
 	current_state._on_animation_finished(anim_name)
+
 
 func _change_state(state_name):
 	if not _active:

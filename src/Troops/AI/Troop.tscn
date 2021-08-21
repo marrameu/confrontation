@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://src/Troops/AI/Troop.gd" type="Script" id=1]
 [ext_resource path="res://src/Troops/Player/PlayerMesh/PlayerMesh.tscn" type="PackedScene" id=2]
@@ -10,6 +10,10 @@
 [ext_resource path="res://src/Troops/AI/TroopNetwork.gd" type="Script" id=8]
 [ext_resource path="res://src/Troops/AI/TroopStateMachine.gd" type="Script" id=9]
 [ext_resource path="res://src/Troops/AI/GroundIdle.gd" type="Script" id=10]
+[ext_resource path="res://src/Troops/AI/GoToCP.gd" type="Script" id=11]
+[ext_resource path="res://src/Troops/AI/ChoseObjective.gd" type="Script" id=12]
+[ext_resource path="res://src/Troops/AI/SearchShip.gd" type="Script" id=13]
+[ext_resource path="res://src/Troops/AI/Conquer.gd" type="Script" id=14]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.6
@@ -54,10 +58,23 @@ script = ExtResource( 8 )
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 9 )
-START_STATE = NodePath("GroundIdle")
+START_STATE = NodePath("ChoseObjective")
+
+[node name="ChoseObjective" type="Node" parent="StateMachine"]
+script = ExtResource( 12 )
 
 [node name="GroundIdle" type="Node" parent="StateMachine"]
 script = ExtResource( 10 )
+
+[node name="GoToCP" type="Node" parent="StateMachine"]
+script = ExtResource( 11 )
+
+[node name="Conquer" type="Node" parent="StateMachine"]
+script = ExtResource( 14 )
+CONQUEST_TIMER = NodePath("../../ConquestTimer")
+
+[node name="SearchShip" type="Node" parent="StateMachine"]
+script = ExtResource( 13 )
 
 [node name="PathMaker" type="Node" parent="."]
 script = ExtResource( 5 )
@@ -78,7 +95,10 @@ one_shot = true
 one_shot = true
 autostart = true
 
+[connection signal="animation_finished" from="PlayerMesh/rig/AnimationPlayer" to="StateMachine" method="_on_animation_finished"]
+[connection signal="arrived" from="PathMaker" to="StateMachine" method="_on_PathMaker_arrived"]
 [connection signal="die" from="HealthSystem" to="." method="_on_HealthSystem_die"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
-[connection signal="timeout" from="ConquestTimer" to="." method="_on_ConquestTimer_timeout"]
-[connection signal="timeout" from="InitTimer" to="." method="_on_InitTimer_timeout"]
+[connection signal="timeout" from="InitTimer" to="StateMachine/ChoseObjective" method="_on_InitTimer_timeout"]
+
+[editable path="PlayerMesh"]

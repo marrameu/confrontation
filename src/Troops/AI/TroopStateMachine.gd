@@ -8,14 +8,18 @@ extends "res://src/Troops/Player/StateMachine/StateMachine.gd"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# si no és el servidor que es desactivi l'state machine (active) o crear un estat Client
 	states_map = {
+		"chose_objective": $ChoseObjective,
 		"ground_idle": $GroundIdle,
-		"go_to_cp": $GoingToCP,
-		"conquer": $Conquering,
+		"go_to_cp": $GoToCP,
+		"conquer": $Conquer,
 		"search_ship": $SearchShip,
+		#"dead": $Dead
 	}
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_PathMaker_arrived():
+	if not _active:
+		return
+	current_state._on_PathMaker_arrived()
