@@ -9,6 +9,9 @@ export var cap_ship_id : int = 0
 func _ready():
 	$Hangar/Area.connect("body_entered", self, "_on_Area_body_entered", [])
 	$Hangar/Area.connect("body_exited", self, "_on_Area_body_exited", [])
+	
+	if name == "CapitalShip2":
+		$Label.rect_position.y -= 50
 
 
 func _process(delta : float) -> void:

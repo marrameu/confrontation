@@ -28,3 +28,9 @@ func _process(_delta):
 	if get_parent().current_enemie:
 		if get_parent().current_enemie.translation.distance_to(get_parent().translation) > 30:
 			get_parent().current_enemie = null
+
+
+func set_active(value):
+	$Area/CollisionShape.disabled = !value
+	set_process(value)
+	enemies = []

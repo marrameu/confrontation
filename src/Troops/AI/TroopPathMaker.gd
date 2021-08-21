@@ -15,7 +15,8 @@ var finished := true
 
 var navigation_node : Navigation = null
 
-func _process(delta : float) -> void:
+
+func _physics_process(delta : float) -> void: # NSE SI FENT-HO AMB EL PHYSICS JA NO CAL EL INITTIMER, SI SEGEUIX FENT FALTA, CANVIAR-HO A PHYSSICS?
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
 			return
@@ -59,6 +60,7 @@ func _process(delta : float) -> void:
 		if path.size() < 2:
 			path = []
 
+
 func update_path(new_begin : Vector3, new_end : Vector3) -> void:
 	begin = new_begin
 	end = new_end
@@ -76,6 +78,8 @@ func update_path(new_begin : Vector3, new_end : Vector3) -> void:
 		i += 1
 	"""
 
+
 func clean_path() -> void:
 	finished = true
 	path = []
+	navigation_node = null

@@ -310,7 +310,7 @@ func _add_new_capital_ship(capital_ship_data : Dictionary) -> void:
 		new_ship.name = "CapitalShip2"
 		new_ship.translation = Vector3(0, 2000, -2000)
 		new_ship.rotation_degrees = Vector3(0, -90, 0)
-		new_ship.get_node("Label").rect_position.y -= 50
+		# new_ship.get_node("Label").rect_position.y -= 50
 		for cp in new_ship.get_node("CPs").get_children():
 			if cp is CommandPost:
 				cp.start_team = 2
