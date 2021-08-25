@@ -67,16 +67,26 @@ func _connected_to_server():
 # S'executa quan es desconnecta un jugador
 func _on_player_disconnected(id):
 	# Es podria fer sense consultar quin local player és
-	for i in range(0, players.size()):
+	for i in range(players.size()):
 		if players[i].has(id):
 			var player # : Player 
 			for node in get_tree().get_nodes_in_group("Players"):
 				if node.online_id == id:
 					player = node
 			if player.get_node("Interaction").is_in_a_vehicle:
-				player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF)
+				player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF, true)
 			
 			player.set_process(false) # Es pot treure?
+			if player.get_parent().is_in_group("CapitalShips"):
+				"""
+				si no fem això, apareixen errors, segurament relacionats amb el fet
+				que si fas queue_free() a un node, com que surt de l'arbre, s'executa
+				l'_on_body_exited() -tot i que pot ésser qualsevol altra cosa-.
+				Potser s'arranjaria amb un weakref al remove_passatger().
+				"""
+				player.get_parent().remove_passatger(player.get_path())
+			print("bye " + player.name)
+			#yield(get_tree(),"idle_frame")
 			player.queue_free()
 			
 			players[i].erase(id)

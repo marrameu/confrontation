@@ -53,10 +53,10 @@ func _on_RespawnTimer_timeout():
 
 
 # Moltes coses el client no les haruia de fer
-func set_dead(value) -> void: # Canviar-li el nom a disable components per als vehicles o fer una funció a part?
+sync func set_dead(value) -> void: # Canviar-li el nom a disable components per als vehicles o fer una funció a part?
 	# NO -> my_cap_ship = null, només canviar-ho quan li canviem el parent(), si no errors online
 	
-	set_process(!value)
+	set_process(!value) # No caldria
 	
 	$TroopManager.is_alive = !value
 	$PathMaker.clean_path()
@@ -66,7 +66,7 @@ func set_dead(value) -> void: # Canviar-li el nom a disable components per als v
 	visible = !value
 	
 	for weapon in $Weapons.get_children():
-		weapon.shooting = false
+		weapon.shooting = false # ONLINE!?
 	
 	$StateMachine.set_active(!value) # s'ha de fer com a última cosa
 
@@ -98,13 +98,19 @@ func set_spawn_place():
 		my_cp = command_posts[randi()%command_posts.size()]
 		global_transform.origin = my_cp.global_transform.origin #1,815
 	
-	# Naus capitals
+	# Naus capitals, codi MOLT MILLORABLE
 	space = global_transform.origin.y > 1000 # millor fer-ho depenent del my_cp
 	if space:
 		if get_tree().has_network_peer():
-			my_cp.owner.rpc("add_fill", get_path())
+			if my_cp.owner is CapitalShip:
+				my_cp.owner.rpc("add_fill", get_path())
+			elif my_cp.owner is Ship: # Transport
+				my_cp.owner.get_parent().rpc("add_fill", get_path())
 		else:
-			my_cp.owner.add_fill(get_path())
+			if my_cp.owner is CapitalShip:
+				my_cp.owner.add_fill(get_path())
+			elif my_cp.owner is Ship: # Transport
+				my_cp.owner.get_parent().add_fill(get_path())
 
 
 func set_material() -> void:

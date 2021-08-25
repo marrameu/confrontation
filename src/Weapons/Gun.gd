@@ -72,6 +72,7 @@ func _shoot() -> void:
 	var point = $RayCast.get_collision_point()
 	if collider:
 		if get_tree().has_network_peer():
+			#if owner.is_network_master():
 			rpc("_hit", collider.get_path(), point)
 		else:
 			_hit(collider.get_path(), point)

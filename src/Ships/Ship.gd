@@ -80,11 +80,11 @@ func _physics_process(delta : float) -> void:
 	if is_player:
 		set_network_master(player_id) #si és 0, doncs no en té
 		if is_network_master():
-			rset_unreliable("slave_position", translation)
+			rset_unreliable("slave_position", global_transform.origin)
 			rset_unreliable("slave_rotation", rotation)
 			rset_unreliable("slave_state", state)
 		else:
-			translation = slave_position
+			global_transform.origin = slave_position
 			rotation = slave_rotation
 			state = slave_state
 
@@ -121,5 +121,5 @@ func _on_HealthSystem_die():
 sync func die() -> void:
 	var explosion : Particles = explosion_scene.instance()
 	get_node("/root/Main").add_child(explosion)
-	explosion.translation = translation
+	explosion.translation = global_transform.origin
 	queue_free()

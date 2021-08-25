@@ -76,12 +76,12 @@ func _process(delta : float) -> void:
 	if get_tree().has_network_peer():
 		if is_network_master():
 			if Input.is_key_pressed(KEY_K):
-				$HealthSystem.take_damage(INF)
+				$HealthSystem.take_damage(INF, true)
 		else:
 			$TroopManager.m_team = Network.players[number_of_player - 1][online_id].team # què ve a compondre açò? per si vol canviar d'equi enmig de la partida?
 	else:
 		if Input.is_key_pressed(KEY_K):
-			$HealthSystem.take_damage(INF)
+			$HealthSystem.take_damage(INF, true)
 	
 	var camera_down_action := "camera_down" if LocalMultiplayer.number_of_players == 1 else $InputManager.input_map.camera_down
 	var camera_up_action := "camera_up" if LocalMultiplayer.number_of_players == 1 else $InputManager.input_map.camera_up

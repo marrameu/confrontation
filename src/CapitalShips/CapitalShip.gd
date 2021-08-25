@@ -39,7 +39,8 @@ func _on_DestructionTimer_timeout() -> void:
 			rpc("_explode")
 	else:
 		for child in get_children():
-			if child is Ship or child is Troop or child is Player: # o vehicle
+			# if child has_methoud("take_damage")
+			if child.is_in_group("Ships") or child.is_in_group("Troops"): # o vehicle
 				child.get_node("HealthSystem").take_damage(INF, true) # gradual
 		_explode()
 
@@ -51,12 +52,14 @@ sync func _explode() -> void:
 
 func _on_Area_body_entered(body):
 	print("BODY_ENTERED: " + body.name)
+	
 	if not body.is_in_group("Ships") and not body.is_in_group("Troops"):
 		return
 	if body.wait_a_fcking_moment:
 		return
 	if body.get_parent() == self: # per a les naus que hi són des del principi
 		return
+	
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
 			rpc("add_passatger", body.get_path())
@@ -65,7 +68,24 @@ func _on_Area_body_entered(body):
 
 
 func _on_Area_body_exited(body):
+	"""
+	Cal comprovar si body.wait_a_fcking_moment, perquè això ho resolíem
+	comprovant si el pare és la nua capital -ergo, ja ha passat per _on_Area_body_entered 
+	i add_passatger() una vegada-, però amb les naus que ja són dins de la nau capital
+	això no funciona
+	"""
+	# Si abans de fer cap rpc, comprov si body.wait_a_fcking_moment, potser
+	# ens estalviaríem uns quants errors, nogensmenys, s'hauria de repetir una mica de codi
+	# del remove_passatger
 	print("BODY_EXITED: " + body.name)
+	
+	if not body.is_in_group("Ships") and not body.is_in_group("Troops"):
+		return
+	if body.wait_a_fcking_moment:
+		return
+	if body.get_parent() != self:
+		return
+	
 	if get_tree().has_network_peer():
 		if get_tree().is_network_server():
 			rpc("remove_passatger", body.get_path())
@@ -74,6 +94,7 @@ func _on_Area_body_exited(body):
 
 
 sync func add_passatger(path):
+	print(path)
 	var body = get_node(path)
 	if not body:
 		return
@@ -95,29 +116,26 @@ sync func remove_passatger(path):
 	var body = get_node(path)
 	if not body:
 		return
-	"""
-	comprovant si el pare és la nau també se soluciona el bug 14578, car si bé 
-	surten de la nau, puix encara tenen de node pare el /Troops, no s'executa,
-	ÉS A DIR, no cal comprovar si wait_a_fcking_moment
-	"""
-	if body.get_parent() == self:
-		print("surt de " + name + " " + body.name)
-		body.global_transform.origin = to_global(body.global_transform.origin)
-		remove_child(body)
-		if body.is_in_group("AI"):
-			get_node("/root/Main/Troops").add_child(body)
-		elif body.is_in_group("Ships"):
-			get_node("/root/Main/Vehicles").add_child(body)
-			# treure'n també el fill si no es fa sol
-			body.rotation += rotation
-		elif body.is_in_group("Players"):
-			get_node("/root/Main").add_child(body)
-		else:
-			return
-		return
+	
+	print("surt de " + name + " " + body.name)
+	
+	body.wait_a_fcking_moment = true # per a quan un client tanca el joc
+	body.global_transform.origin = to_global(body.global_transform.origin)
+	remove_child(body)
+	
+	if body.is_in_group("AI"):
+		get_node("/root/Main/Troops").add_child(body)
+	elif body.is_in_group("Ships"):
+		get_node("/root/Main/Vehicles").add_child(body)
+		# la tropa i el jugador surten sols
+		body.rotation += rotation
+	elif body.is_in_group("Players"):
+		get_node("/root/Main").add_child(body)
+	
+	body.wait_a_fcking_moment = false
 
 
-# que amb add-pasatger() ja es pugui fer això
+# que amb l'add-pasatger() ja es pugui fer això
 sync func add_fill(path):
 	print("s'intenta afegir " + path + " a " + name)
 	var body = get_node(path)

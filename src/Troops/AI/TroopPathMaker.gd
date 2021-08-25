@@ -16,11 +16,13 @@ var finished := true
 var navigation_node : Navigation = null
 
 
-func _physics_process(delta : float) -> void: # NSE SI FENT-HO AMB EL PHYSICS JA NO CAL EL INITTIMER, SI SEGEUIX FENT FALTA, CANVIAR-HO A PHYSSICS?
+func _ready() -> void:
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
-			return
-	
+			set_physics_process(false)
+
+
+func _physics_process(delta : float) -> void: # NSE SI FENT-HO AMB EL PHYSICS JA NO CAL EL INITTIMER, SI SEGEUIX FENT FALTA, CANVIAR-HO A PHYSSICS?
 	# Walk
 	if path.size() > 1:
 		# Distance to stop
@@ -68,18 +70,14 @@ func update_path(new_begin : Vector3, new_end : Vector3) -> void:
 	var p = navigation_node.get_simple_path(begin, end, true)
 	path = Array(p) # Vector3 array too complex to use, convert to regular array (nse q vol dir)
 	path.invert()
-	
-	# Cal passar, ara, la path a coords. globals perquè aquestes s'apliquen directament a la posició de la tropa.
-	# Quan les naus capitals es moguin, açò s'haurà de fer diferent, potser passant-les primer a global i després a local respecte el node base de la nau
-	"""
-	var i : int = 0
-	for pos in path:
-		path[i] =  navigation_node.to_global(pos)
-		i += 1
-	"""
 
 
 func clean_path() -> void:
+	# No passaria res si ho fes el client, per això
+	if get_tree().has_network_peer():
+		if not get_tree().is_network_server():
+			return
+	
 	finished = true
 	path = []
 	navigation_node = null

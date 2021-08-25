@@ -31,6 +31,10 @@ func _process(_delta):
 
 
 func set_active(value):
+	if get_tree().has_network_peer():
+		if not get_tree().is_network_server():
+			return
+	
 	$Area/CollisionShape.disabled = !value
-	set_process(value)
+	set_process(value) # No caldria
 	enemies = []

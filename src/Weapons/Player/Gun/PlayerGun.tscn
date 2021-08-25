@@ -8,7 +8,6 @@
 [node name="PlayerGun" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 offset = Vector2( 5, 5 )
-cam = NodePath("")
 
 [node name="RayCast" parent="." index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
@@ -45,6 +44,7 @@ expand = true
 
 [node name="Audio" type="AudioStreamPlayer" parent="HUD/Hitmarker" index="1"]
 stream = ExtResource( 4 )
+
 [connection signal="headshot" from="." to="." method="_on_headshot"]
 [connection signal="shoot" from="." to="." method="_shake_camera"]
 [connection signal="shot" from="." to="." method="_on_shot"]

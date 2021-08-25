@@ -32,7 +32,7 @@ func instance_cp() -> void:
 	var cp = main.instance_cp(Vector3.ZERO, false, m_team) # Pos. = 0 perquè ara serà fill nostre
 	
 	cp.get_parent().remove_child(cp)
-	get_parent().add_child(cp)
+	owner.add_child(cp)
 	
 	cp.get_node("MeshInstance").hide()
 	connect("tree_exited", cp, "queue_free")

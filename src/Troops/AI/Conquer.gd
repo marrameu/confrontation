@@ -4,14 +4,9 @@ extends "OnFloor.gd"
 export(NodePath) var CONQUEST_TIMER
 onready var conquest_timer : Timer = get_node(CONQUEST_TIMER)
 
-"""
-func _process(delta):
-	if Engine.editor_hint:
-		assert(!CONQUEST_TIMER)
-"""
-
 
 func _ready():
+	assert(CONQUEST_TIMER)
 	conquest_timer.connect("timeout", self, "_on_ConquestTimer_timeout")
 
 

@@ -11,6 +11,7 @@ const hitmarkers := {
 	2: preload("res://assets/interface/hitmarkers/hitmarker_red.png"),
 }
 
+
 func _get_configuration_warning() -> String:
 	var warning := ""
 	if not cam:
@@ -19,6 +20,8 @@ func _get_configuration_warning() -> String:
 
 
 func _ready() -> void:
+	m_team = get_node("../../TroopManager").m_team
+	
 	if get_tree().has_network_peer():
 		if not is_network_master():
 			$HUD/Crosshair.queue_free()
@@ -36,8 +39,10 @@ func _process(delta : float) -> void:
 	$RayCast.global_transform.origin = get_node(cam).global_transform.origin
 	global_transform.basis = cam_basis.get_euler() + Vector3(deg2rad(180), 0, 0)
 	
+	""" Per a canviar d'equip
 	if m_team != get_node("../../TroopManager").m_team: # On value changed
 		m_team = get_node("../../TroopManager").m_team
+	"""
 	
 	if action == "":
 		action = get_parent().shoot_action
