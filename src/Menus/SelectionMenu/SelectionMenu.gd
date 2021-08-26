@@ -60,7 +60,7 @@ func _on_SpawnButton_pressed() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	if not get_node("/root/Main").game_started:
-		# get_node("/root/Main/Music").play()
+		get_node("/root/Main/Music").play()
 		if get_tree().has_network_peer():
 			"""
 			Millorar: que només iniciar la partida en X segons (si hi ha més d'un jugador) comencin a fer spawn les tropes

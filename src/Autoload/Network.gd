@@ -158,7 +158,8 @@ remote func _request_match_info(request_from_id) -> void:
 		var ship_data = { name = ship.name, health = ship.get_node("HealthSystem").health, id = ship.cap_ship_id } # el nom no caldria
 		current_capital_ships_data[current_capital_ships_data.size() - 1] = ship_data
 	
-	for vehicle in get_node("/root/Main/Vehicles").get_children():
+	for vehicle in get_tree().get_nodes_in_group("Ships"): # vehicles hauria d'ésser
+		print(vehicle.name)
 		current_vehicles_data.resize(current_vehicles_data.size() + 1)
 		current_vehicles_data[current_vehicles_data.size() - 1] = vehicle.get_node("VehicleNetwork").vehicle_data
 	

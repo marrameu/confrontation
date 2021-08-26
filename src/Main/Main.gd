@@ -34,11 +34,15 @@ func _ready() -> void:
 	if LocalMultiplayer.number_of_players == 3:
 		_enable_scene_camera4()
 	
+	# Es podria fer d'una molt millor manera
 	# Destroy vehicles and frigates
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
-			for vehicle in $Vehicles.get_children():
+			for vehicle in get_tree().get_nodes_in_group("Ships"): # vehicles hauria d'ésser
+				print("destrop" + vehicle.name)
+				# nsé pq no elimina les naus de les CS
 				vehicle.queue_free()
+				print(vehicle)
 			
 			for ship in $CapitalShips.get_children(): # Es podria fer d'una molt millor manera
 				ship.queue_free()
@@ -288,7 +292,7 @@ func _add_new_vehicle(vehicle_data : Dictionary) -> void:
 	if vehicle_data.team != 0:
 		new_vehicle.get_node("Transport").m_team = vehicle_data.team
 	if vehicle_data.is_player:
-		new_vehicle.player_name = String(vehicle_data.player_id)
+		new_vehicle.player_id = vehicle_data.player_id
 	
 	if vehicle_data.parent_cap_ship_id != 0:
 		for cap_ship in get_tree().get_nodes_in_group("CapitalShips"):

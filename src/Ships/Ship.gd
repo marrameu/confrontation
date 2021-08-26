@@ -28,6 +28,12 @@ var wait_a_fcking_moment := false
 
 func _ready():
 	# nom aletaori si es server
+	if get_tree().has_network_peer():
+		if get_tree().is_network_server():
+			# Es fa des d'aquí perquè el ready dels fills va abans
+			name = "Ship" + str(rand_range(0, 1000))
+			$VehicleNetwork.vehicle_data.vehicle_name = name
+	
 	slave_position = global_transform.origin # cal fer-ho perquè si no quan el jugador hi entra hi ha un frame que la nau apareix a 0, 0 i per tant es com si sortís de la CS
 	slave_rotation = global_transform.basis.get_euler()
 

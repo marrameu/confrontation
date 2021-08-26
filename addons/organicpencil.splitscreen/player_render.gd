@@ -5,8 +5,8 @@ var viewport
 var player_number
 
 func _ready():
-	assert(viewport)
-	assert(!player_number)
+	#assert(viewport)
+	#assert(player_number)
 
 	get_tree().connect("screen_resized", self, "update_viewport")
 
