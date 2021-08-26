@@ -18,6 +18,7 @@ var _troops_instantiated := false
 var _capital_ships_instantiated := false
 var _everything_instantiated := false
 
+
 func _ready() -> void:
 	get_tree().connect('server_disconnected', self, '_on_server_disconnected')
 	

@@ -32,7 +32,7 @@ func _on_RespawnTimer_timeout() -> void:
 
 sync func die() -> void:
 	health = 0 # Per al HUD (temporal)
-	get_node("../TroopManager").is_alive = false
+	owner.get_node("TroopManager").is_alive = false
 	
 	if get_tree().has_network_peer(): # Per al mode un jugador
 		if is_network_master():
@@ -79,8 +79,21 @@ sync func respawn() -> void:
 
 
 sync func update_components(var enable : bool, var update_interaction := true) -> void:
+	if not enable:
+		if owner.get_parent().is_in_group("CapitalShips"):
+			# si no fem això, quan una CS exploti, el jugador seguira sent-ne
+			# fill encara que la nau sigui fora i... queue_free() kk
+			if get_tree().has_network_peer():
+				if get_tree().is_network_server():
+					owner.get_parent().rpc("remove_passatger", owner.get_path())
+			else:
+				owner.get_parent().remove_passatger(owner.get_path())
+	if enable:
+		pass # Caldria que des d'aquí és fes l'add_passatger(), car, altrament,
+		# quan un client apareix a un CP d'una CS apareixen uns quants errors al depurador evitables
+	
 	# si no és el network master es podria obviar de fer moltes coses
-	# perquè no es mogui, oi?
+	# per tal que no es mogui això, oi?
 	get_parent().set_process(enable)
 	get_parent().set_physics_process(enable)
 	

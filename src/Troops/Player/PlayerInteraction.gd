@@ -18,9 +18,11 @@ var current_vehicle : Spatial
 # Multiplayer
 var action := ""
 
+
 func _ready() -> void:
 	current_camera = get_node("../CameraBase/Camera")
 	ship_camera = get_node("../CameraBase/ShipCamera")
+
 
 func _process(delta : float) -> void:
 	if get_tree().has_network_peer():

@@ -76,15 +76,15 @@ func _on_player_disconnected(id):
 			if player.get_node("Interaction").is_in_a_vehicle:
 				player.get_node("Interaction").current_vehicle.get_node("HealthSystem").take_damage(INF, true)
 			
-			player.set_process(false) # Es pot treure?
-			if player.get_parent().is_in_group("CapitalShips"):
-				"""
-				si no fem això, apareixen errors, segurament relacionats amb el fet
-				que si fas queue_free() a un node, com que surt de l'arbre, s'executa
-				l'_on_body_exited() -tot i que pot ésser qualsevol altra cosa-.
-				Potser s'arranjaria amb un weakref al remove_passatger().
-				"""
-				player.get_parent().remove_passatger(player.get_path())
+			player.set_process(false) # Es pot treure? ja apareix a die()
+			player.get_node("HealthSystem").rpc("die")
+			"""
+			si no fem això i el jugador segeuix a una nau, apareixen errors, 
+			segurament relacionats amb el fet
+			que si fas queue_free() a un node, com que surt de l'arbre, s'executa
+			l'_on_body_exited() -tot i que pot ésser qualsevol altra cosa-.
+			Potser s'arranjaria amb un weakref al remove_passatger().
+			"""
 			print("bye " + player.name)
 			#yield(get_tree(),"idle_frame")
 			player.queue_free()
