@@ -86,6 +86,7 @@ sync func update_components(var enable : bool, var update_interaction := true) -
 			if get_tree().has_network_peer():
 				if get_tree().is_network_server():
 					owner.get_parent().rpc("remove_passatger", owner.get_path())
+					print("el uc a tret el player")
 			else:
 				owner.get_parent().remove_passatger(owner.get_path())
 	if enable:
@@ -123,7 +124,6 @@ sync func update_components(var enable : bool, var update_interaction := true) -
 					child.visible = enable
 	
 	for child in get_parent().get_children():
-		# print("uwu")
 		if child is Spatial:
 			child.visible = enable
 	

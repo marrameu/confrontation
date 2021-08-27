@@ -159,7 +159,6 @@ remote func _request_match_info(request_from_id) -> void:
 		current_capital_ships_data[current_capital_ships_data.size() - 1] = ship_data
 	
 	for vehicle in get_tree().get_nodes_in_group("Ships"): # vehicles hauria d'ésser
-		print(vehicle.name)
 		current_vehicles_data.resize(current_vehicles_data.size() + 1)
 		current_vehicles_data[current_vehicles_data.size() - 1] = vehicle.get_node("VehicleNetwork").vehicle_data
 	

@@ -29,7 +29,7 @@ sync func take_damage(amount : int, obviar_shield : bool = false) -> void:
 			health -= amount
 			health = max(0, health)
 			if health <= 0:
-				print("dies: " + owner.name)
+				#print("dies: " + owner.name)
 				emit_signal("die")
 
 

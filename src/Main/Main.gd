@@ -38,11 +38,8 @@ func _ready() -> void:
 	# Destroy vehicles and frigates
 	if get_tree().has_network_peer():
 		if not get_tree().is_network_server():
-			for vehicle in get_tree().get_nodes_in_group("Ships"): # vehicles hauria d'ésser
-				print("destrop" + vehicle.name)
-				# nsé pq no elimina les naus de les CS
+			for vehicle in $Vehicles.get_children(): # Les CS eliminen les seves naus, pq, si no, tornarien a aparèixer
 				vehicle.queue_free()
-				print(vehicle)
 			
 			for ship in $CapitalShips.get_children(): # Es podria fer d'una molt millor manera
 				ship.queue_free()
@@ -114,13 +111,19 @@ func _process(delta : float) -> void:
 		if child is Player:
 			troops_node += ("PL:" + child.name)
 	var cs1  = "CS1: "
-	for child in $CapitalShips/CapitalShip.get_children():
-		if child is Troop or child is Player:
-			cs1 += child.name
+	if $CapitalShips/CapitalShip:
+		for child in $CapitalShips/CapitalShip.get_children():
+			if child is Troop:
+				cs1 += child.name
+			elif child is Player:
+				cs1 += ("PL:" + child.name)
 	var cs2 = "CS2: "
-	for child in $CapitalShips/CapitalShip2.get_children():
-		if child is Troop or child is Player:
-			cs2 += child.name
+	if $CapitalShips/CapitalShip2:
+		for child in $CapitalShips/CapitalShip2.get_children():
+			if child is Troop:
+				cs2 += child.name
+			elif child is Player:
+				cs2 += ("PL:" + child.name)
 	$Label.text = (troops_node + "\n" + cs1 + "\n" + cs2)
 
 

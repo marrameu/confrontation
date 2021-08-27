@@ -7,6 +7,13 @@ export var cap_ship_id : int = 0
 
 
 func _ready():
+	# Temporal, s'ha de fer millor
+	if get_tree().has_network_peer():
+		if not get_tree().is_network_server():
+			for child in get_children():
+				if child.is_in_group("Ships"):
+					child.queue_free()
+	
 	$Hangar/Area.connect("body_entered", self, "_on_Area_body_entered", [])
 	$Hangar/Area.connect("body_exited", self, "_on_Area_body_exited", [])
 	
@@ -97,6 +104,8 @@ sync func add_passatger(path):
 	print(path)
 	var body = get_node(path)
 	if not body:
+		return
+	if body.is_queued_for_deletion():
 		return
 	
 	print("entra a " + name + " " + body.name)
