@@ -28,22 +28,25 @@ var camera_up_action := "camera_up"
 var camera_left_action := "camera_left"
 var camera_right_action := "camera_right"
 
+var target: Vector3 = Vector3(100, 2000, 100)
+
 
 func _ready() -> void:
 	pass
 
 
-func _process(delta : float) -> void:
+func _physics_process(delta):
 	roll = clamp(lerp(roll, (Input.get_action_strength(move_right_action) - Input.get_action_strength(move_left_action)), delta * ROLL_SPEED), -1, 1)
 	
-	update_yaw_and_ptich()
+	update_yaw_and_ptich(delta)
 	update_throttle(move_forward_action, move_backward_action, delta)
 
 
-func update_yaw_and_ptich() -> void:
+func update_yaw_and_ptich(delta) -> void:
 	mouse_input.x = get_node("../../PlayerHUD").cursor_input.x
 	mouse_input.y = -get_node("../../PlayerHUD").cursor_input.y
 	
+	# no cal lerp? i pq al throttle sí?
 	pitch = mouse_input.y if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action)
 	yaw = -mouse_input.x if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_left_action) - Input.get_action_strength(camera_right_action)
 

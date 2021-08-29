@@ -4,8 +4,8 @@ var input_manager : InputManager
 var input_map : Dictionary
 
 func _ready() -> void:
-	$Player.set_process(false)
-	$AI.set_process(false)
+	$Player.set_physics_process(false)
+	#$AI.set_process(false)
 	get_parent().set_mode(RigidBody.MODE_KINEMATIC)
 
 func _process(delta: float) -> void:
@@ -20,9 +20,9 @@ func _process(delta: float) -> void:
 		input_manager = null
 	
 	if get_parent().is_player and get_parent().state == get_parent().State.FLYING:
-		$Player.set_process(true)
+		$Player.set_physics_process(true)
 	else:
-		$Player.set_process(false)
+		$Player.set_physics_process(false)
 		$Player.throttle = 0.0
 		$Player.strafe = 0.0
 
