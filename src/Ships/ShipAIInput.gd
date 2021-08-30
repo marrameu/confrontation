@@ -22,6 +22,11 @@ var entered = false
 
 var boost_multi: = 1.0
 
+var distancia_per_comencar_a_frenat := 500.0
+var a_partir_daqui_min := 200.0
+
+var min_raycast_longitude = 1
+
 func enter():
 	owner.leave()
 	owner.is_ai = true
@@ -36,6 +41,11 @@ func _physics_process(delta):
 			entered = true
 	
 	if owner.is_ai:
+		if Input.is_action_just_pressed("CANVI_TAR"):
+			target = get_node("/root/Main/CapitalShips/Spatial").translation
+			distancia_per_comencar_a_frenat = 700
+			a_partir_daqui_min = 200
+			min_raycast_longitude = 0.2
 		move_forward(delta)
 		if target:
 			turn(delta)
@@ -44,7 +54,8 @@ func _physics_process(delta):
 
 
 func move_forward(delta):
-	update_throttle(1, delta)
+	var dist = owner.global_transform.origin.distance_to(target)
+	update_throttle(dist - a_partir_daqui_min/distancia_per_comencar_a_frenat - a_partir_daqui_min, delta)
 
 
 # Va una mica ebri!, però fa el fet. S'hauria de fer amb matemàtiques, passant la desired_oirent a local, com ho feia al del 2017 (amb l'Slerp però amb pitch, yaw i roll)
@@ -96,15 +107,27 @@ func turn(delta):
 	var right = false
 	var left = false
 	
+	# fer-ho amb la velocitat?
+	var dist = owner.global_transform.origin.distance_to(target)
+	var multi = clamp(((dist - a_partir_daqui_min)/(distancia_per_comencar_a_frenat - a_partir_daqui_min)), min_raycast_longitude, 1)
+	#print(multi)
+	owner.get_node("ColDetectForward").cast_to = Vector3(0, 0, 300 * multi)
+	owner.get_node("ColDetectDown").cast_to = Vector3(0, -150 * multi, 300 * multi)
+	owner.get_node("ColDetectUp").cast_to = Vector3(0, 150 * multi, 300 * multi)
+	owner.get_node("ColDetectRight").cast_to = Vector3(-150 * multi, 0, 300 * multi)
+	owner.get_node("ColDetectLeft").cast_to = Vector3(150 * multi, 0, 300 * multi)
+	
+	#owner.get_node("ColDetectForward").force_raycast_update()
+	
+	if (owner.get_node("ColDetectUp") as RayCast).is_colliding():
+		DebugDraw.draw_line_3d(owner.global_transform.origin, owner.global_transform.origin+(owner.global_transform.basis.xform(owner.get_node("ColDetectUp").cast_to)), Color.blue)
+		pitch = 1 # ves avall
+		up = true
 	if (owner.get_node("ColDetectDown") as RayCast).is_colliding():
 		DebugDraw.draw_line_3d(owner.global_transform.origin, owner.global_transform.origin+(owner.global_transform.basis.xform(owner.get_node("ColDetectDown").cast_to)), Color.blue)
 		pitch = -1 # vés amunt
 		down = true
 	# No elif pq si no, no es pot posar a true up i down
-	if (owner.get_node("ColDetectUp") as RayCast).is_colliding():
-		DebugDraw.draw_line_3d(owner.global_transform.origin, owner.global_transform.origin+(owner.global_transform.basis.xform(owner.get_node("ColDetectUp").cast_to)), Color.blue)
-		pitch = 1 # ves avall
-		up = true
 	
 	# No toca ni a dalt ni a baix però si endavant
 	if not down and not up and (owner.get_node("ColDetectForward") as RayCast).is_colliding():
@@ -115,6 +138,15 @@ func turn(delta):
 			pitch = 0
 			# vés endavant
 		else: # Toca per tot l'eix vertical
+			if (owner.get_node("ColDetectUp") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) - (owner.get_node("ColDetectDown") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > 20:
+				if (owner.get_node("ColDetectUp") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > (owner.get_node("ColDetectDown") as RayCast).get_collision_point().distance_to(owner.global_transform.origin):
+					pitch = -1
+				else:
+					pitch = 1
+			else: # Si són a la mateixa distància, és a dir, una paret plana per exemple
+				pitch = uwu.x
+				
+			#pitch = uwu.x # Això o el punt que quedi més lluny (amunt o avall)
 			fotut = true
 			# Toca amunt avall i davant
 	
@@ -139,12 +171,17 @@ func turn(delta):
 		if not (owner.get_node("ColDetectForward") as RayCast).is_colliding(): # No toca endavant
 			yaw = 0
 			# vés endavant
-		elif fotut: # toca per tot arreu
-			boost_multi = 0.25
-			print(yaw, pitch)
-			
-			pass # U turn
-			# Toca amunt dreta, esquerra i, a més, amunt, avall i endevant
+		else: # toca per tot arreu
+			# Com més baix el número amb què es compara millor anirà a dintre de la CS (menys xocarà), però, segurament, li costi més d'entar
+			if (owner.get_node("ColDetectRight") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) - (owner.get_node("ColDetectLeft") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > 20:
+				if (owner.get_node("ColDetectRight") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > (owner.get_node("ColDetectLeft") as RayCast).get_collision_point().distance_to(owner.global_transform.origin):
+					yaw = -1
+				else:
+					yaw = 1
+			else: # Si són a la mateixa distància, és a dir, una paret plana per exemple
+				yaw = uwu.y
+			if fotut: # Toca amunt dreta, esquerra i, a més, amunt, avall i endevant
+				boost_multi = 0.25
 	
 	owner.get_node("MeshInstance").rotation = Vector3.ZERO
 	
@@ -154,7 +191,7 @@ func turn(delta):
 
 
 func update_throttle(value : float, delta : float) -> void:
-	var target := throttle
-	target = clamp(value * boost_multi, min_throttle, 1)
+	var targett := throttle
+	targett = clamp(value * boost_multi, min_throttle, 1)
 	# Change to move_towards
-	throttle = clamp(lerp(throttle, target, delta * THROTTLE_SPEED), -1, 1)
+	throttle = clamp(lerp(throttle, targett, delta * THROTTLE_SPEED), -1, 1)
