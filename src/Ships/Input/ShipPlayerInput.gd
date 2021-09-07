@@ -39,17 +39,35 @@ var min_raycast_longitude := 0.7
 
 var going_to_cs = false
 
+var raycast_multiplier = 1
+
 func _ready() -> void:
 	pass
 
 
 func _physics_process(delta):
-	if Input.is_action_just_pressed("CANVI_TAR"):
-		target = get_node("/root/Main/CapitalShips/Spatial").translation
-		distancia_per_comencar_a_frenat = 700
-		a_partir_daqui_min = 200
-		min_raycast_longitude = 0.25
-		going_to_cs = true
+	if not going_to_cs:
+		if Input.is_action_just_pressed("CANVI_TAR"):
+			var davant = get_node("/root/Main/CapitalShips/EntradaDavant").translation
+			var darrere = get_node("/root/Main/CapitalShips/EntradaDarrere").translation
+			var dsit_davant = owner.global_transform.origin.distance_to(davant)
+			var dist_darrere = owner.global_transform.origin.distance_to(darrere)
+			
+			if dsit_davant < dist_darrere:
+				target = davant
+			else:
+				target = darrere
+			
+			distancia_per_comencar_a_frenat = 700
+			a_partir_daqui_min = 200
+			min_raycast_longitude = 0.2
+			going_to_cs = true
+	else:
+		if owner.global_transform.origin.distance_to(target) < 30: #abs(owner.global_transform.origin.y - target.y) < 5:
+			distancia_per_comencar_a_frenat = 1500
+			a_partir_daqui_min = 500
+			raycast_multiplier = 0.3
+			target = get_node("/root/Main/CapitalShips/CentreHangar").translation
 	
 	# roll = clamp(lerp(roll, (Input.get_action_strength(move_right_action) - Input.get_action_strength(move_left_action)), delta * ROLL_SPEED), -1, 1)
 	
@@ -106,21 +124,26 @@ func update_yaw_and_ptich(delta) -> void:
 	var right = false
 	var left = false
 	
+	owner.get_node("ColDetectForward").cast_to = Vector3(0, 0, 150 * raycast_multiplier)
+	owner.get_node("ColDetectDown").cast_to = Vector3(0, -75 * raycast_multiplier, 150 * raycast_multiplier)
+	owner.get_node("ColDetectUp").cast_to = Vector3(0, 75 * raycast_multiplier, 150 * raycast_multiplier)
+	owner.get_node("ColDetectRight").cast_to = Vector3(-75 * raycast_multiplier, 0, 150 * raycast_multiplier)
+	owner.get_node("ColDetectLeft").cast_to = Vector3(75 * raycast_multiplier, 0, 150 * raycast_multiplier)
+	
+	
+	"""
 	# fer-ho amb la velocitat?
 	var dist = owner.global_transform.origin.distance_to(target)
 	var multi = clamp(((dist - a_partir_daqui_min)/(distancia_per_comencar_a_frenat - a_partir_daqui_min)), min_raycast_longitude, 1)
-	
-	var going_to_cp = false
 	#print(multi)
 	owner.get_node("ColDetectForward").cast_to = Vector3(0, 0, 300 * multi)
-	# Si trec aixó: és més fàcil que entri a la CS, però si hi voleia a prop té més possibilitats de xocar
-	# Sia com sia, és el que dic, s'hauria de fer en funció de la velocitat
 	owner.get_node("ColDetectDown").cast_to = Vector3(0, -150 * multi, 300 * multi)
 	owner.get_node("ColDetectUp").cast_to = Vector3(0, 150 * multi, 300 * multi)
 	owner.get_node("ColDetectRight").cast_to = Vector3(-150 * multi, 0, 300 * multi)
 	owner.get_node("ColDetectLeft").cast_to = Vector3(150 * multi, 0, 300 * multi)
 	
 	#owner.get_node("ColDetectForward").force_raycast_update()
+	"""
 	
 	if (owner.get_node("ColDetectUp") as RayCast).is_colliding():
 		DebugDraw.draw_line_3d(owner.global_transform.origin, owner.global_transform.origin+(owner.global_transform.basis.xform(owner.get_node("ColDetectUp").cast_to)), Color.blue)
@@ -135,16 +158,13 @@ func update_yaw_and_ptich(delta) -> void:
 	# No toca ni a dalt ni a baix però si endavant
 	if not down and not up and (owner.get_node("ColDetectForward") as RayCast).is_colliding():
 		DebugDraw.draw_line_3d(owner.global_transform.origin, owner.global_transform.origin+(owner.global_transform.basis.xform(owner.get_node("ColDetectForward").cast_to)), Color.brown)
-		if not going_to_cs: # El target no és sòlid
-			pitch = -1 # Tant se val si -1 o 1, pq no toca enlloc
+		pitch = -1 # Tant se val si -1 o 1, pq no toca enlloc
 	elif down and up: # Toca a dalt i a baix
-		"""
 		if not (owner.get_node("ColDetectForward") as RayCast).is_colliding(): # No toca endavant
 			pitch = 0
-			# vés endavant, millor que segeuixi com va
-		"""
-		if true: # Toca per tot l'eix vertical
-			if (owner.get_node("ColDetectUp") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) - (owner.get_node("ColDetectDown") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > 0:
+			# vés endavant
+		else: # Toca per tot l'eix vertical
+			if (owner.get_node("ColDetectUp") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) - (owner.get_node("ColDetectDown") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > 20:
 				if (owner.get_node("ColDetectUp") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > (owner.get_node("ColDetectDown") as RayCast).get_collision_point().distance_to(owner.global_transform.origin):
 					pitch = -1
 				else:
@@ -156,6 +176,9 @@ func update_yaw_and_ptich(delta) -> void:
 			fotut = true
 			# Toca amunt avall i davant
 	
+	
+	# En un món ideal, la llargada dels RayCast dependria de la velocitat de la nau
+	# dreta esquerra
 	if (owner.get_node("ColDetectRight") as RayCast).is_colliding():
 		DebugDraw.draw_line_3d(owner.global_transform.origin, owner.global_transform.origin+(owner.global_transform.basis.xform(owner.get_node("ColDetectRight").cast_to)), Color.blue)
 		yaw = 1 # veé esquerra
@@ -166,19 +189,17 @@ func update_yaw_and_ptich(delta) -> void:
 		yaw = -1 # vés dreta
 		left = true
 	
+	# No toca ni a dreta ni a esq però si endavant
 	if not left and not right and (owner.get_node("ColDetectForward") as RayCast).is_colliding():
 		DebugDraw.draw_line_3d(owner.global_transform.origin, owner.global_transform.origin+(owner.global_transform.basis.xform(owner.get_node("ColDetectForward").cast_to)), Color.brown)
-		if not going_to_cs: # El target no és sòlid
-			yaw = 1 # Tant se val si -1 o 1, pq no toca enlloc
+		yaw = 1 # Tant se val si -1 o 1, pq no toca enlloc
 	elif right and left: # Toca dreta i esquerra
-		"""
 		if not (owner.get_node("ColDetectForward") as RayCast).is_colliding(): # No toca endavant
 			yaw = 0
-			# vés endavant, millor que segeuixi com va
-		"""
-		if true: # toca per tot arreu
+			# vés endavant
+		else: # toca per tot arreu
 			# Com més baix el número amb què es compara millor anirà a dintre de la CS (menys xocarà), però, segurament, li costi més d'entar
-			if (owner.get_node("ColDetectRight") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) - (owner.get_node("ColDetectLeft") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > 5:
+			if (owner.get_node("ColDetectRight") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) - (owner.get_node("ColDetectLeft") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > 20:
 				if (owner.get_node("ColDetectRight") as RayCast).get_collision_point().distance_to(owner.global_transform.origin) > (owner.get_node("ColDetectLeft") as RayCast).get_collision_point().distance_to(owner.global_transform.origin):
 					yaw = -1
 				else:
@@ -188,6 +209,13 @@ func update_yaw_and_ptich(delta) -> void:
 			if fotut: # Toca amunt dreta, esquerra i, a més, amunt, avall i endevant
 				boost_multi = 0.25
 	
+	owner.get_node("MeshInstance").rotation = Vector3.ZERO
+	
+	# COM AL JOC ANTERIOR
+	#owner.global_transform.basis = owner.global_transform.basis.slerp(desired_oirent.basis, 0.7 * delta)
+	#owner.translation += owner.global_transform.basis.z * 100 * delta
+
+	
 	"""
 	mouse_input.x = get_node("../../PlayerHUD").cursor_input.x
 	mouse_input.y = -get_node("../../PlayerHUD").cursor_input.y
@@ -196,6 +224,7 @@ func update_yaw_and_ptich(delta) -> void:
 	pitch = mouse_input.y if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_down_action) - Input.get_action_strength(camera_up_action)
 	yaw = -mouse_input.x if LocalMultiplayer.number_of_players == 1 and not Settings.controller_input or input_device == -1 else Input.get_action_strength(camera_left_action) - Input.get_action_strength(camera_right_action)
 	"""
+
 
 func update_throttle(value : float, delta : float) -> void:
 	var targett := throttle

@@ -93,29 +93,29 @@ script = ExtResource( 11 )
 [node name="PlayerHUD" parent="." instance=ExtResource( 12 )]
 
 [node name="ColDetectLeft" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0 )
 enabled = true
-cast_to = Vector3( 150, 0, 300 )
-collision_mask = 5
+cast_to = Vector3( 75, 0, 150 )
 
 [node name="ColDetectRight" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 0 )
 enabled = true
-cast_to = Vector3( -150, 0, 300 )
-collision_mask = 5
+cast_to = Vector3( -75, 0, 150 )
 
 [node name="ColDetectForward" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9.33699 )
 enabled = true
-cast_to = Vector3( 0, 0, 300 )
-collision_mask = 5
+cast_to = Vector3( 0, 0, 150 )
 
 [node name="ColDetectUp" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0 )
 enabled = true
-cast_to = Vector3( 0, 150, 300 )
-collision_mask = 5
+cast_to = Vector3( 0, 75, 150 )
 
 [node name="ColDetectDown" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0 )
 enabled = true
-cast_to = Vector3( 0, -150, 300 )
-collision_mask = 5
+cast_to = Vector3( 0, -75, 150 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.13336, 0 )

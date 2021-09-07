@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://src/Main/Main.gd" type="Script" id=1]
 [ext_resource path="res://addons/organicpencil.splitscreen/splitscreen.tscn" type="PackedScene" id=2]
@@ -50,6 +50,9 @@ extents = Vector3( 180.878, 13.5, 66.556 )
 
 [sub_resource type="BoxShape" id=11]
 extents = Vector3( 49.822, 13.5, 50.5 )
+
+[sub_resource type="CubeMesh" id=16]
+size = Vector3( 5, 5, 5 )
 
 [sub_resource type="SphereMesh" id=12]
 radius = 60.0
@@ -287,8 +290,25 @@ cap_ship_id = 2
 [node name="CommandPost" parent="CapitalShips/CapitalShip2/CPs" index="0"]
 start_team = 2
 
-[node name="Spatial" type="Spatial" parent="CapitalShips"]
+[node name="CentreHangar" type="Spatial" parent="CapitalShips"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -281.211, 1962.99, 1962.54 )
+
+[node name="EntradaDavant" type="Spatial" parent="CapitalShips"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -281.211, 1962.99, 1610.89 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="MeshInstance2" type="MeshInstance" parent="CapitalShips/EntradaDavant"]
+mesh = SubResource( 16 )
+material/0 = null
+
+[node name="EntradaDarrere" type="Spatial" parent="CapitalShips"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -281.211, 1962.99, 2440.12 )
+
+[node name="MeshInstance" type="MeshInstance" parent="CapitalShips/EntradaDarrere"]
+mesh = SubResource( 16 )
+material/0 = null
 
 [node name="Troops" type="Node" parent="."]
 
@@ -307,54 +327,12 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 85.026,
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 105.964, 4, 171.178 )
 
 [node name="ShipTransport" parent="Vehicles" instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -150, 4, 0 )
-
-[node name="Transport" parent="Vehicles/ShipTransport" index="7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -154.045, 5.60332, -0.75769 )
 m_team = 1
 
-[node name="ColDetectLeft" parent="Vehicles/ShipTransport" index="12"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( 100, 0, 300 )
-
-[node name="ColDetectRight" parent="Vehicles/ShipTransport" index="13"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( -100, 0, 300 )
-
-[node name="ColDetectForward" parent="Vehicles/ShipTransport" index="14"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-
-[node name="ColDetectUp" parent="Vehicles/ShipTransport" index="15"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( 0, 100, 300 )
-
-[node name="ColDetectDown" parent="Vehicles/ShipTransport" index="16"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( 0, -100, 300 )
-
 [node name="ShipTransport2" parent="Vehicles" instance=ExtResource( 13 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 150, 4, 0 )
-
-[node name="Transport" parent="Vehicles/ShipTransport2" index="7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 5.86094, -1.515 )
 m_team = 2
-
-[node name="ColDetectLeft" parent="Vehicles/ShipTransport2" index="12"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( 100, 0, 300 )
-
-[node name="ColDetectRight" parent="Vehicles/ShipTransport2" index="13"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( -100, 0, 300 )
-
-[node name="ColDetectForward" parent="Vehicles/ShipTransport2" index="14"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-
-[node name="ColDetectUp" parent="Vehicles/ShipTransport2" index="15"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( 0, 100, 300 )
-
-[node name="ColDetectDown" parent="Vehicles/ShipTransport2" index="16"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2263 )
-cast_to = Vector3( 0, -100, 300 )
 
 [node name="Cameras" type="Node" parent="."]
 
@@ -458,6 +436,3 @@ shape = SubResource( 15 )
 [editable path="CapitalShips/CapitalShip2/Scene Root"]
 [editable path="CapitalShips/CapitalShip2/Hangar"]
 [editable path="CapitalShips/CapitalShip2/Hangar/LandingArea"]
-[editable path="Vehicles/ShipTransport"]
-[editable path="Vehicles/ShipTransport2"]
-[editable path="Vehicles/ShipTransport2/ShipMesh"]

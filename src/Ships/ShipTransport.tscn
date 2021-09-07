@@ -6,17 +6,12 @@
 [node name="ShipTransport" groups=[
 "Transports",
 ] instance=ExtResource( 1 )]
-
-[node name="Transport" type="Node" parent="." index="7"]
 script = ExtResource( 2 )
-mesh = NodePath("../ShipMesh/RootNode (gltf orientation matrix)/RootNode (model correction matrix)/Collada visual scene group/A-Wing/Hull/Hull_Dorsal/Material1")
 
 [node name="Player" parent="Input" index="0"]
 min_throttle = -0.2
 
-[node name="HealthSystem" parent="." index="9"]
+[node name="HealthSystem" parent="." index="8"]
 MAX_HEALTH = 3600
-
-[connection signal="die" from="HealthSystem" to="Transport" method="delete_cp"]
 
 [editable path="ShipMesh"]

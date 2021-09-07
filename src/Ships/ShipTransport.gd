@@ -1,4 +1,4 @@
-extends Node
+extends Ship
 
 export var m_team := 0
 export var mesh : NodePath
@@ -14,9 +14,9 @@ func _process(delta : float) -> void:
 	# Cambiar quan les naus tinguin models propis
 	set_material()
 	
-	if get_parent().state == get_parent().State.LANDED and not current_cp:
+	if state == State.LANDED and not current_cp:
 		instance_cp()
-	elif get_parent().state != get_parent().State.LANDED and current_cp:
+	elif state != State.LANDED and current_cp:
 		delete_cp()
 	
 	"""
@@ -32,7 +32,7 @@ func instance_cp() -> void:
 	var cp = main.instance_cp(Vector3.ZERO, false, m_team) # Pos. = 0 perquè ara serà fill nostre
 	
 	cp.get_parent().remove_child(cp)
-	owner.add_child(cp)
+	add_child(cp)
 	
 	cp.get_node("MeshInstance").hide()
 	connect("tree_exited", cp, "queue_free")
